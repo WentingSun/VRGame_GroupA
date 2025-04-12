@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7160303214332454942}
   m_Layer: 0
   m_Name: Small ball
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,6 +147,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
-  velocity: {x: 0, y: 0, z: 0}
-  velocityMagnitude: 0
   StayTime: 0
+  targetPosition: {fileID: 0}
