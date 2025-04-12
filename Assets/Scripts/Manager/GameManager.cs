@@ -53,11 +53,16 @@ public enum GameState
 //Events for PlayerState, some Player behavior 
 public enum PlayerState 
 {
-    PlayerDead,
+    Idel,
+    Aiming,
+    TakingDamage,
+    Dead,
+    
 }
 
 // Events for other GameEvent not include above. 
 public enum GameEvent 
 {
-
+    Null,
+    TenComboHit,// if a ball comboNum reach 10
 }
