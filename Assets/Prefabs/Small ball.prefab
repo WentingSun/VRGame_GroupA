@@ -149,3 +149,4 @@ MonoBehaviour:
   rb: {fileID: 0}
   StayTime: 0
   targetPosition: {fileID: 0}
+  MaxSpeed: 3

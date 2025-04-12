@@ -7,6 +7,11 @@ public class SmallBall : MonoBehaviour
     [SerializeField] Rigidbody rb;
     [SerializeField] float StayTime;
     [SerializeField] Transform targetPosition;
+    [SerializeField] float MaxSpeed = 3f;
+    [SerializeField] float MinSpeed = 2f;
+
+    [SerializeField] Vector3 velocity;
+    [SerializeField] float velocityMagnitude;
 
 
     // Start is called before the first frame update
@@ -18,8 +23,8 @@ public class SmallBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // velocity = rb.velocity;
-        // velocityMagnitude = velocity.magnitude;
+        velocity = rb.velocity;
+        velocityMagnitude = velocity.magnitude;
     }
 
 
@@ -36,31 +41,51 @@ public class SmallBall : MonoBehaviour
     void OnCollisionStay(Collision collision)
     {
         // Debug.Log("CollisionStay");
-        StayTime += Time.deltaTime;
+        if (collision.gameObject.CompareTag("WorldShell"))
+        {
+            StayTime += Time.deltaTime;
+        }
+        
         if (StayTime > 0.1f)
         {
             rb.velocity = Vector3.zero;
-            if(targetPosition != null){
-            rb.AddForce((targetPosition.position-transform.position).normalized * 3, ForceMode.VelocityChange);
-            }else{
-            rb.AddForce((-transform.position).normalized * 3, ForceMode.VelocityChange);
+            if (targetPosition != null)
+            {
+                rb.AddForce((targetPosition.position - transform.position).normalized * MaxSpeed, ForceMode.VelocityChange);
+            }
+            else
+            {
+                rb.AddForce((-transform.position).normalized * MaxSpeed, ForceMode.VelocityChange);
             }
             
         }
-        if (rb.velocity.magnitude < 5f)
-        {
-            Vector3 vector3= rb.velocity;
-            rb.velocity = Vector3.zero;
-            rb.AddForce(vector3.normalized * 2, ForceMode.VelocityChange);
-        }
+        
 
     }
 
     void OnCollisionExit(Collision collision)
     {
-        StayTime = 0;
-        // Debug.Log("SmallBall Exit");
-        Vector3 direction = rb.velocity.normalized;
+
+        if (collision.gameObject.CompareTag("WorldShell"))
+        {
+            StayTime = 0;
+        }
+
+        if (rb.velocity.magnitude > MaxSpeed)
+        {
+            
+            rb.velocity = rb.velocity.normalized * MaxSpeed;
+            
+        }
+
+        if (rb.velocity.magnitude < MinSpeed)
+        {
+            
+            rb.velocity = rb.velocity.normalized * MaxSpeed;
+            
+        }
+        
+
 
     }
 
