@@ -24,7 +24,7 @@ public class PoolManager : Singleton<PoolManager>
         Debug.Log("test button");
         var ball = SmallBallPool.Get();// 类似于使用了Instantiate()
         
-        ball.transform.position  = GameManager.Instance.targetPosition.position;
+        ball.transform.position  = WorldManager.Instance.RandomMoveTarget.position;
         ball.applyForce();
     }
 

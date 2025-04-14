@@ -7,13 +7,16 @@ public class SmallBall : MonoBehaviour
 {
     [SerializeField] Rigidbody rb;
     [SerializeField] float StayTime;
-    [SerializeField] Transform targetPosition;
+
     [SerializeField] float MaxSpeed = 3f;
     [SerializeField] float MinSpeed = 2f;
 
     [SerializeField] Vector3 velocity;
     [SerializeField] float velocityMagnitude;
 
+    [Header("Game Logic Related")]
+    [SerializeField] private int comboNum;
+    [SerializeField] private int hitShellNum;
 
     // Start is called before the first frame update
     void Start()
@@ -51,6 +54,16 @@ public class SmallBall : MonoBehaviour
         PoolManager.Instance.SmallBallPool.Release(this);
     }
 
+    void OnEnable()
+    {
+        GameManager.OnGameStateChange += GameStateChange;
+    }
+
+    void OnDisable()
+    {
+        GameManager.OnGameStateChange -= GameStateChange;
+    }
+
     public void onRelease()
     {
 
@@ -74,9 +87,9 @@ public class SmallBall : MonoBehaviour
         if (StayTime > 0.1f)
         {
             rb.velocity = Vector3.zero;
-            if (targetPosition != null)
+            if (WorldManager.Instance.RandomMoveTarget != null)
             {
-                rb.AddForce((targetPosition.position - transform.position).normalized * MaxSpeed, ForceMode.VelocityChange);
+                rb.AddForce((WorldManager.Instance.RandomMoveTarget.position - transform.position).normalized * MaxSpeed, ForceMode.VelocityChange);
             }
             else
             {
