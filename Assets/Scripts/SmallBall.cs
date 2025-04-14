@@ -33,7 +33,7 @@ public class SmallBall : MonoBehaviour
         rb.AddForce(Vector3.down * 3f, ForceMode.Impulse);
     }
 
-    public void testRelease()
+    public void ReleaseItself()
     {
         PoolManager.Instance.SmallBallPool.Release(this);
     }

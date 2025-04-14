@@ -23,7 +23,7 @@ public class SmallBallEditor : Editor
 
         if (GUILayout.Button("Test Release"))
         {
-            ball.testRelease();
+            ball.ReleaseItself();
         }
 
     }
