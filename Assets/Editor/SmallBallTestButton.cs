@@ -16,9 +16,15 @@ public class SmallBallEditor : Editor
         EditorGUILayout.Space();
 
         // 添加测试按钮
-        if (GUILayout.Button("测试 ApplyForce"))
+        if (GUILayout.Button("Test ApplyForce"))
         {
             ball.applyForce();
         }
+
+        if (GUILayout.Button("Test Release"))
+        {
+            ball.ReleaseItself();
+        }
+
     }
 }
