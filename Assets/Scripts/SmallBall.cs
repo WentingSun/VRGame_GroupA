@@ -42,6 +42,14 @@ public class SmallBall : MonoBehaviour
         velocityMagnitude = velocity.magnitude;
     }
 
+    private void Initialise()
+    {
+        gameObject.layer = 0;
+        penetrationNum = 0;
+        hitShellNum = 0;
+        comboNum = 0;
+    }
+
 
     public void applyForce()
     {
@@ -58,7 +66,7 @@ public class SmallBall : MonoBehaviour
 
     void OnEnable()
     {
-        hitShellNum = 0;
+        Initialise();
         GameManager.OnGameStateChange += GameStateChange;
     }
 

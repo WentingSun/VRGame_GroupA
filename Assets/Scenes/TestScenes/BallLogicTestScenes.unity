@@ -504,6 +504,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Small ball
       objectReference: {fileID: 0}
+    - target: {fileID: 6689154326295921218, guid: 867164e4ae393a44a8b93773b9fdbbb1, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7160303214332454942, guid: 867164e4ae393a44a8b93773b9fdbbb1, type: 3}
+      propertyPath: MaxHitShellNum
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8403725622768826623, guid: 867164e4ae393a44a8b93773b9fdbbb1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.186
