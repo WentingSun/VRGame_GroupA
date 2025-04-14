@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 5925933317759878195}
   - component: {fileID: 1638077676639427904}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: RoomBallWorldShell
   m_TagString: WorldShell
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

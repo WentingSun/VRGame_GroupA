@@ -17,6 +17,8 @@ public class SmallBall : MonoBehaviour
     [Header("Game Logic Related")]
     [SerializeField] private int comboNum;
     [SerializeField] private int hitShellNum;
+    [SerializeField] private int MaxHitShellNum = 10;
+    [SerializeField] private int penetrationNum;
 
     // Start is called before the first frame update
     void Start()
@@ -56,6 +58,7 @@ public class SmallBall : MonoBehaviour
 
     void OnEnable()
     {
+        hitShellNum = 0;
         GameManager.OnGameStateChange += GameStateChange;
     }
 
@@ -71,10 +74,35 @@ public class SmallBall : MonoBehaviour
 
     #endregion
 
+    #region Collision Logic
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Planet"))
+        {
+            penetrationNum--;
+            if (penetrationNum <= 0)
+            {
+                gameObject.layer = 0; //default
+            }
+        }
+
+        // Debug.Log("Trigger! "+ other.gameObject.name);
+    }
+
     void OnCollisionEnter(Collision collision)
     {
-        // Debug.Log("SmallBall Enter");
+        if (collision.gameObject.CompareTag("WorldShell"))
+        {
+            HandleHitShell();
+        }
+        if (collision.gameObject.CompareTag("Planet"))
+        {
+            HandleCombo();
+        }
     }
+
+
 
     void OnCollisionStay(Collision collision)
     {
@@ -122,6 +150,40 @@ public class SmallBall : MonoBehaviour
             rb.velocity = rb.velocity.normalized * MaxSpeed;
 
         }
+    }
+
+    #endregion
+
+    private void HandleHitShell()
+    {
+        comboNum = 0;
+
+        hitShellNum++;
+        if (hitShellNum >= MaxHitShellNum)
+        {
+            ReleaseItself();
+        }
+    }
+
+    private void HandleCombo()
+    {
+        comboNum++;
+
+        if (comboNum == 3)
+        {
+            GameManager.Instance.SendGameEvent(GameEvent.ThreeComboHit);
+        }
+
+        if (comboNum == 10)
+        {
+            GameManager.Instance.SendGameEvent(GameEvent.TenComboHit);
+        }
+    }
+
+    public void SetPenetration(int Num)
+    {
+        penetrationNum = Num;
+        gameObject.layer = 8; // PenetrationSmallBall
     }
 
 }

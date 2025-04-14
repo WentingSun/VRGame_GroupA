@@ -26,5 +26,10 @@ public class SmallBallEditor : Editor
             ball.ReleaseItself();
         }
 
+        if (GUILayout.Button("SetPenetration(int 3)"))
+        {
+            ball.SetPenetration(3);
+        }
+
     }
 }

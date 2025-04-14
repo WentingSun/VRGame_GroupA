@@ -37,10 +37,26 @@ public class GameManager : Singleton<GameManager>
     public void SendGameEvent(GameEvent newGameEvent)
     {
         currentgameEvent = newGameEvent;
+        switch (newGameEvent){
+            case GameEvent.ThreeComboHit:
+            HandleThreeComboHit();
+            break;
+            case GameEvent.TenComboHit:
+            HandleTenComboHit();
+            break;
+        }
         OnGameEventSent?.Invoke(newGameEvent);
     }
 
+    private void HandleTenComboHit()
+    {
+        
+    }
 
+    private void HandleThreeComboHit()
+    {
+        
+    }
 }
 //We need add more State or Event in future.
 //Events for GameState
@@ -66,5 +82,6 @@ public enum PlayerState
 public enum GameEvent 
 {
     Null,
+    ThreeComboHit,
     TenComboHit,// if a ball comboNum reach 10
 }

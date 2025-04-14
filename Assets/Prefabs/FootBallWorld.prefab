@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 6439975458910275826}
   - component: {fileID: 2922577881875016167}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: FootBallWorldShell
   m_TagString: WorldShell
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
