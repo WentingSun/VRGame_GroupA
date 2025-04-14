@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,15 @@ public class SmallBall : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        GameManager.OnGameStateChange += GameStateChange;
+    }
+
+    private void GameStateChange(GameState state)
+    {
+        if (state == GameState.GameOver)
+        {
+            ReleaseItself(); // 当游戏结束时, 禁用自己
+        }
     }
 
     // Update is called once per frame
@@ -33,10 +43,20 @@ public class SmallBall : MonoBehaviour
         rb.AddForce(Vector3.down * 3f, ForceMode.Impulse);
     }
 
+    #region Pool-Related
+
     public void ReleaseItself()
     {
+        onRelease();
         PoolManager.Instance.SmallBallPool.Release(this);
     }
+
+    public void onRelease()
+    {
+
+    }
+
+    #endregion
 
     void OnCollisionEnter(Collision collision)
     {
@@ -89,9 +109,6 @@ public class SmallBall : MonoBehaviour
             rb.velocity = rb.velocity.normalized * MaxSpeed;
 
         }
-
-
-
     }
 
 }
