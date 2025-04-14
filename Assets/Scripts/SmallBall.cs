@@ -33,6 +33,11 @@ public class SmallBall : MonoBehaviour
         rb.AddForce(Vector3.down * 3f, ForceMode.Impulse);
     }
 
+    public void testRelease()
+    {
+        PoolManager.Instance.SmallBallPool.Release(this);
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         // Debug.Log("SmallBall Enter");
@@ -45,7 +50,7 @@ public class SmallBall : MonoBehaviour
         {
             StayTime += Time.deltaTime;
         }
-        
+
         if (StayTime > 0.1f)
         {
             rb.velocity = Vector3.zero;
@@ -57,9 +62,9 @@ public class SmallBall : MonoBehaviour
             {
                 rb.AddForce((-transform.position).normalized * MaxSpeed, ForceMode.VelocityChange);
             }
-            
+
         }
-        
+
 
     }
 
@@ -73,18 +78,18 @@ public class SmallBall : MonoBehaviour
 
         if (rb.velocity.magnitude > MaxSpeed)
         {
-            
+
             rb.velocity = rb.velocity.normalized * MaxSpeed;
-            
+
         }
 
         if (rb.velocity.magnitude < MinSpeed)
         {
-            
+
             rb.velocity = rb.velocity.normalized * MaxSpeed;
-            
+
         }
-        
+
 
 
     }
