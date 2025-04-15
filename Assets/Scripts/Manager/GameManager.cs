@@ -17,7 +17,9 @@ public class GameManager : Singleton<GameManager>
     public static event Action<GameState> OnGameStateChange;
     public static event Action<PlayerState> OnPlayerStateChange;
     public static event Action<GameEvent> OnGameEventSent;
+    
 
+    public Transform targetPosition;
 
     public void UpdateGameState(GameState newGameState)
     {
