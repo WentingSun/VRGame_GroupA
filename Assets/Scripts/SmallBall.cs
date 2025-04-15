@@ -56,6 +56,12 @@ public class SmallBall : MonoBehaviour
         rb.AddForce(Vector3.down * 3f, ForceMode.Impulse);
     }
 
+    public void VelocityChange(Vector3 Direction, float Magnitude)
+    {
+        rb.velocity = Vector3.zero;
+        rb.AddForce(Direction * Magnitude, ForceMode.VelocityChange);
+    }
+
     #region Pool-Related
 
     public void ReleaseItself()
