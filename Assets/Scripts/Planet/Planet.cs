@@ -50,31 +50,3 @@ public class normalPlanet : Planet
         // Update normal planet properties
     }
 }
-
-public class SpeedUpPlanet : Planet
-{
-    [SerializeField] private float speedMultiplier = 1.5f;
-
-    public override void OnBallCollision(SmallBall ball, Vector3 collisionNormal)
-    {
-        ball.Reflect(collisionNormal);
-
-        ball.AdjustSpeed(speedMultiplier);
-
-        TakeDamage(1);
-    }
-}
-
-public class SlowDownPlanet : Planet
-{
-    [SerializeField] private float speedMultiplier = 0.8f;
-
-    public override void OnBallCollision(SmallBall ball, Vector3 collisionNormal)
-    {
-        ball.Reflect(collisionNormal);
-
-        ball.AdjustSpeed(speedMultiplier);
-
-        TakeDamage(1);
-    }
-}
