@@ -99,16 +99,36 @@ public class SmallBall : MonoBehaviour
     }
 
     void OnCollisionEnter(Collision collision)
+{
+    if (collision.gameObject.CompareTag("WorldShell"))
     {
-        if (collision.gameObject.CompareTag("WorldShell"))
-        {
-            HandleHitShell();
-        }
-        if (collision.gameObject.CompareTag("Planet"))
-        {
-            HandleCombo();
-        }
+        HandleHitShell();
     }
+    else if (collision.gameObject.CompareTag("Planet"))
+    {
+        Planet planet = collision.gameObject.GetComponent<Planet>();
+        if (planet != null)
+        {
+            Vector3 normal = collision.contacts[0].normal;
+            planet.OnBallCollision(this, normal); 
+        }
+
+        HandleCombo();
+    }
+}
+
+
+public void AdjustSpeed(float multiplier)
+{
+    velocityMagnitude *= multiplier; 
+    rb.velocity = rb.velocity.normalized * velocityMagnitude;
+}
+
+public void Reflect(Vector3 normal)
+{
+    rb.velocity = Vector3.Reflect(rb.velocity, normal);
+    rb.velocity = rb.velocity.normalized * velocityMagnitude;
+}
 
 
 
