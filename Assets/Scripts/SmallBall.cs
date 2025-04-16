@@ -84,6 +84,12 @@ public class SmallBall : MonoBehaviour
 
     #region Collision Logic
 
+    public void AddCollisions(int count)
+    {
+        MaxHitShellNum += count;
+        Debug.Log($"The ball's collision count increased by {count}. Current total: {MaxHitShellNum}");
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Planet"))
