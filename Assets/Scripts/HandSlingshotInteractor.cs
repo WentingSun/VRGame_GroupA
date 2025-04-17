@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Hands;
@@ -6,49 +5,80 @@ using UnityEngine.XR.Management;
 
 public class HandSlingshotInteractor : MonoBehaviour
 {
-    [Header("References")]
-    public Transform targetBall;                     // 固定球体
-    public GameObject projectilePrefab;              // 子弹预制体（火球）
-    public LineRenderer lineRenderer;                // 拉线可视化
+    [Header("World References (from WorldManager)")]
+    [Tooltip("足球(小世界) – 如果不手动赋值，会自动从WorldManager获取 FootBallWorld")]
+    public Transform soccerBall;      // 足球（小球形世界）
+    [Tooltip("房间球(大世界) – 如果不手动赋值，会自动从WorldManager获取 RoomBallWorld")]
+    public Transform roomBall;        // 房间球（大球形世界）
+
+    [Header("Prefabs / Pools")]
+    [Tooltip("用于在足球内部短暂出现的虚拟小球，若无需求可留空")]
+    public GameObject virtualBallPrefab;
+    [Tooltip("若使用对象池，可以不指定Prefab，统一从SmallBallPool获取")]
+    public GameObject realBallPrefab; // 可留空，如果你只想走对象池
+
+    [Header("Line Renderer")]
+    public LineRenderer lineRenderer;
 
     [Header("Settings")]
-    public float maxPullDistance = 0.3f;             // 最大拉距
-    public float launchForce = 10f;                  // 发射力
-    public float activationDistance = 0.15f;         // 距离球体表面允许的捏合激活范围
+    [Tooltip("允许在足球表面激活的距离范围（贴近表面）")]
+    public float activationDistance = 0.03f;
+    [Tooltip("食指拇指捏合阈值")]
+    public float pinchThreshold = 0.03f;
+    [Tooltip("拉线最大距离")]
+    public float maxPullDistance = 0.3f;
+    [Tooltip("发射力度")]
+    public float launchForce = 10f;
+    [Tooltip("虚拟小球多长时间后消失")]
+    public float vanishDelay = 1f;
+    [Tooltip("是否生成虚拟小球")]
+    public bool spawnVirtualBall = true;
+    [Tooltip("是否使用对象池生成真实小球")]
+    public bool usePoolForRealBall = true;
 
+    // XR Hands Subsystem
     private XRHandSubsystem handSubsystem;
+
+    // 交互状态
     private bool isPinching = false;
     private bool hasLaunched = false;
-    private Vector3 pinchStartPosition;
+    private Vector3 pinchStartPosition; // 捏合点
 
     void Start()
     {
+        // 若没有显式指定球体引用，则从 WorldManager 里找
+        if (!soccerBall && WorldManager.Instance && WorldManager.Instance.FootBallWorld)
+        {
+            soccerBall = WorldManager.Instance.FootBallWorld;
+        }
+        if (!roomBall && WorldManager.Instance && WorldManager.Instance.RoomBallWorld)
+        {
+            roomBall = WorldManager.Instance.RoomBallWorld;
+        }
+
+        // XRHands 初始化
         handSubsystem = XRGeneralSettings.Instance.Manager.activeLoader.GetLoadedSubsystem<XRHandSubsystem>();
         if (handSubsystem == null)
         {
             Debug.LogError("XRHandSubsystem is missing! 请确认已启用 XR Hands 插件");
         }
 
-        if (!lineRenderer)
-            lineRenderer = GetComponent<LineRenderer>();
-
-        lineRenderer.enabled = false;
-        hasLaunched = false;
+        // 如果没指定LineRenderer，尝试在自身获取
+        if (!lineRenderer) lineRenderer = GetComponent<LineRenderer>();
+        if (lineRenderer) lineRenderer.enabled = false;
     }
 
     void Update()
     {
-        if (handSubsystem == null || !handSubsystem.running)
-            return;
+        if (handSubsystem == null || !handSubsystem.running) return;
 
         // 遍历左右手
-        XRHand[] hands = new XRHand[] { handSubsystem.leftHand, handSubsystem.rightHand };
-
+        XRHand[] hands = { handSubsystem.leftHand, handSubsystem.rightHand };
         foreach (var hand in hands)
         {
-            if (!hand.isTracked)
-                continue;
+            if (!hand.isTracked) continue;
 
+            // 获取手指关键关节
             XRHandJoint thumb = hand.GetJoint(XRHandJointID.ThumbTip);
             XRHandJoint index = hand.GetJoint(XRHandJointID.IndexTip);
 
@@ -57,50 +87,104 @@ public class HandSlingshotInteractor : MonoBehaviour
 
             Vector3 thumbPos = thumbPose.position;
             Vector3 indexPos = indexPose.position;
-            float pinchDistance = Vector3.Distance(indexPos, thumbPos);
+            float pinchDist = Vector3.Distance(indexPos, thumbPos);
 
-            // 距离球体表面范围内才允许激活
-            float distanceToBall = Vector3.Distance(indexPos, targetBall.position);
-            bool nearBallSurface = distanceToBall <= activationDistance;
+            // 需要确定玩家贴近“足球表面”
+            // 计算捏合中点到足球中心的距离 vs. 足球半径
+            if (!soccerBall) return; // 无法检测
+            float soccerRadius = soccerBall.localScale.x * 0.5f;
+            Vector3 pinchMid = (thumbPos + indexPos) * 0.5f;
+            float distToSoccerCenter = Vector3.Distance(pinchMid, soccerBall.position);
+            bool onSoccerSurface = Mathf.Abs(distToSoccerCenter - soccerRadius) < activationDistance;
 
-            bool currentPinching = pinchDistance < 0.03f && nearBallSurface;
+            // 判定捏合
+            bool currentPinching = (pinchDist < pinchThreshold) && onSoccerSurface;
 
             if (currentPinching)
             {
+                // 刚开始捏合
                 if (!isPinching)
                 {
                     isPinching = true;
-                    lineRenderer.enabled = true;
                     hasLaunched = false;
-                    pinchStartPosition = indexPos;
+                    if (lineRenderer) lineRenderer.enabled = true;
+
+                    pinchStartPosition = pinchMid; // 记录捏合点
                 }
 
-                // 准星朝球体内部方向延伸
-                Vector3 targetDir = (targetBall.position - pinchStartPosition).normalized;
-                Vector3 pullPoint = pinchStartPosition - targetDir * maxPullDistance * 0.5f;
+                // 可视化拉线: 从捏合点向球体中心反向
+                if (lineRenderer)
+                {
+                    Vector3 dirToCenter = (soccerBall.position - pinchStartPosition).normalized;
+                    Vector3 pullEnd = pinchStartPosition - dirToCenter * maxPullDistance;
+                    lineRenderer.SetPosition(0, pinchStartPosition);
+                    lineRenderer.SetPosition(1, pullEnd);
+                }
 
-                lineRenderer.SetPosition(0, pinchStartPosition);
-                lineRenderer.SetPosition(1, pullPoint);
-
-                return; // 一次只处理一只手
+                // 一次只处理一只手
+                return;
             }
             else
             {
+                // 如果之前在捏合，现在松手，执行发射
                 if (isPinching && !hasLaunched)
                 {
-                    Vector3 direction = (targetBall.position - pinchStartPosition).normalized;
+                    hasLaunched = true;
+                    if (lineRenderer) lineRenderer.enabled = false;
 
-                    GameObject projectile = Instantiate(projectilePrefab, pinchStartPosition, Quaternion.LookRotation(direction));
-                    Rigidbody rb = projectile.GetComponent<Rigidbody>();
-                    if (rb)
+                    // 1) 在足球内部制造一个“虚拟小球”（可选）
+                    if (spawnVirtualBall && virtualBallPrefab)
                     {
-                        rb.velocity = direction * launchForce;
+                        Vector3 insideDir = (soccerBall.position - pinchStartPosition).normalized;
+                        var virtualBall = Instantiate(
+                            virtualBallPrefab,
+                            pinchStartPosition,
+                            Quaternion.LookRotation(insideDir)
+                        );
+                        Destroy(virtualBall, vanishDelay);
                     }
 
-                    hasLaunched = true;
-                    lineRenderer.enabled = false;
+                    // 2) 计算在房间球那边对应位置并生成真实小球
+                    if (roomBall)
+                    {
+                        // 比例映射
+                        float distInSoccer = distToSoccerCenter; // pinchStartPosition离足球中心距离
+                        float ratio = distInSoccer / soccerRadius;
+
+                        float roomRadius = roomBall.localScale.x * 0.5f;
+                        float distInRoom = ratio * roomRadius + 0.02f; // +0.02稍微在外面
+
+                        // 朝向与方向
+                        Vector3 offsetDir = pinchStartPosition - soccerBall.position; // 捏合点相对足球中心
+                        Vector3 spawnPos = roomBall.position + offsetDir.normalized * distInRoom;
+                        Vector3 flyDirection = -offsetDir.normalized; // 往里飞
+
+                        if (usePoolForRealBall)
+                        {
+                            // 从对象池获取小球(小组脚本: SmallBallPool + PoolManager)
+                            var smallBall = PoolManager.Instance.SmallBallPool.Get();
+                            if (smallBall)
+                            {
+                                smallBall.transform.position = spawnPos;
+                                // 如果脚本SmallBall里有 VelocityChange() 等方法，可用
+                                // 例如:
+                                smallBall.VelocityChange(flyDirection, launchForce);
+                            }
+                        }
+                        else
+                        {
+                            // 直接 Instantiate realBallPrefab
+                            if (realBallPrefab)
+                            {
+                                var realObj = Instantiate(realBallPrefab, spawnPos, Quaternion.LookRotation(flyDirection));
+                                Rigidbody rb = realObj.GetComponent<Rigidbody>();
+                                if (rb) rb.velocity = flyDirection * launchForce;
+                            }
+                        }
+                    }
                 }
 
+                // 重置
                 isPinching = false;
             }
         }
