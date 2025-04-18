@@ -17,7 +17,7 @@ public class SmallBall : MonoBehaviour
     [Header("Game Logic Related")]
     [SerializeField] private int comboNum;
     [SerializeField] private int hitShellNum;
-    [SerializeField] private int MaxHitShellNum = 10;
+    [SerializeField] public int MaxHitShellNum = 10;
     [SerializeField] private int penetrationNum;
 
     // Start is called before the first frame update
@@ -90,6 +90,12 @@ public class SmallBall : MonoBehaviour
 
     #region Collision Logic
 
+    public void SetCollisions(int count)
+    {
+        MaxHitShellNum = count;
+        Debug.Log($"The ball's collision count increased by {count}. Current total: {MaxHitShellNum}");
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Planet"))
@@ -105,16 +111,36 @@ public class SmallBall : MonoBehaviour
     }
 
     void OnCollisionEnter(Collision collision)
+{
+    if (collision.gameObject.CompareTag("WorldShell"))
     {
-        if (collision.gameObject.CompareTag("WorldShell"))
-        {
-            HandleHitShell();
-        }
-        if (collision.gameObject.CompareTag("Planet"))
-        {
-            HandleCombo();
-        }
+        HandleHitShell();
     }
+    else if (collision.gameObject.CompareTag("Planet"))
+    {
+        Planet planet = collision.gameObject.GetComponent<Planet>();
+        if (planet != null)
+        {
+            Vector3 normal = collision.contacts[0].normal;
+            planet.OnBallCollision(this, normal); 
+        }
+
+        HandleCombo();
+    }
+}
+
+
+public void AdjustSpeed(float multiplier)
+{
+    velocityMagnitude *= multiplier; 
+    rb.velocity = rb.velocity.normalized * velocityMagnitude;
+}
+
+public void Reflect(Vector3 normal)
+{
+    rb.velocity = Vector3.Reflect(rb.velocity, normal);
+    rb.velocity = rb.velocity.normalized * velocityMagnitude;
+}
 
 
 
