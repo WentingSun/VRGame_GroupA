@@ -22,6 +22,7 @@ public class SplitPlanet : Planet
         for (int i = 0; i < fragmentCount; i++)
         {
             SmallBall fragment = PoolManager.Instance.SmallBallPool.Get();
+            fragment.SetCollisions(1);
             if (fragment != null)
             {
                 fragment.transform.position = transform.position;

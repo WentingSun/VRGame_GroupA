@@ -12,7 +12,7 @@ public class ExtraCollisionPlanet : Planet
 
         if (ball != null)
         {
-            ball.AddCollisions(extraCollisions);
+            ball.SetCollisions(extraCollisions+ball.MaxHitShellNum);
         }
     }
 }

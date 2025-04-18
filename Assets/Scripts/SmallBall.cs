@@ -17,7 +17,7 @@ public class SmallBall : MonoBehaviour
     [Header("Game Logic Related")]
     [SerializeField] private int comboNum;
     [SerializeField] private int hitShellNum;
-    [SerializeField] private int MaxHitShellNum = 10;
+    [SerializeField] public int MaxHitShellNum = 10;
     [SerializeField] private int penetrationNum;
 
     // Start is called before the first frame update
@@ -84,9 +84,9 @@ public class SmallBall : MonoBehaviour
 
     #region Collision Logic
 
-    public void AddCollisions(int count)
+    public void SetCollisions(int count)
     {
-        MaxHitShellNum += count;
+        MaxHitShellNum = count;
         Debug.Log($"The ball's collision count increased by {count}. Current total: {MaxHitShellNum}");
     }
 
