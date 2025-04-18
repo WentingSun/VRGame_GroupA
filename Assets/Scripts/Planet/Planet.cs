@@ -22,7 +22,7 @@ public class Planet : MonoBehaviour
         // 可选：在这里添加星球的其他逻辑
     }
 
-    public void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage)
     {
         health -= damage;
         if (health <= 0)
