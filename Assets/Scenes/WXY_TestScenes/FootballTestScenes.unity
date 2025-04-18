@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: b6a3f8bca2c865243929bac258c89b96, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 57926b68ff93b494aa8dc462c716f786, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.019064382, g: 0.015714036, b: 0.05102752, a: 1}
+  m_IndirectSpecularColor: {r: 0.0026686075, g: 0.0037542188, b: 0.023797525, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1093,7 +1093,7 @@ Transform:
   m_GameObject: {fileID: 634031549}
   serializedVersion: 2
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: -2.53, y: 4.42, z: -2.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1337,7 +1337,7 @@ PrefabInstance:
     - target: {fileID: 568124504498724409, guid: 867164e4ae393a44a8b93773b9fdbbb1, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4ac462c720702c64ba3c20df7acf3d62, type: 2}
+      objectReference: {fileID: 2100000, guid: 7deaed43d2fa5ce428451e4344f87d11, type: 2}
     - target: {fileID: 6689154326295921218, guid: 867164e4ae393a44a8b93773b9fdbbb1, type: 3}
       propertyPath: m_Name
       value: Small ball (1)
@@ -3134,7 +3134,7 @@ PrefabInstance:
     - target: {fileID: 568124504498724409, guid: 867164e4ae393a44a8b93773b9fdbbb1, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 25048fd64aef7654a8b731237624e753, type: 2}
+      objectReference: {fileID: 2100000, guid: 7deaed43d2fa5ce428451e4344f87d11, type: 2}
     - target: {fileID: 6689154326295921218, guid: 867164e4ae393a44a8b93773b9fdbbb1, type: 3}
       propertyPath: m_Name
       value: Small ball
@@ -3220,17 +3220,21 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 4730d043da2d8a3479b636b565d90c8f, type: 2}
+    - target: {fileID: 7339442442954338679, guid: 86ad988db18f8c04d9cdec53af4e585f, type: 3}
+      propertyPath: centrePoint
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7823876477853313566, guid: 86ad988db18f8c04d9cdec53af4e585f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.44621596
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7823876477853313566, guid: 86ad988db18f8c04d9cdec53af4e585f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.14311142
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7823876477853313566, guid: 86ad988db18f8c04d9cdec53af4e585f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.5727197
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7823876477853313566, guid: 86ad988db18f8c04d9cdec53af4e585f, type: 3}
       propertyPath: m_LocalRotation.w
