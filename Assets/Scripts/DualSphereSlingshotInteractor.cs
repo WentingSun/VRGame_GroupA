@@ -9,6 +9,9 @@ public class DualSphereSlingshotInteractor_Handed : MonoBehaviour
     public Transform soccerShell;   // FootBallWorldShell
     public Transform roomShell;     // RoomBallWorldShell
 
+    [Header("XR orgin")]
+    public Transform xrOriginTransform;
+
     [Header("Prefabs")]
     public GameObject virtualBallPrefab;
     public GameObject realBallPrefab;  // 带 Rigidbody
@@ -72,17 +75,16 @@ public class DualSphereSlingshotInteractor_Handed : MonoBehaviour
             }
 
             // 拇指 & 食指
-            var thumb = hand.GetJoint(XRHandJointID.ThumbTip);
-            var index = hand.GetJoint(XRHandJointID.IndexTip);
-            if (!thumb.TryGetPose(out Pose tPose) ||
-                !index.TryGetPose(out Pose iPose))
+            if (!hand.GetJoint(XRHandJointID.ThumbTip).TryGetPose(out Pose tPose) ||
+                !hand.GetJoint(XRHandJointID.IndexTip).TryGetPose(out Pose iPose))
             {
                 isPinching[i] = false;
                 continue;
             }
 
-            Vector3 thumbPos = tPose.position;
-            Vector3 indexPos = iPose.position;
+            // 转换到世界坐标
+            Vector3 thumbPos = xrOriginTransform.TransformPoint(tPose.position);
+            Vector3 indexPos = xrOriginTransform.TransformPoint(iPose.position);
             float pinchDist = Vector3.Distance(thumbPos, indexPos);
 
             // 计算表面点
@@ -149,19 +151,14 @@ public class DualSphereSlingshotInteractor_Handed : MonoBehaviour
                 // 实体球 (外部)
                 if (realBallPrefab != null)
                 {
-                    Vector3 spawnRoom = roomCenter + offsetDir * roomRadius;
-                    Vector3 flyDir = -offsetDir;
+                    //Vector3 spawnRoom = roomCenter + offsetDir * roomRadius;
+                    //Vector3 flyDir = -offsetDir;
                     float pr = pullAmt[i] / maxPullDistance;
                     float force = Mathf.Lerp(minLaunchForce, maxLaunchForce, pr);
 
-                    var obj = Instantiate(realBallPrefab,
-                                          spawnRoom,
-                                          Quaternion.LookRotation(flyDir));
-                    if (obj.TryGetComponent<Rigidbody>(out var rb))
-                    {
-                        rb.velocity = Vector3.zero;
-                        rb.AddForce(flyDir * force, ForceMode.VelocityChange);
-                    }
+                    var ball = PoolManager.Instance.SmallBallPool.Get();
+                    ball.transform.position = roomCenter + offsetDir * roomRadius;
+                    ball.VelocityChange(-offsetDir, force);
                 }
             }
 
