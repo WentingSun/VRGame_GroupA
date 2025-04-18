@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+// Audio Request 达到某个分数的时候的音效
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private GameState currentGameState;
@@ -26,15 +27,23 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] int MaxSmallBallNum = 10;
 
     [Header("Game Information")]
-    public int Score;
+    public float Score;
+    public int destoryPlanetNum;
+    public int numOfSmallBallShooted;
+    public int MaxReachComboNum; //达到的最大连击数
 
 
     public void GameInitialsation()
     {
         CurrentPlayerHealth = MaxPlayerHealth;
         remainingSmallBallNum = MaxSmallBallNum;
+        destoryPlanetNum = 0;
+        numOfSmallBallShooted = 0;
+        MaxReachComboNum = 0;
         Score = 0;
     }
+
+    #region GameState
 
     public void UpdateGameState(GameState newGameState)
     {
@@ -56,12 +65,12 @@ public class GameManager : Singleton<GameManager>
 
     private void HandleGameOver()
     {
-        
+
     }
 
     private void HandleGamePause()
     {
-        
+
     }
 
     private void HandleGameStart()
@@ -69,11 +78,18 @@ public class GameManager : Singleton<GameManager>
         GameInitialsation();
     }
 
+    #endregion
+
+    #region PlayerState
     public void UpdatePlayerState(PlayerState newPlayerState)
     {
         currentPlayerState = newPlayerState;
         OnPlayerStateChange?.Invoke(newPlayerState);
     }
+
+    #endregion
+
+    #region GameEvent
 
     public void SendGameEvent(GameEvent newGameEvent)
     {
@@ -99,6 +115,46 @@ public class GameManager : Singleton<GameManager>
     {
 
     }
+    #endregion
+
+    public void addScore(int ScoreNum, float ScoreMultiplier)
+    {
+        Score += ScoreNum * ScoreMultiplier;
+    }
+
+    public void addSmallBallNum(int Num)
+    {
+        int newNum = remainingSmallBallNum + Num;
+        if (newNum >= MaxSmallBallNum)
+        {
+            remainingSmallBallNum = MaxSmallBallNum;
+            //
+        }
+        else
+        {
+            remainingSmallBallNum = newNum;
+        }
+
+    }
+
+    public void AddDestoryPlanetNum()
+    {
+        destoryPlanetNum++;
+    }
+
+    public void AddNumOfSmallBallShooted()
+    {
+        numOfSmallBallShooted++;
+    }
+
+    public void CompareMaxComboNum(int comboNum)
+    {
+        if (comboNum >= MaxReachComboNum)
+        {
+            MaxReachComboNum = comboNum;
+        }
+    }
+
 }
 //We need add more State or Event in future.
 //Events for GameState
@@ -115,6 +171,7 @@ public enum PlayerState
 {
     Idel,
     Aiming,
+    ShootingABall,
     TakingDamage,
     Dead,
 
@@ -126,4 +183,5 @@ public enum GameEvent
     Null,
     ThreeComboHit,
     TenComboHit,// if a ball comboNum reach 10
+    AllBallUsed
 }
