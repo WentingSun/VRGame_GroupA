@@ -17,16 +17,57 @@ public class GameManager : Singleton<GameManager>
     public static event Action<GameState> OnGameStateChange;
     public static event Action<PlayerState> OnPlayerStateChange;
     public static event Action<GameEvent> OnGameEventSent;
-    
+
+    [Header("Player Information")]
+    public int CurrentPlayerHealth = 3;
+    [SerializeField] int MaxPlayerHealth = 3;
+
+    public int remainingSmallBallNum = 10;
+    [SerializeField] int MaxSmallBallNum = 10;
+
+    [Header("Game Information")]
+    public int Score;
 
 
+    public void GameInitialsation()
+    {
+        CurrentPlayerHealth = MaxPlayerHealth;
+        remainingSmallBallNum = MaxSmallBallNum;
+        Score = 0;
+    }
 
     public void UpdateGameState(GameState newGameState)
     {
         currentGameState = newGameState;
+        switch (newGameState)
+        {
+            case GameState.GameStart:
+                HandleGameStart();
+                break;
+            case GameState.GameOver:
+                HandleGameOver();
+                break;
+            case GameState.GamePause:
+                HandleGamePause();
+                break;
+        }
         OnGameStateChange?.Invoke(newGameState);
     }
 
+    private void HandleGameOver()
+    {
+        
+    }
+
+    private void HandleGamePause()
+    {
+        
+    }
+
+    private void HandleGameStart()
+    {
+        GameInitialsation();
+    }
 
     public void UpdatePlayerState(PlayerState newPlayerState)
     {
@@ -37,30 +78,31 @@ public class GameManager : Singleton<GameManager>
     public void SendGameEvent(GameEvent newGameEvent)
     {
         currentgameEvent = newGameEvent;
-        switch (newGameEvent){
+        switch (newGameEvent)
+        {
             case GameEvent.ThreeComboHit:
-            HandleThreeComboHit();
-            break;
+                HandleThreeComboHit();
+                break;
             case GameEvent.TenComboHit:
-            HandleTenComboHit();
-            break;
+                HandleTenComboHit();
+                break;
         }
         OnGameEventSent?.Invoke(newGameEvent);
     }
 
     private void HandleTenComboHit()
     {
-        
+
     }
 
     private void HandleThreeComboHit()
     {
-        
+
     }
 }
 //We need add more State or Event in future.
 //Events for GameState
-public enum GameState 
+public enum GameState
 {
     GameStart,
     GameOver,
@@ -69,17 +111,17 @@ public enum GameState
 }
 
 //Events for PlayerState, some Player behavior 
-public enum PlayerState 
+public enum PlayerState
 {
     Idel,
     Aiming,
     TakingDamage,
     Dead,
-    
+
 }
 
 // Events for other GameEvent not include above. 
-public enum GameEvent 
+public enum GameEvent
 {
     Null,
     ThreeComboHit,
