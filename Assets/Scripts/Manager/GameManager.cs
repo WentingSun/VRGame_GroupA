@@ -113,11 +113,13 @@ public class GameManager : Singleton<GameManager>
 
     private void handlePlayerShootingABall()
     {
-        if(remainingSmallBallNum>0){
-            remainingSmallBallNum --;
-            numOfSmallBallShooted ++;
-        } 
-        if (remainingSmallBallNum <= 0){
+        if (remainingSmallBallNum > 0)
+        {
+            remainingSmallBallNum--;
+            numOfSmallBallShooted++;
+        }
+        if (remainingSmallBallNum <= 0)
+        {
             SendGameEvent(GameEvent.AllBallUsed);
         }
     }
@@ -196,6 +198,7 @@ public class GameManager : Singleton<GameManager>
 
     private void HandleResurrectionUsed()
     {
+        isResurrection = false;
         CurrentPlayerHealth = MaxPlayerHealth; //以最大血量复活
     }
 
