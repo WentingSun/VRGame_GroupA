@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Audio Request 还需要小球出现音效和动画特效, 发射音效, 连击音效, 爆炸音效
 public class SmallBall : MonoBehaviour
 {
     [SerializeField] Rigidbody rb;
@@ -10,6 +11,8 @@ public class SmallBall : MonoBehaviour
 
     [SerializeField] float MaxSpeed = 3f;
     [SerializeField] float MinSpeed = 2f;
+
+    [Header("Small Ball Rigidbody Information")]
 
     [SerializeField] Vector3 velocity;
     [SerializeField] float velocityMagnitude;
@@ -67,7 +70,11 @@ public class SmallBall : MonoBehaviour
     public void ReleaseItself()
     {
         onRelease();
-        PoolManager.Instance.SmallBallPool.Release(this);
+        if (gameObject.activeSelf)
+        {
+            PoolManager.Instance.SmallBallPool.Release(this);
+        }
+
     }
 
     void OnEnable()
