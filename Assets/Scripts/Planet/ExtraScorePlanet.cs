@@ -25,15 +25,19 @@ public class ExtraScorePlanet : Planet
         }
 
         // 调用得分逻辑（留作接口）
-        GrantScore();
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        if (gameManager != null)
+        {
+            gameManager.addScore(1, scoreMultiplier); // 这里的1可以替换为实际得分
+        }
+        else
+        {
+            Debug.LogError("GameManager instance not found!");
+        }
 
         Debug.Log($"ExtraScorePlanet hit! Current hit count: {hitCount}, Score multiplier: {scoreMultiplier}");
     }
 
-    private void GrantScore()
-    {
-        // TODO: 实现得分逻辑
-    }
 
     private void Start()
     {
