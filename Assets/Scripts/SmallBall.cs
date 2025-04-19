@@ -70,7 +70,11 @@ public class SmallBall : MonoBehaviour
     public void ReleaseItself()
     {
         onRelease();
-        PoolManager.Instance.SmallBallPool.Release(this);
+        if (gameObject.activeSelf)
+        {
+            PoolManager.Instance.SmallBallPool.Release(this);
+        }
+
     }
 
     void OnEnable()
