@@ -13,7 +13,7 @@ public class SmallBall : MonoBehaviour
 
     [SerializeField] Vector3 velocity;
     [SerializeField] float velocityMagnitude;
-
+    public float bounceStrength = 1.2f;
     [Header("Game Logic Related")]
     [SerializeField] private int comboNum;
     [SerializeField] private int hitShellNum;
@@ -106,6 +106,7 @@ public class SmallBall : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        Debug.Log($"SmallBall 碰到：{collision.gameObject.name} (layer={collision.gameObject.layer})");
         if (collision.gameObject.CompareTag("WorldShell"))
         {
             HandleHitShell();
@@ -113,6 +114,13 @@ public class SmallBall : MonoBehaviour
         if (collision.gameObject.CompareTag("Planet"))
         {
             HandleCombo();
+        }
+        int handLayer = LayerMask.NameToLayer("Default");
+        if (collision.gameObject.layer == handLayer)
+        {
+            Vector3 n = collision.contacts[0].normal;
+            rb.velocity = Vector3.Reflect(rb.velocity, n) * 1.2f;
+            return;
         }
     }
 

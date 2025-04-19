@@ -22,7 +22,7 @@ public class DualSphereSlingshotInteractor_Handed : MonoBehaviour
     [Header("Settings")]
     public float activationDistance = 0.05f;  // 指尖到表面最大误差
     public float pinchThreshold = 0.03f;  // 食指-拇指阈值
-    public float maxPullDistance = 0.30f;
+    public float maxPullDistance = 2f;
     public float minLaunchForce = 2f;
     public float maxLaunchForce = 10f;
     public float virtualBallDepthRatio = 0.2f;   // 相对于小球半径的内部深度
@@ -30,11 +30,19 @@ public class DualSphereSlingshotInteractor_Handed : MonoBehaviour
 
     private XRHandSubsystem handSubsystem;
 
-    // 分手状态：索引 0 = left, 1 = right
+    [Header("Tutorial Mode")]
+    [Tooltip("When true, slingshot will detect gestures but not spawn balls")]
+    public bool tutorialMode = true;
+
+    // Public states for tutorial
+    public bool LastOnSurface { get; private set; }
+    public bool LastPinch { get; private set; }
+    public bool LastFire { get; private set; }
+
+
     private bool[] isPinching = new bool[2];
     private bool[] hasLaunched = new bool[2];
     private float[] pullAmt = new float[2];
-
     void Start()
     {
         handSubsystem = XRGeneralSettings.Instance.Manager.activeLoader
@@ -55,7 +63,8 @@ public class DualSphereSlingshotInteractor_Handed : MonoBehaviour
     {
         if (handSubsystem == null || !handSubsystem.running) return;
         if (soccerShell == null || roomShell == null) return;
-
+        if (tutorialMode)
+            Debug.Log("[Slingshot] TutorialMode active: only detecting, no spawn");
         Vector3 soccerCenter = soccerShell.position;
         float soccerRadius = soccerShell.localScale.x * 0.5f;
         Vector3 roomCenter = roomShell.position;
