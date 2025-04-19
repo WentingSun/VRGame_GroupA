@@ -20,7 +20,19 @@ public class PoolManagerEditor : Editor
         // 添加测试按钮
         if (GUILayout.Button("Get a small ball"))
         {
-           manager.testSmallBallPoolGet();
+            manager.testSmallBallPoolGet();
+        }
+
+        if (GUILayout.Button("Simulate Player Shooting a ball"))
+        {
+            if (GameManager.Instance.remainingSmallBallNum > 0)
+            {
+                manager.testSmallBallPoolGet();
+                GameManager.Instance.UpdatePlayerState(PlayerState.ShootingABall);
+            }else{
+                Debug.Log("No Balls");
+            }
+
         }
     }
 }
