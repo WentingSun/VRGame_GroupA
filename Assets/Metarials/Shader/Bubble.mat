@@ -29,8 +29,8 @@ Material:
     - _BUILTIN_QueueOffset: 4
     - _Fresnel_Effect: 10.1
     - _Index: 0.162
-    - _Metallic: 0.788
-    - _Smoothness: 0.306
+    - _Metallic: 0.657
+    - _Smoothness: 0.779
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
