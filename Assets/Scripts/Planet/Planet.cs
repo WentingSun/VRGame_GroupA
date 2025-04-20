@@ -4,11 +4,23 @@ using UnityEngine;
 
 public class Planet : MonoBehaviour
 {
-    [SerializeField] private int health = 3; 
+    [SerializeField] private int health = 3;
+    [SerializeField] private int MaxHealth = 3;
+    [SerializeField] private PlanetSpawner planetSpawner;
+
+    void OnEnable()
+    {
+        health = MaxHealth;
+    }
+
+    public void SetPlanetSpawner(PlanetSpawner Spawner)
+    {
+        planetSpawner = Spawner;
+    }
 
     public void SetHealth(int newHealth)
     {
-        health = Mathf.Max(newHealth, 0); 
+        health = Mathf.Max(newHealth, 0);
     }
 
     public int GetHealth()
@@ -27,7 +39,10 @@ public class Planet : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            Destroy(gameObject); 
+            planetSpawner.isSpawner = false;
+            planetSpawner.StartSpawnAPlanet();
+            gameObject.SetActive(false);
+            // Destroy(gameObject);// Wenting:这里是不是要改成SetActive(false)?
         }
     }
     public virtual void OnBallCollision(SmallBall ball, Vector3 collisionNormal)

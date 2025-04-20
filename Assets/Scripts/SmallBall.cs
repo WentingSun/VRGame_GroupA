@@ -22,6 +22,9 @@ public class SmallBall : MonoBehaviour
     [SerializeField] private int hitShellNum;
     [SerializeField] public int MaxHitShellNum = 10;
     [SerializeField] private int penetrationNum;
+    
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip appearAudio;//出现音效 备注音频文件名字
 
     // Start is called before the first frame update
     void Start()

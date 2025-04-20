@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2103209445718183256}
   - component: {fileID: 5712488207781222241}
   - component: {fileID: 6128125227359585049}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ExtraCollisionPlanet
   m_TagString: Planet
   m_Icon: {fileID: 0}
@@ -99,6 +99,10 @@ PrefabInstance:
     - target: {fileID: 5013454637359159159, guid: e7f1cdee8e4a6f24bb3204fd12e38315, type: 3}
       propertyPath: m_Name
       value: Frozen_Design1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5013454637359159159, guid: e7f1cdee8e4a6f24bb3204fd12e38315, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8342926791371203940, guid: e7f1cdee8e4a6f24bb3204fd12e38315, type: 3}
       propertyPath: m_LocalPosition.x

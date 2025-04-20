@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8543576823150425198}
   - component: {fileID: 508506499517199329}
   - component: {fileID: 7267840839234961677}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SpeedDownPlanet
   m_TagString: Planet
   m_Icon: {fileID: 0}
@@ -99,6 +99,10 @@ PrefabInstance:
     - target: {fileID: 6818884641722200439, guid: 7ded786f373b83b47b63f3a92f180f4b, type: 3}
       propertyPath: m_Name
       value: Desert_Design2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6818884641722200439, guid: 7ded786f373b83b47b63f3a92f180f4b, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7564590163748258660, guid: 7ded786f373b83b47b63f3a92f180f4b, type: 3}
       propertyPath: m_LocalScale.x

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4151397971445162011}
   - component: {fileID: 8695580161634687342}
   - component: {fileID: 2753981186553197416}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ExtraScorePlanet
   m_TagString: Planet
   m_Icon: {fileID: 0}
@@ -101,6 +101,10 @@ PrefabInstance:
     - target: {fileID: 5756696402320316541, guid: c350756d8bf39d04887ced2ff01c9550, type: 3}
       propertyPath: m_Name
       value: Frozen_Design5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5756696402320316541, guid: c350756d8bf39d04887ced2ff01c9550, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8770968323652627054, guid: c350756d8bf39d04887ced2ff01c9550, type: 3}
       propertyPath: m_LocalPosition.x

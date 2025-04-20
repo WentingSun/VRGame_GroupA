@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 919409044609370535}
   - component: {fileID: 8264033419645015167}
   - component: {fileID: 6527244429014216957}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: normalPlanet
   m_TagString: Planet
   m_Icon: {fileID: 0}
@@ -98,6 +98,10 @@ PrefabInstance:
     - target: {fileID: 5331585953082624635, guid: 28597c4c2f7e32d498c4f34ff6d3d9e7, type: 3}
       propertyPath: m_Name
       value: Earth-Like_Design1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331585953082624635, guid: 28597c4c2f7e32d498c4f34ff6d3d9e7, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9198251450829191272, guid: 28597c4c2f7e32d498c4f34ff6d3d9e7, type: 3}
       propertyPath: m_LocalPosition.x

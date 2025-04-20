@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4729312745902238628}
   - component: {fileID: 1781062198521885729}
   - component: {fileID: 6885304608023262097}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: MoreBallPlanet
   m_TagString: Planet
   m_Icon: {fileID: 0}
@@ -139,6 +139,10 @@ PrefabInstance:
     - target: {fileID: 7235834590047120839, guid: 16710000f8daef245af9181453d75aa3, type: 3}
       propertyPath: m_Name
       value: Earth-Like_Design10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7235834590047120839, guid: 16710000f8daef245af9181453d75aa3, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

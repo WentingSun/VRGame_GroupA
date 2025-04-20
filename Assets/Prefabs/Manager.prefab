@@ -44,9 +44,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c8b45492e08fc4a8f98e7b57c26069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultPrefab: {fileID: 0}
-  defaultSize: 100
-  maxSize: 500
+  planetWeights:
+  - planetType: normalPlanet
+    prefab: {fileID: 7092967303873896753, guid: fba0f9a1577667242976a9229f031350, type: 3}
+    weight: 40
+  - planetType: SplitPlanet
+    prefab: {fileID: 1137411725709347201, guid: bf71770ca3f6def4b99b00132a5e8282, type: 3}
+    weight: 15
+  - planetType: SpeedUpPlanet
+    prefab: {fileID: 9094274626015903239, guid: 008da4b230c790c42a2a9d88598e597f, type: 3}
+    weight: 10
+  - planetType: SlowDownPlanet
+    prefab: {fileID: 9147684622700678824, guid: 75605870deceb3440a3e1382011be56e, type: 3}
+    weight: 10
+  - planetType: MoreBallPlanet
+    prefab: {fileID: 7587204976674686612, guid: 4ddd2070463b07b4c98c7e026d6a7e5f, type: 3}
+    weight: 10
+  - planetType: ExtraScorePlanet
+    prefab: {fileID: 550643163985590430, guid: 2e117cfa1d43caa489ea8a531336acee, type: 3}
+    weight: 10
+  - planetType: ExtraCollisionPlanet
+    prefab: {fileID: 7768936338423413223, guid: 46d4af3d40bbed7458c5db47fc4d84a7, type: 3}
+    weight: 3
+  - planetType: ExplosivePlanet
+    prefab: {fileID: 550643163985590430, guid: 2e117cfa1d43caa489ea8a531336acee, type: 3}
+    weight: 2
 --- !u!1 &4253780773314421202
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,6 +116,8 @@ MonoBehaviour:
   defaultPrefab: {fileID: 7160303214332454942, guid: 867164e4ae393a44a8b93773b9fdbbb1, type: 3}
   defaultSize: 5
   maxSize: 100
+  smallBalls: []
+  visibleActiveBallNum: 0
 --- !u!1 &8475757141000227118
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,7 +172,17 @@ MonoBehaviour:
   currentGameState: 0
   currentPlayerState: 0
   currentgameEvent: 0
-  targetPosition: {fileID: 0}
+  CurrentPlayerHealth: 3
+  MaxPlayerHealth: 3
+  remainingSmallBallNum: 10
+  MaxSmallBallNum: 10
+  ProtectShell: 0
+  Score: 0
+  destoryPlanetNum: 0
+  numOfSmallBallShooted: 0
+  MaxReachComboNum: 0
+  isResurrection: 0
+  isAllBallUsed: 0
 --- !u!114 &5462272844308109847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,4 +333,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RoomBallWorld: {fileID: 0}
   FootBallWorld: {fileID: 0}
+  RoomBallWorldShell: {fileID: 0}
+  FootBallWorldShell: {fileID: 0}
   RandomMoveTarget: {fileID: 0}

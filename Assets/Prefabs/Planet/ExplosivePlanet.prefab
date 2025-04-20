@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7122428188283517247}
   - component: {fileID: 8017581567273909158}
   - component: {fileID: 435591447167192610}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ExplosivePlanet
   m_TagString: Planet
   m_Icon: {fileID: 0}
@@ -102,6 +102,10 @@ PrefabInstance:
     - target: {fileID: 5482779694080814317, guid: 94c8df80853fd654282747f0a617048c, type: 3}
       propertyPath: m_Name
       value: Alien_Design9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482779694080814317, guid: 94c8df80853fd654282747f0a617048c, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8812953817214590718, guid: 94c8df80853fd654282747f0a617048c, type: 3}
       propertyPath: m_LocalPosition.x

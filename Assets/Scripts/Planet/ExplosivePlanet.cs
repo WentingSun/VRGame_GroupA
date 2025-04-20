@@ -45,6 +45,7 @@ public class ExplosivePlanet : Planet
             }
         }
 
-        Destroy(gameObject);
+        // Destroy(gameObject);// Wenting: 这也应该是SetActivity(false)
+        gameObject.SetActive(false);
     }
 }
