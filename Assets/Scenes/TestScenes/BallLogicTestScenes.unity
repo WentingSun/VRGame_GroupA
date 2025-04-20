@@ -637,10 +637,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameWorld
       objectReference: {fileID: 0}
-    - target: {fileID: 2926206880438078018, guid: 86ad988db18f8c04d9cdec53af4e585f, type: 3}
-      propertyPath: m_Name
-      value: RandomMoveTarget
-      objectReference: {fileID: 0}
     - target: {fileID: 7823876477853313566, guid: 86ad988db18f8c04d9cdec53af4e585f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

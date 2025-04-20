@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MenuManager : Singleton<MenuManager>
 {
+    GameObject Startmenu;
+    GameObject GameOverMenu;
+    GameObject PauseMenu;
 
     void Start()
     {
@@ -20,7 +23,7 @@ public class MenuManager : Singleton<MenuManager>
     {
         if (gameState == GameState.GamePause)
         {
-
+            PauseMenu.SetActive(true);
         }
         else if (gameState == GameState.GameStart)
         {

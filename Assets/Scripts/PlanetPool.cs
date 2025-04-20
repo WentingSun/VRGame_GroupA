@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 public class PlanetPool : MonoBehaviour
@@ -11,7 +12,8 @@ public class PlanetPool : MonoBehaviour
         public int weight; // 权重
     }
 
-    [SerializeField] private List<PlanetWeight> planetWeights = new List<PlanetWeight>
+    [SerializeField]
+    private List<PlanetWeight> planetWeights = new List<PlanetWeight>
     {
         new PlanetWeight { planetType = "normalPlanet", weight = 40 },
         new PlanetWeight { planetType = "SplitPlanet", weight = 15 },
@@ -22,7 +24,7 @@ public class PlanetPool : MonoBehaviour
         new PlanetWeight { planetType = "ExtraCollisionPlanet", weight = 3 },
         new PlanetWeight { planetType = "ExplosivePlanet", weight = 2 }
     };
-    private List<GameObject> pooledPlanets = new List<GameObject>(); // 对象池中的星球
+    [SerializeField] private List<GameObject> pooledPlanets = new List<GameObject>(); // 对象池中的星球
 
     public Planet Get()
     {
@@ -44,6 +46,36 @@ public class PlanetPool : MonoBehaviour
         instance.name = prefab.name; // 确保实例名称与预制体一致
         pooledPlanets.Add(instance);
         return instance.GetComponent<Planet>();
+    }
+
+    public Planet GetByName(string planetName)
+    {
+
+        foreach (var planet in pooledPlanets)
+        {
+            if (!planet.activeInHierarchy && planet.name.StartsWith(planetName))
+            {
+                return planet.GetComponent<Planet>();
+            }
+        }
+
+        var PlanetWeight = planetWeights.Find(x => x.planetType == planetName);
+        Planet result = null;
+        
+
+        if (PlanetWeight != null)
+        {
+            GameObject instance = Instantiate(PlanetWeight.prefab, transform);
+            instance.name = PlanetWeight.planetType;
+            pooledPlanets.Add(instance);
+            result = instance.GetComponent<Planet>();
+
+        }
+        else
+        {
+            result = Get();
+        }
+        return result;
     }
 
     private GameObject GetRandomPlanetPrefab()

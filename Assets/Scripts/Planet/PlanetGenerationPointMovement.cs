@@ -119,7 +119,7 @@ public class PlanetGenerationPointMovement : MonoBehaviour
 
         // 3. 返回圆周上的点
         var result = center + (u * Mathf.Cos(theta) + v * Mathf.Sin(theta)) * radius;
-        Debug.Log(result);
+        // Debug.Log(result);
         return result;
     }
 

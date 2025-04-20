@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4247377319738429684}
   - component: {fileID: 9132242705856802890}
   - component: {fileID: 162289193114986853}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SpeedUpPlanet
   m_TagString: Planet
   m_Icon: {fileID: 0}
@@ -99,6 +99,10 @@ PrefabInstance:
     - target: {fileID: 1345651076695995216, guid: 642454a265967e1468360a08fc66db60, type: 3}
       propertyPath: m_Name
       value: Alien_Design1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1345651076695995216, guid: 642454a265967e1468360a08fc66db60, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2663860894798233923, guid: 642454a265967e1468360a08fc66db60, type: 3}
       propertyPath: m_LocalPosition.x

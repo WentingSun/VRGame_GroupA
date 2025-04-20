@@ -15,6 +15,7 @@ public class PoolManager : Singleton<PoolManager>
     // 详情看SmallBall 例子
     public SmallBallPool SmallBallPool;
     public PlanetPool defaultPlanetPool;
+    public List<PlanetSpawner> InnerPlanetSpawners;
 
 
 
