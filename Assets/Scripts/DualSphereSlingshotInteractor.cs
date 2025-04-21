@@ -35,7 +35,8 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
     private float[] pullAmt = new float[2];
     private GameObject[] currentVball = new GameObject[2];
     private Vector3[] pinchPoint = new Vector3[2];
-
+    public AudioClip pinchClip;
+    public AudioClip launchClip;
     void Start()
     {
         handSub = XRGeneralSettings.Instance.Manager
@@ -84,6 +85,9 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
                 {
                     isPinching[i] = true;
                     hasLaunched[i] = false;
+                    //添加捏合并开始拉拽音效（Audio）
+
+
 
                     // 记录表面捏合点
                     pinchPoint[i] = center + (mid - center).normalized * radius;
@@ -141,6 +145,9 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
             {
                 hasLaunched[i] = true;
                 isPinching[i] = false;
+                //添加松手发射小球音效（Audio）
+
+
 
                 // 隐藏外部线
                 if (fingerLineThumb != null) fingerLineThumb.enabled = false;
