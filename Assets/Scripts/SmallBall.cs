@@ -50,7 +50,7 @@ public class SmallBall : MonoBehaviour
 
     private void Initialise()
     {
-        gameObject.layer = 0;
+        //gameObject.layer = 0;
         penetrationNum = 0;
         hitShellNum = 0;
         comboNum = 0;

@@ -50,7 +50,7 @@ public class NewBehaviourScript : MonoBehaviour
             if (distance < 1f)
             {
                 // 越接近越透明（0 = 完全透明，fadeStart = 完全不透明）
-                alpha = Mathf.Clamp01(Mathf.InverseLerp(0.2f, 1f, distance));
+                alpha = Mathf.Clamp01(Mathf.InverseLerp(0.5f, 1.5f, distance));
             }
             //float alpha = Mathf.Clamp01(distance / 15f); // 越近越透明（你可调15这个范围）
             SetAlpha(zodiac, alpha);
@@ -59,18 +59,18 @@ public class NewBehaviourScript : MonoBehaviour
     // 修改星座材质透明度（要求材质使用支持透明的Shader）
     void SetAlpha(Transform zodiac, float alpha)
     {
-        Renderer rend = zodiac.GetComponentInChildren<Renderer>();
-        if (rend != null)
+        Renderer[] renderers = zodiac.GetComponentsInChildren<Renderer>();
+        foreach (Renderer rend in renderers)
         {
             foreach (var mat in rend.materials)
             {
                 if (mat.HasProperty("_Color"))
                 {
                     Color c = mat.color;
-                    c.a = alpha;
+                    c.a = Mathf.Lerp(c.a, alpha, 0.2f);  // 平滑透明过渡
                     mat.color = c;
 
-                    // 确保材质开启透明混合模式（建议提前设置）
+                    // 设置为透明模式
                     mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                     mat.SetInt("_ZWrite", 0);
