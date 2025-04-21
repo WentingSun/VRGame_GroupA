@@ -48,6 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 3
+  MaxHealth: 3
+  planetSpawner: {fileID: 0}
   rewardAmount: 3
 --- !u!135 &1781062198521885729
 SphereCollider:
@@ -143,6 +145,10 @@ PrefabInstance:
     - target: {fileID: 7235834590047120839, guid: 16710000f8daef245af9181453d75aa3, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8959365225999243547, guid: 16710000f8daef245af9181453d75aa3, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

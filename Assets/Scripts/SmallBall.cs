@@ -16,13 +16,13 @@ public class SmallBall : MonoBehaviour
 
     [SerializeField] Vector3 velocity;
     [SerializeField] float velocityMagnitude;
-
+    public float bounceStrength = 1.2f;
     [Header("Game Logic Related")]
     [SerializeField] private int comboNum;
     [SerializeField] private int hitShellNum;
     [SerializeField] public int MaxHitShellNum = 10;
     [SerializeField] private int penetrationNum;
-    
+
     [Header("Audio Clips")]
     [SerializeField] private AudioClip appearAudio;//出现音效 备注音频文件名字
 
@@ -50,7 +50,7 @@ public class SmallBall : MonoBehaviour
 
     private void Initialise()
     {
-        gameObject.layer = 0;
+        //gameObject.layer = 0;
         penetrationNum = 0;
         hitShellNum = 0;
         comboNum = 0;
@@ -121,36 +121,47 @@ public class SmallBall : MonoBehaviour
     }
 
     void OnCollisionEnter(Collision collision)
-{
-    if (collision.gameObject.CompareTag("WorldShell"))
     {
-        HandleHitShell();
-    }
-    else if (collision.gameObject.CompareTag("Planet"))
-    {
-        Planet planet = collision.gameObject.GetComponent<Planet>();
-        if (planet != null)
+
+
+        // Debug.Log($"SmallBall 碰到：{collision.gameObject.name} (layer={collision.gameObject.layer})");
+        if (collision.gameObject.CompareTag("WorldShell"))
         {
-            Vector3 normal = collision.contacts[0].normal;
-            planet.OnBallCollision(this, normal); 
+            HandleHitShell();
+        }
+        if (collision.gameObject.CompareTag("Planet"))
+        {
+            Planet planet = collision.gameObject.GetComponent<Planet>();
+            if (planet != null)
+            {
+                Vector3 normal = collision.contacts[0].normal;
+                planet.OnBallCollision(this, normal);
+            }
+
+            HandleCombo();
+        }
+        int handLayer = LayerMask.NameToLayer("PlayerHand");
+        if (collision.gameObject.layer == handLayer)
+        {
+            Vector3 n = collision.contacts[0].normal;
+            rb.velocity = Vector3.Reflect(rb.velocity, n) * 1.2f;
+            return;
         }
 
-        HandleCombo();
     }
-}
 
 
-public void AdjustSpeed(float multiplier)
-{
-    velocityMagnitude *= multiplier; 
-    rb.velocity = rb.velocity.normalized * velocityMagnitude;
-}
+    public void AdjustSpeed(float multiplier)
+    {
+        velocityMagnitude *= multiplier;
+        rb.velocity = rb.velocity.normalized * velocityMagnitude;
+    }
 
-public void Reflect(Vector3 normal)
-{
-    rb.velocity = Vector3.Reflect(rb.velocity, normal);
-    rb.velocity = rb.velocity.normalized * velocityMagnitude;
-}
+    public void Reflect(Vector3 normal)
+    {
+        rb.velocity = Vector3.Reflect(rb.velocity, normal);
+        rb.velocity = rb.velocity.normalized * velocityMagnitude;
+    }
 
 
 

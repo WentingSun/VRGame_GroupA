@@ -87,6 +87,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 3
+  MaxHealth: 3
+  planetSpawner: {fileID: 0}
   speedMultiplier: 1.5
 --- !u!1001 &8715568563048442647
 PrefabInstance:
@@ -96,6 +98,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5368537020362957215}
     m_Modifications:
+    - target: {fileID: 761214486731556748, guid: 642454a265967e1468360a08fc66db60, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1345651076695995216, guid: 642454a265967e1468360a08fc66db60, type: 3}
       propertyPath: m_Name
       value: Alien_Design1
