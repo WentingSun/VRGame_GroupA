@@ -44,11 +44,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1840689850689701356, guid: 379f424318038124fb691101861689ae, type: 3}
       propertyPath: m_Name
-      value: Target
-      objectReference: {fileID: 0}
-    - target: {fileID: 6109827828128284377, guid: 379f424318038124fb691101861689ae, type: 3}
-      propertyPath: radius
-      value: 1
+      value: RandomMoveTarget
       objectReference: {fileID: 0}
     - target: {fileID: 6109827828128284377, guid: 379f424318038124fb691101861689ae, type: 3}
       propertyPath: centrePoint

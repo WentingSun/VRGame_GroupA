@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Audio Request 还需要小球出现音效和动画特效, 发射音效, 连击音效, 爆炸音效
 public class SmallBall : MonoBehaviour
 {
     [SerializeField] Rigidbody rb;
@@ -11,14 +12,19 @@ public class SmallBall : MonoBehaviour
     [SerializeField] float MaxSpeed = 3f;
     [SerializeField] float MinSpeed = 2f;
 
+    [Header("Small Ball Rigidbody Information")]
+
     [SerializeField] Vector3 velocity;
     [SerializeField] float velocityMagnitude;
     public float bounceStrength = 1.2f;
     [Header("Game Logic Related")]
     [SerializeField] private int comboNum;
     [SerializeField] private int hitShellNum;
-    [SerializeField] private int MaxHitShellNum = 10;
+    [SerializeField] public int MaxHitShellNum = 10;
     [SerializeField] private int penetrationNum;
+
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip appearAudio;//出现音效 备注音频文件名字
 
     // Start is called before the first frame update
     void Start()
@@ -67,7 +73,11 @@ public class SmallBall : MonoBehaviour
     public void ReleaseItself()
     {
         onRelease();
-        PoolManager.Instance.SmallBallPool.Release(this);
+        if (gameObject.activeSelf)
+        {
+            PoolManager.Instance.SmallBallPool.Release(this);
+        }
+
     }
 
     void OnEnable()
@@ -90,6 +100,12 @@ public class SmallBall : MonoBehaviour
 
     #region Collision Logic
 
+    public void SetCollisions(int count)
+    {
+        MaxHitShellNum = count;
+        Debug.Log($"The ball's collision count increased by {count}. Current total: {MaxHitShellNum}");
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Planet"))
@@ -106,22 +122,46 @@ public class SmallBall : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log($"SmallBall 碰到：{collision.gameObject.name} (layer={collision.gameObject.layer})");
         if (collision.gameObject.CompareTag("WorldShell"))
         {
-            HandleHitShell();
+
+            Debug.Log($"SmallBall 碰到：{collision.gameObject.name} (layer={collision.gameObject.layer})");
+            if (collision.gameObject.CompareTag("WorldShell"))
+            {
+                HandleHitShell();
+            }
+            if (collision.gameObject.CompareTag("Planet"))
+            {
+                Planet planet = collision.gameObject.GetComponent<Planet>();
+                if (planet != null)
+                {
+                    Vector3 normal = collision.contacts[0].normal;
+                    planet.OnBallCollision(this, normal);
+                }
+
+                HandleCombo();
+            }
+            int handLayer = LayerMask.NameToLayer("PlayerHand");
+            if (collision.gameObject.layer == handLayer)
+            {
+                Vector3 n = collision.contacts[0].normal;
+                rb.velocity = Vector3.Reflect(rb.velocity, n) * 1.2f;
+                return;
+            }
         }
-        if (collision.gameObject.CompareTag("Planet"))
-        {
-            HandleCombo();
-        }
-        int handLayer = LayerMask.NameToLayer("PlayerHand");
-        if (collision.gameObject.layer == handLayer)
-        {
-            Vector3 n = collision.contacts[0].normal;
-            rb.velocity = Vector3.Reflect(rb.velocity, n) * 1.2f;
-            return;
-        }
+    }
+
+
+    public void AdjustSpeed(float multiplier)
+    {
+        velocityMagnitude *= multiplier;
+        rb.velocity = rb.velocity.normalized * velocityMagnitude;
+    }
+
+    public void Reflect(Vector3 normal)
+    {
+        rb.velocity = Vector3.Reflect(rb.velocity, normal);
+        rb.velocity = rb.velocity.normalized * velocityMagnitude;
     }
 
 
