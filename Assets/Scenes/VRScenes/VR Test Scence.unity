@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac74b9f7070a1ab40a4a4d8b7ed6d680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
+  mainCamera: {fileID: 192650044}
   solidAngle: 30
   transparentAngle: 90
 --- !u!65 &119154039
@@ -359,7 +359,7 @@ MeshRenderer:
   m_GameObject: {fileID: 119154037}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -1576,7 +1576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5340953fc07cffc4db09bf9bf6009326, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  planetPool: {fileID: 0}
+  planetPool: {fileID: 2027511279}
   spawnPoints:
   - {fileID: 1508788709}
   spawnInterval: 5
@@ -2226,6 +2226,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 655811548}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2027511279 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 247527707314596961, guid: 1133855405d6faf489534d0be68e751f, type: 3}
+  m_PrefabInstance: {fileID: 1182409433}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c8b45492e08fc4a8f98e7b57c26069, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2094427079
 PrefabInstance:
   m_ObjectHideFlags: 0
