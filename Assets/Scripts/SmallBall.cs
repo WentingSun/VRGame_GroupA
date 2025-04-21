@@ -115,7 +115,7 @@ public class SmallBall : MonoBehaviour
         {
             HandleCombo();
         }
-        int handLayer = LayerMask.NameToLayer("Default");
+        int handLayer = LayerMask.NameToLayer("PlayerHand");
         if (collision.gameObject.layer == handLayer)
         {
             Vector3 n = collision.contacts[0].normal;
