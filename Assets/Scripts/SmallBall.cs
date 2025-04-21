@@ -122,33 +122,32 @@ public class SmallBall : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+
+
+        // Debug.Log($"SmallBall 碰到：{collision.gameObject.name} (layer={collision.gameObject.layer})");
         if (collision.gameObject.CompareTag("WorldShell"))
         {
-
-            Debug.Log($"SmallBall 碰到：{collision.gameObject.name} (layer={collision.gameObject.layer})");
-            if (collision.gameObject.CompareTag("WorldShell"))
-            {
-                HandleHitShell();
-            }
-            if (collision.gameObject.CompareTag("Planet"))
-            {
-                Planet planet = collision.gameObject.GetComponent<Planet>();
-                if (planet != null)
-                {
-                    Vector3 normal = collision.contacts[0].normal;
-                    planet.OnBallCollision(this, normal);
-                }
-
-                HandleCombo();
-            }
-            int handLayer = LayerMask.NameToLayer("PlayerHand");
-            if (collision.gameObject.layer == handLayer)
-            {
-                Vector3 n = collision.contacts[0].normal;
-                rb.velocity = Vector3.Reflect(rb.velocity, n) * 1.2f;
-                return;
-            }
+            HandleHitShell();
         }
+        if (collision.gameObject.CompareTag("Planet"))
+        {
+            Planet planet = collision.gameObject.GetComponent<Planet>();
+            if (planet != null)
+            {
+                Vector3 normal = collision.contacts[0].normal;
+                planet.OnBallCollision(this, normal);
+            }
+
+            HandleCombo();
+        }
+        int handLayer = LayerMask.NameToLayer("PlayerHand");
+        if (collision.gameObject.layer == handLayer)
+        {
+            Vector3 n = collision.contacts[0].normal;
+            rb.velocity = Vector3.Reflect(rb.velocity, n) * 1.2f;
+            return;
+        }
+
     }
 
 
