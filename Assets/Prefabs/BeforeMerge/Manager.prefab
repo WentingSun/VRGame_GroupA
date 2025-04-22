@@ -1,0 +1,338 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &569976969426905709
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4397234900856441587}
+  - component: {fileID: 247527707314596961}
+  m_Layer: 0
+  m_Name: DefaultPlanetPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4397234900856441587
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 569976969426905709}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3723377527873450465}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &247527707314596961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 569976969426905709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c8b45492e08fc4a8f98e7b57c26069, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planetWeights:
+  - planetType: normalPlanet
+    prefab: {fileID: 7092967303873896753, guid: fba0f9a1577667242976a9229f031350, type: 3}
+    weight: 40
+  - planetType: SplitPlanet
+    prefab: {fileID: 1137411725709347201, guid: bf71770ca3f6def4b99b00132a5e8282, type: 3}
+    weight: 15
+  - planetType: SpeedUpPlanet
+    prefab: {fileID: 9094274626015903239, guid: 008da4b230c790c42a2a9d88598e597f, type: 3}
+    weight: 10
+  - planetType: SlowDownPlanet
+    prefab: {fileID: 9147684622700678824, guid: 75605870deceb3440a3e1382011be56e, type: 3}
+    weight: 10
+  - planetType: MoreBallPlanet
+    prefab: {fileID: 7587204976674686612, guid: 4ddd2070463b07b4c98c7e026d6a7e5f, type: 3}
+    weight: 10
+  - planetType: ExtraScorePlanet
+    prefab: {fileID: 550643163985590430, guid: 2e117cfa1d43caa489ea8a531336acee, type: 3}
+    weight: 10
+  - planetType: ExtraCollisionPlanet
+    prefab: {fileID: 7768936338423413223, guid: 46d4af3d40bbed7458c5db47fc4d84a7, type: 3}
+    weight: 3
+  - planetType: ExplosivePlanet
+    prefab: {fileID: 550643163985590430, guid: 2e117cfa1d43caa489ea8a531336acee, type: 3}
+    weight: 2
+--- !u!1 &4253780773314421202
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6403931576564552410}
+  - component: {fileID: 1964081016016168844}
+  m_Layer: 0
+  m_Name: SmallBallPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6403931576564552410
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4253780773314421202}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3723377527873450465}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1964081016016168844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4253780773314421202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fae96849c85d3b46bdd9da8853e814a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultPrefab: {fileID: 7160303214332454942, guid: 867164e4ae393a44a8b93773b9fdbbb1, type: 3}
+  defaultSize: 5
+  maxSize: 100
+  smallBalls: []
+  visibleActiveBallNum: 0
+--- !u!1 &8475757141000227118
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3723377527873450465}
+  - component: {fileID: 7747849034336014850}
+  - component: {fileID: 5462272844308109847}
+  - component: {fileID: 7197611603460939874}
+  - component: {fileID: 4885373086079009148}
+  - component: {fileID: 7766736558852856115}
+  - component: {fileID: 6434831466326393126}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3723377527873450465
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8475757141000227118}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6403931576564552410}
+  - {fileID: 4397234900856441587}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7747849034336014850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8475757141000227118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e05d2a8ed93b2f4fbf2f0bf4e050399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentGameState: 0
+  currentPlayerState: 0
+  currentgameEvent: 0
+  CurrentPlayerHealth: 3
+  MaxPlayerHealth: 3
+  remainingSmallBallNum: 10
+  MaxSmallBallNum: 10
+  ProtectShell: 0
+  Score: 0
+  destoryPlanetNum: 0
+  numOfSmallBallShooted: 0
+  MaxReachComboNum: 0
+  isResurrection: 0
+  isAllBallUsed: 0
+--- !u!114 &5462272844308109847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8475757141000227118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09a1564cbb1f3f14b8b311b85e6fd062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioVolumn: 0
+  ManagerAudioSource: {fileID: 4885373086079009148}
+--- !u!114 &7197611603460939874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8475757141000227118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd21306cc871c624a96e1b89f57c57d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!82 &4885373086079009148
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8475757141000227118}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &7766736558852856115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8475757141000227118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1be6609e102311240b78ffbdf5bc67c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SmallBallPool: {fileID: 1964081016016168844}
+  defaultPlanetPool: {fileID: 0}
+--- !u!114 &6434831466326393126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8475757141000227118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17588360c42dcee4dbdddf4ef64b0acf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RoomBallWorld: {fileID: 0}
+  FootBallWorld: {fileID: 0}
+  RoomBallWorldShell: {fileID: 0}
+  FootBallWorldShell: {fileID: 0}
+  RandomMoveTarget: {fileID: 0}
