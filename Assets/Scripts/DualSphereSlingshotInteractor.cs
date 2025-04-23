@@ -80,6 +80,10 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
 
             if (pinched)
             {
+                if (GameManager.Instance.remainingSmallBallNum <= 0)
+                {
+                    return;
+                }
                 // --- 捏合开始 ---
                 if (!isPinching[i])
                 {
@@ -145,6 +149,7 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
             {
                 hasLaunched[i] = true;
                 isPinching[i] = false;
+                GameManager.Instance.UpdatePlayerState(PlayerState.ShootingABall);
                 //添加松手发射小球音效（Audio）
 
 
