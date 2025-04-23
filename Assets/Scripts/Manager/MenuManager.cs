@@ -46,6 +46,23 @@ public class MenuManager : Singleton<MenuManager>
                 break;
         }
     }
+    private void PositionMenuInFrontOfCamera(GameObject menu)
+    {
+        Camera cam = Camera.main;
+        if (cam == null) return;
+
+        Vector3 forward = cam.transform.forward;
+        Vector3 position = cam.transform.position + forward * 2f; // 2米前方
+
+        menu.transform.position = position;
+
+        // 始终面向摄像机
+        Vector3 lookAtPos = cam.transform.position;
+        lookAtPos.y = menu.transform.position.y; // 可选：保持Y轴水平
+        menu.transform.LookAt(lookAtPos);
+        menu.transform.Rotate(0, 180, 0); // 因为LookAt背面朝向玩家，所以旋转180度
+    }
+
 
     private void HideAllMenus()
     {
@@ -54,20 +71,24 @@ public class MenuManager : Singleton<MenuManager>
         GameOverMenu.SetActive(false);
     }
 
+/// 刚开始游戏的时候显示开始菜单
     private void ShowStartMenu()
     {
+        PositionMenuInFrontOfCamera(StartMenu);
         StartMenu.SetActive(true);
     }
 
     private void ShowPauseMenu()
     {
-        PauseMenu.SetActive(true);
+        PositionMenuInFrontOfCamera(PauseMenu);
+        PauseMenu.SetActive(true);   
         UpdateCurrentScore(); // 更新当前分数
         EnableCollisionBypass(true); // 启用穿模逻辑
     }
 
     private void ShowGameOverMenu()
     {
+        PositionMenuInFrontOfCamera(GameOverMenu);
         GameOverMenu.SetActive(true);
         UpdateTotalScore(); // 更新总分数
     }
@@ -125,6 +146,7 @@ public class MenuManager : Singleton<MenuManager>
 
     public void OnTutorialButton()
     {
+        //TODO: Implement tutorial logic here
         Debug.Log("Tutorial started.");
     }
 
