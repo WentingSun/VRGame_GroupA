@@ -80,6 +80,10 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
 
             if (pinched)
             {
+                if (GameManager.Instance.remainingSmallBallNum <= 0)
+                {
+                    return;
+                }
                 // --- 捏合开始 ---
                 if (!isPinching[i])
                 {
@@ -145,6 +149,7 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
             {
                 hasLaunched[i] = true;
                 isPinching[i] = false;
+                GameManager.Instance.UpdatePlayerState(PlayerState.ShootingABall);
                 //添加松手发射小球音效（Audio）
 
 
@@ -173,7 +178,8 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
                 float pr = pullAmt[i] / maxPullDistance;
                 float force = Mathf.Lerp(minLaunchForce, maxLaunchForce, pr);
 
-                var real = Instantiate(realBallPrefab, spawnPos, Quaternion.identity);
+                //var real = Instantiate(realBallPrefab, spawnPos, Quaternion.identity);
+                var real = PoolManager.Instance.SmallBallPool.Get();
                 if (real.TryGetComponent<Rigidbody>(out var rb))
                 {
                     rb.velocity = Vector3.zero;
