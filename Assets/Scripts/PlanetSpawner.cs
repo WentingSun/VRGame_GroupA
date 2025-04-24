@@ -19,7 +19,7 @@ public class PlanetSpawner : MonoBehaviour
         {
             currentPlanet.TakeDamage(1);
         }
-        
+
     }
 
 
@@ -50,7 +50,7 @@ public class PlanetSpawner : MonoBehaviour
 
     private IEnumerator SpawnPlanets()
     {
-
+        isSpawner = true;
         yield return new WaitForSeconds(spawnInterval);
         if (isBooked && BookedPlanetName != null)
         {
@@ -82,7 +82,11 @@ public class PlanetSpawner : MonoBehaviour
 
     public void StartSpawnAPlanet()
     {
-        StartCoroutine(SpawnPlanets());
+        if (isSpawner == false)
+        {
+            StartCoroutine(SpawnPlanets());
+        }
+
     }
 
     private void SpwnARandomPlanet()

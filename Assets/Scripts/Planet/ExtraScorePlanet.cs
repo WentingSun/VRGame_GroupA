@@ -16,6 +16,8 @@ public class ExtraScorePlanet : Planet
         if (!isActive) return;
 
         base.OnBallCollision(ball, collisionNormal);
+        health = MaxHealth;
+
 
         hitCount++;
 
@@ -41,13 +43,25 @@ public class ExtraScorePlanet : Planet
 
     private void Start()
     {
+        isActive = true;
+        hitCount = 0;
+        // StartCoroutine(DeactivateAfterDuration());
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        isActive = true;
+        hitCount = 0;
         StartCoroutine(DeactivateAfterDuration());
     }
 
     private IEnumerator DeactivateAfterDuration()
     {
         yield return new WaitForSeconds(duration);
-        isActive = false; 
-        Destroy(gameObject);
+        isActive = false;
+        StartCoroutine(GetDestroy());
+        // gameObject.SetActive(false);
+        // Destroy(gameObject);
     }
 }

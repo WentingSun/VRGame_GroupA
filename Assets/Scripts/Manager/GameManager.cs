@@ -30,7 +30,7 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Game Information")]
     public float Score;
-    public int destoryPlanetNum;
+    public int destroyPlanetNum;
     public int numOfSmallBallShooted;
     public int MaxReachComboNum; //达到的最大连击数
     public bool isResurrection;
@@ -41,7 +41,7 @@ public class GameManager : Singleton<GameManager>
     {
         CurrentPlayerHealth = MaxPlayerHealth;
         remainingSmallBallNum = MaxSmallBallNum;
-        destoryPlanetNum = 0;
+        destroyPlanetNum = 0;
         numOfSmallBallShooted = 0;
         MaxReachComboNum = 0;
         Score = 0;
@@ -240,9 +240,9 @@ public class GameManager : Singleton<GameManager>
 
     }
 
-    public void AddDestoryPlanetNum()
+    public void AddDestroyPlanetNum()
     {
-        destoryPlanetNum++;
+        destroyPlanetNum++;
     }
 
     public void AddNumOfSmallBallShooted()
