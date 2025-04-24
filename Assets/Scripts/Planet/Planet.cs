@@ -11,6 +11,7 @@ public class Planet : MonoBehaviour
     [SerializeField] private GameObject HitedGameobject;
     [SerializeField] private float FeedbackTime = 0.1f;
     [SerializeField] private SphereCollider sphereCollider;
+    [SerializeField] protected int BaseScore = 1;
 
 
     private IEnumerator GetHitedFeedback()
@@ -38,7 +39,7 @@ public class Planet : MonoBehaviour
         RealGameobject.SetActive(false);
         HitedGameobject.SetActive(true);
         sphereCollider.enabled = false;
-
+        GameManager.Instance.addScore(BaseScore, 1.0f);
         yield return new WaitForSeconds(FeedbackTime);
 
         gameObject.SetActive(false);
