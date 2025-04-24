@@ -6,6 +6,9 @@ using UnityEngine;
 // Audio Request 还需要小球出现音效和动画特效, 发射音效, 连击音效, 爆炸音效
 public class SmallBall : MonoBehaviour
 {
+    [SerializeField] private Renderer meshRenderer;
+    [SerializeField] private Material OriginMaterial;
+    [SerializeField] private Material FinalMaterial;
     [SerializeField] Rigidbody rb;
     [SerializeField] float StayTime;
 
@@ -22,6 +25,7 @@ public class SmallBall : MonoBehaviour
     [SerializeField] private int hitShellNum;
     [SerializeField] public int MaxHitShellNum = 10;
     [SerializeField] private int penetrationNum;
+    [SerializeField] private bool isHarmful = false;
 
     [Header("Audio Clips")]
     [SerializeField] private AudioClip appearAudio;//出现音效 备注音频文件名字
@@ -54,6 +58,8 @@ public class SmallBall : MonoBehaviour
         penetrationNum = 0;
         hitShellNum = 0;
         comboNum = 0;
+        meshRenderer.material = OriginMaterial;
+        isHarmful = false;
     }
 
 
@@ -108,6 +114,7 @@ public class SmallBall : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        // Debug.Log("OnTriggerEnter");
         if (other.gameObject.CompareTag("Planet"))
         {
             penetrationNum--;
@@ -115,6 +122,13 @@ public class SmallBall : MonoBehaviour
             {
                 gameObject.layer = 0; //default
             }
+        }
+
+        if (other.gameObject.CompareTag("Player") && isHarmful) 
+        { 
+            Debug.Log("PlayerState.GetHit");
+            GameManager.Instance.UpdatePlayerState(PlayerState.GetHit);
+            this.ReleaseItself();
         }
 
         // Debug.Log("Trigger! "+ other.gameObject.name);
@@ -140,12 +154,15 @@ public class SmallBall : MonoBehaviour
 
             HandleCombo();
         }
+
+
+
         int handLayer = LayerMask.NameToLayer("PlayerHand");
         if (collision.gameObject.layer == handLayer)
         {
             Vector3 n = collision.contacts[0].normal;
             rb.velocity = Vector3.Reflect(rb.velocity, n) * 1.2f;
-            return;
+
         }
 
     }
@@ -220,6 +237,13 @@ public class SmallBall : MonoBehaviour
         comboNum = 0;
 
         hitShellNum++;
+
+        if (hitShellNum == MaxHitShellNum - 1)
+        {
+            isHarmful = true;
+            meshRenderer.material = FinalMaterial;
+        }
+
         if (hitShellNum >= MaxHitShellNum)
         {
             ReleaseItself();

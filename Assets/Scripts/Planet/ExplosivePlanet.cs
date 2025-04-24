@@ -35,17 +35,19 @@ public class ExplosivePlanet : Planet
             Planet planet = collider.GetComponent<Planet>();
             if (planet != null && planet != this)
             {
-                Destroy(planet.gameObject);
+                // Destroy(planet.gameObject);
+                planet.StartDestroy();
             }
 
             SmallBall smallBall = collider.GetComponent<SmallBall>();
             if (smallBall != null)
             {
-                Destroy(smallBall.gameObject); 
+                // Destroy(smallBall.gameObject);
+                smallBall.gameObject.SetActive(false); 
             }
         }
 
         // Destroy(gameObject);// Wenting: 这也应该是SetActivity(false)
-        gameObject.SetActive(false);
+        StartCoroutine(GetDestroy());
     }
 }

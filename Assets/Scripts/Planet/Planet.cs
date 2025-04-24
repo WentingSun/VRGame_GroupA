@@ -4,13 +4,70 @@ using UnityEngine;
 
 public class Planet : MonoBehaviour
 {
-    [SerializeField] private int health = 3;
-    [SerializeField] private int MaxHealth = 3;
+    [SerializeField] protected int health = 3;
+    [SerializeField] protected int MaxHealth = 3;
     [SerializeField] private PlanetSpawner planetSpawner;
+    [SerializeField] private GameObject RealGameobject;
+    [SerializeField] private GameObject HitedGameobject;
+    [SerializeField] private float FeedbackTime = 0.1f;
+    [SerializeField] private SphereCollider sphereCollider;
 
-    void OnEnable()
+
+    private IEnumerator GetHitedFeedback()
     {
+        if (RealGameobject == null || HitedGameobject == null)
+        {
+            yield break;
+        }
+
+        RealGameobject.SetActive(false);
+        HitedGameobject.SetActive(true);
+
+
+        yield return new WaitForSeconds(FeedbackTime);
+
+        RealGameobject.SetActive(true);
+        HitedGameobject.SetActive(false);
+        yield break;
+    }
+
+    protected IEnumerator GetDestroy()
+    {
+        planetSpawner.isSpawner = false;
+        planetSpawner.StartSpawnAPlanet();
+        RealGameobject.SetActive(false);
+        HitedGameobject.SetActive(true);
+        sphereCollider.enabled = false;
+
+        yield return new WaitForSeconds(FeedbackTime);
+
+        gameObject.SetActive(false);
+        yield break;
+
+
+    }
+
+    public void StartDestroy()
+    {
+        StartCoroutine(GetDestroy());
+    }
+
+    protected virtual void OnEnable()
+    {
+        sphereCollider.enabled = true;
         health = MaxHealth;
+        RealGameobject.SetActive(true);
+        HitedGameobject.SetActive(false);
+    }
+
+    void OnDisable()
+    {
+        GameManager.Instance.destroyPlanetNum++;
+    }
+
+    void Awake()
+    {
+        sphereCollider = GetComponent<SphereCollider>();
     }
 
     public void SetPlanetSpawner(PlanetSpawner Spawner)
@@ -36,12 +93,11 @@ public class Planet : MonoBehaviour
 
     public virtual void TakeDamage(int damage)
     {
+        StartCoroutine(GetHitedFeedback());
         health -= damage;
         if (health <= 0)
         {
-            planetSpawner.isSpawner = false;
-            planetSpawner.StartSpawnAPlanet();
-            gameObject.SetActive(false);
+            StartCoroutine(GetDestroy());
             // Destroy(gameObject);// Wenting:这里是不是要改成SetActive(false)?
         }
     }

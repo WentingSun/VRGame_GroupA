@@ -79,7 +79,7 @@ public class PlanetGenerationPointMovement : MonoBehaviour
 
         float slotStep = 2 * Mathf.PI / numOfSameOrbit;
         Vector3 prevSlotPoint = center + u * radius;
-        for (int i = 1; i <= numOfSameOrbit ; i++)
+        for (int i = 1; i <= numOfSameOrbit; i++)
         {
             float theta = slotStep * i;
             Vector3 nextPoint = center
