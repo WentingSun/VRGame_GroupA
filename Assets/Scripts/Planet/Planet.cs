@@ -7,10 +7,49 @@ public class Planet : MonoBehaviour
     [SerializeField] private int health = 3;
     [SerializeField] private int MaxHealth = 3;
     [SerializeField] private PlanetSpawner planetSpawner;
+    [SerializeField] private GameObject RealGameobject;
+    [SerializeField] private GameObject HitedGameobject;
+    [SerializeField] private float FeedbackTime = 0.1f;
+
+
+    private IEnumerator GetHitedFeedback()
+    {
+        if (RealGameobject == null || HitedGameobject == null)
+        {
+            yield break;
+        }
+
+        RealGameobject.SetActive(false);
+        HitedGameobject.SetActive(true);
+
+
+        yield return new WaitForSeconds(FeedbackTime);
+
+        RealGameobject.SetActive(true);
+        HitedGameobject.SetActive(false);
+        yield break;
+    }
+
+    private IEnumerator GetDestory()
+    {
+        planetSpawner.isSpawner = false;
+        planetSpawner.StartSpawnAPlanet();
+        RealGameobject.SetActive(false);
+        HitedGameobject.SetActive(true);
+
+        yield return new WaitForSeconds(FeedbackTime);
+
+        gameObject.SetActive(false);
+        yield break;
+
+
+    }
 
     void OnEnable()
     {
         health = MaxHealth;
+        RealGameobject.SetActive(true);
+        HitedGameobject.SetActive(false);
     }
 
     public void SetPlanetSpawner(PlanetSpawner Spawner)
@@ -36,12 +75,11 @@ public class Planet : MonoBehaviour
 
     public virtual void TakeDamage(int damage)
     {
+        StartCoroutine(GetHitedFeedback());
         health -= damage;
         if (health <= 0)
         {
-            planetSpawner.isSpawner = false;
-            planetSpawner.StartSpawnAPlanet();
-            gameObject.SetActive(false);
+            StartCoroutine(GetDestory());
             // Destroy(gameObject);// Wenting:这里是不是要改成SetActive(false)?
         }
     }
