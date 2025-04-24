@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MenuManager : Singleton<MenuManager>
 {
-    [SerializeField] private GameObject StartMenu;
-    [SerializeField] private GameObject PauseMenu;
-    [SerializeField] private GameObject GameOverMenu;
+    [SerializeField] private GameObject StartMenu; // 初始菜单
+    [SerializeField] private GameObject PauseMenu; // 暂停菜单
+    [SerializeField] private GameObject GameOverMenu; // 游戏结束菜单
 
     [SerializeField] private TMPro.TextMeshProUGUI currentScoreText; // 暂停菜单显示当前分数
     [SerializeField] private TMPro.TextMeshProUGUI totalScoreText; // 游戏结束菜单显示总分数
@@ -14,6 +14,9 @@ public class MenuManager : Singleton<MenuManager>
     private void Start()
     {
         GameManager.OnGameStateChange += OnGameStateChange;
+
+        // 手动调用以初始化菜单
+        OnGameStateChange(GameManager.Instance.GameStat);
     }
 
     protected override void OnDestroy()
@@ -46,6 +49,7 @@ public class MenuManager : Singleton<MenuManager>
                 break;
         }
     }
+
     private void PositionMenuInFrontOfCamera(GameObject menu)
     {
         Camera cam = Camera.main;
@@ -63,7 +67,6 @@ public class MenuManager : Singleton<MenuManager>
         menu.transform.Rotate(0, 180, 0); // 因为LookAt背面朝向玩家，所以旋转180度
     }
 
-
     private void HideAllMenus()
     {
         StartMenu.SetActive(false);
@@ -71,7 +74,6 @@ public class MenuManager : Singleton<MenuManager>
         GameOverMenu.SetActive(false);
     }
 
-/// 刚开始游戏的时候显示开始菜单
     private void ShowStartMenu()
     {
         PositionMenuInFrontOfCamera(StartMenu);
@@ -81,7 +83,7 @@ public class MenuManager : Singleton<MenuManager>
     private void ShowPauseMenu()
     {
         PositionMenuInFrontOfCamera(PauseMenu);
-        PauseMenu.SetActive(true);   
+        PauseMenu.SetActive(true);
         UpdateCurrentScore(); // 更新当前分数
         EnableCollisionBypass(true); // 启用穿模逻辑
     }
@@ -146,7 +148,7 @@ public class MenuManager : Singleton<MenuManager>
 
     public void OnTutorialButton()
     {
-        //TODO: Implement tutorial logic here
+        //TODO : Implement tutorial logic here
         Debug.Log("Tutorial started.");
     }
 
