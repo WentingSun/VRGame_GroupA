@@ -180,6 +180,9 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
 
                 //var real = Instantiate(realBallPrefab, spawnPos, Quaternion.identity);
                 var real = PoolManager.Instance.SmallBallPool.Get();
+                real.transform.position = spawnPos;
+                real.transform.rotation = Quaternion.identity;
+
                 if (real.TryGetComponent<Rigidbody>(out var rb))
                 {
                     rb.velocity = Vector3.zero;
