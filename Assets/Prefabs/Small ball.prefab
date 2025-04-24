@@ -234,6 +234,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b4833096ce87cc43a0342c62953e871, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 568124504498724409}
+  OriginMaterial: {fileID: 2100000, guid: 7deaed43d2fa5ce428451e4344f87d11, type: 2}
+  FinalMaterial: {fileID: 2100000, guid: 2c05eaeb9689ebd40bb522530900a996, type: 2}
   rb: {fileID: 2727151652389420526}
   StayTime: 0
   MaxSpeed: 3
