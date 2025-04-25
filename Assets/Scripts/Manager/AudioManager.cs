@@ -86,6 +86,7 @@ public class AudioManager : Singleton<AudioManager>
     public static string Recursion="recursion"; // 复活
 
 
+
     // 播放音效
     public void PlayAudio(string name, bool isLoop = false)
     {
