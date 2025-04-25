@@ -14,7 +14,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         GameManager.OnGameStateChange += onGameStateChange;
         GameManager.OnPlayerStateChange += onPlayerStateChange;
-
+        GameManager.OnGameEventSent += receivedGameEvent;
          
     }
 
@@ -30,6 +30,8 @@ public class AudioManager : Singleton<AudioManager>
     {
         base.OnDestroy();
         GameManager.OnGameStateChange -= onGameStateChange;
+        GameManager.OnPlayerStateChange -= onPlayerStateChange;
+        GameManager.OnGameEventSent -= receivedGameEvent;
     }
 
     private void onGameStateChange(GameState gameState)
@@ -48,7 +50,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         if (playerState == PlayerState.TakingDamage)
         {
-            if (GameManager.Instance.CurrentPlayerHealth == 1)
+            if (GameManager.Instance.CurrentPlayerHealth == 0)
             {
                 //这时候算是玩家死亡, 不用播放受伤音效, 如果没有死亡音效, 这if判断删了便是
                 PlayAudio(Death);
