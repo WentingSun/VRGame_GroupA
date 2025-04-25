@@ -20,6 +20,9 @@ public class SmallBall : MonoBehaviour
     [SerializeField] private int MaxHitShellNum = 10;
     [SerializeField] private int penetrationNum;
 
+    [SerializeField] private GameObject rippleEffectPrefab;//特效
+    [SerializeField] private GameObject scoreTextPrefab;//score
+
     // Start is called before the first frame update
     void Start()
     {
@@ -108,6 +111,20 @@ public class SmallBall : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("WorldShell"))
         {
+            //HandleHitShell();
+
+            // 获取撞击点
+            ContactPoint contact = collision.contacts[0];
+            Vector3 hitPos = contact.point;
+            Vector3 normal = contact.normal;
+
+
+            //Debug.DrawRay(hitPos, normal * 0.2f, Color.red, 2f);
+
+            // 生成波纹粒子
+            GameObject ripple = Instantiate(rippleEffectPrefab, hitPos + normal * 0.01f, Quaternion.LookRotation(normal));
+            Destroy(ripple, 2f);
+
             HandleHitShell();
         }
         if (collision.gameObject.CompareTag("Planet"))
@@ -171,6 +188,7 @@ public class SmallBall : MonoBehaviour
     private void HandleHitShell()
     {
         comboNum = 0;
+        //ShowScoreText(+1);//测试
 
         hitShellNum++;
         if (hitShellNum >= MaxHitShellNum)
@@ -182,6 +200,7 @@ public class SmallBall : MonoBehaviour
     private void HandleCombo()
     {
         comboNum++;
+        ShowScoreText(+1);
 
         if (comboNum == 3)
         {
@@ -198,6 +217,13 @@ public class SmallBall : MonoBehaviour
     {
         penetrationNum = Num;
         gameObject.layer = 8; // PenetrationSmallBall
+    }
+
+    private void ShowScoreText(int value)
+    {
+        GameObject obj = Instantiate(scoreTextPrefab, transform.position, Quaternion.identity);
+        var effect = obj.GetComponent<ScoreTextEffect>();
+        effect.SetText(value.ToString());
     }
 
 }
