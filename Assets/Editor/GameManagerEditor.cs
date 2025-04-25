@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Unity.VisualScripting;
 
 [CustomEditor(typeof(GameManager))]
 public class GameManagerEditor : Editor
@@ -89,5 +90,44 @@ public class GameManagerEditor : Editor
            manager.SendGameEvent(GameEvent.RewardABall);
         }
 
+        GUILayout.Space(10);
+        GUILayout.Label("音效");
+        if (GUILayout.Button("死亡"))
+        {
+            AudioManager.Instance.PlayAudio(AudioManager.Death);
+        }
+        if (GUILayout.Button("受伤"))
+        {
+            AudioManager.Instance.PlayAudio(AudioManager.Hurt);
+        }
+        if (GUILayout.Button("命中"))
+        {
+            AudioManager.Instance.PlayAudio(AudioManager.Hit);
+        }
+        if (GUILayout.Button("三连击"))
+        {
+            AudioManager.Instance.PlayAudio(AudioManager.Hit3);
+        }
+        if (GUILayout.Button("护盾破坏"))
+        {
+            AudioManager.Instance.PlayAudio(AudioManager.Shield_Break);
+        }
+        if (GUILayout.Button("小球出现"))
+        {
+            AudioManager.Instance.PlayAudio(AudioManager.Ball_Appear);
+        }
+        if (GUILayout.Button("小球命中"))
+        {
+            AudioManager.Instance.PlayAudio(AudioManager.Ball_Hit);
+        }
+        if (GUILayout.Button("小球爆炸"))
+        {
+            AudioManager.Instance.PlayAudio(AudioManager.Ball_Bomb);
+        }
+        if (GUILayout.Button("复活"))
+        {
+            AudioManager.Instance.PlayAudio(AudioManager.Recursion);
+        }
+        
     }
 }

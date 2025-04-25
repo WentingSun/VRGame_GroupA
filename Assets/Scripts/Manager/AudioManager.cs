@@ -79,10 +79,11 @@ public class AudioManager : Singleton<AudioManager>
     public static string Hurt = "hurt"; // 受伤
     public static string Hit = "hit"; // 攻击命中音效
     public static string Hit3 = "hit3"; // 3连击命中音效
-    public static string Shield_Break = "shield_break"; // 护盾破坏
+    public static string Shield_Break = "shield_break3"; // 护盾破坏
     public static string Ball_Appear = "ball_appear"; // 小球出现
     public static string Ball_Hit = "ball_hit"; // 小球命中
     public static string Ball_Bomb = "ball_bomb"; // 小球暴炸
+    public static string Recursion="recursion"; // 复活
 
 
     // 播放音效
