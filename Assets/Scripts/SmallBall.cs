@@ -30,6 +30,9 @@ public class SmallBall : MonoBehaviour
     [Header("Audio Clips")]
     [SerializeField] private AudioClip appearAudio;//出现音效 备注音频文件名字
 
+    [SerializeField] private GameObject rippleEffectPrefab;//特效
+    [SerializeField] private GameObject scoreTextPrefab;//score
+
     // Start is called before the first frame update
     void Start()
     {
@@ -124,8 +127,8 @@ public class SmallBall : MonoBehaviour
             }
         }
 
-        if (other.gameObject.CompareTag("Player") && isHarmful) 
-        { 
+        if (other.gameObject.CompareTag("Player") && isHarmful)
+        {
             Debug.Log("PlayerState.GetHit");
             GameManager.Instance.UpdatePlayerState(PlayerState.GetHit);
             this.ReleaseItself();
@@ -141,6 +144,20 @@ public class SmallBall : MonoBehaviour
         // Debug.Log($"SmallBall 碰到：{collision.gameObject.name} (layer={collision.gameObject.layer})");
         if (collision.gameObject.CompareTag("WorldShell"))
         {
+            //HandleHitShell();
+
+            // 获取撞击点
+            ContactPoint contact = collision.contacts[0];
+            Vector3 hitPos = contact.point;
+            Vector3 normal = contact.normal;
+
+
+            //Debug.DrawRay(hitPos, normal * 0.2f, Color.red, 2f);
+
+            // 生成波纹粒子
+            GameObject ripple = Instantiate(rippleEffectPrefab, hitPos + normal * 0.01f, Quaternion.LookRotation(normal));
+            Destroy(ripple, 2f);
+
             HandleHitShell();
         }
         if (collision.gameObject.CompareTag("Planet"))
@@ -235,6 +252,7 @@ public class SmallBall : MonoBehaviour
     private void HandleHitShell()
     {
         comboNum = 0;
+        //ShowScoreText(+1);//测试
 
         hitShellNum++;
 
@@ -253,6 +271,7 @@ public class SmallBall : MonoBehaviour
     private void HandleCombo()
     {
         comboNum++;
+        // ShowScoreText(+1);
 
         if (comboNum == 3)
         {
@@ -269,6 +288,14 @@ public class SmallBall : MonoBehaviour
     {
         penetrationNum = Num;
         gameObject.layer = 8; // PenetrationSmallBall
+    }
+
+    public void ShowScoreText(int value)
+    {
+        GameObject obj = Instantiate(scoreTextPrefab, transform.position, Quaternion.identity);
+        var effect = obj.GetComponent<ScoreTextEffect>();
+        effect.SetText("+" + value.ToString());
+
     }
 
 }
