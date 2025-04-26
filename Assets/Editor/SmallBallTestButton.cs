@@ -31,5 +31,10 @@ public class SmallBallEditor : Editor
             ball.SetPenetration(3);
         }
 
+        if (GUILayout.Button("ShowScoreText(+1)"))
+        {
+            ball.ShowScoreText(3);
+        }
+
     }
 }
