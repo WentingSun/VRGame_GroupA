@@ -183,8 +183,24 @@ public class GameManager : Singleton<GameManager>
             case GameEvent.AllBallUsed:
                 HandleAllBallUsed();
                 break;
+            case GameEvent.GetProtectShell:
+                HandleGetProtectShell();
+                break;
+            case GameEvent.GetResurrection:
+                HandleGetResurrection();
+                break;
         }
         OnGameEventSent?.Invoke(newGameEvent);
+    }
+
+    private void HandleGetResurrection()
+    {
+        GetPlayerResurrection();
+    }
+
+    private void HandleGetProtectShell()
+    {
+        GetPlayerProtectShell();
     }
 
     private void HandleAllBallUsed()
@@ -261,6 +277,11 @@ public class GameManager : Singleton<GameManager>
     public void GetPlayerProtectShell()
     {
         ProtectShell = true;
+    }
+
+    public void GetPlayerResurrection()
+    {
+        isResurrection = true;
     }
 
 }
