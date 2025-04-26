@@ -222,6 +222,7 @@ public class GameManager : Singleton<GameManager>
     public void addScore(int ScoreNum, float ScoreMultiplier)
     {
         Score += ScoreNum * ScoreMultiplier;
+        SendGameEvent(GameEvent.ScoreUpdated);
     }
 
     public void addSmallBallNum(int Num)
@@ -298,7 +299,8 @@ public enum GameEvent
     ProtectShellBreak,
     SmallBallIsFull,
     GetResurrection,
-    ResurrectionUsed // 复活使用了
+    ResurrectionUsed, // 复活使用了
+    ScoreUpdated
 
 }
 
