@@ -189,12 +189,6 @@ public class GameManager : Singleton<GameManager>
             case GameEvent.GetResurrection:
                 HandleGetResurrection();
                 break;
-            case GameEvent.GetProtectShell:
-                handleGetProtectShell();
-                break;
-            case GameEvent.ProtectShellBreak:
-                handleProtectShellBreak();
-                break;
         }
         OnGameEventSent?.Invoke(newGameEvent);
     }
