@@ -11,6 +11,7 @@ public class MenuManager : Singleton<MenuManager>
     [SerializeField] private TMPro.TextMeshProUGUI currentScoreText; // 暂停菜单显示当前分数
     [SerializeField] private TMPro.TextMeshProUGUI totalScoreText; // 游戏结束菜单显示总分数
 
+    [SerializeField] private TMPro.TextMeshProUGUI smallBallShootedText; // 显示小球射击数量
     private void Start()
     {
         GameManager.OnGameStateChange += OnGameStateChange;
@@ -56,7 +57,7 @@ public class MenuManager : Singleton<MenuManager>
         if (cam == null) return;
 
         Vector3 forward = cam.transform.forward;
-        Vector3 position = cam.transform.position + forward * 2f; // 2米前方
+        Vector3 position = cam.transform.position + forward * 1f; // 1米前方
 
         menu.transform.position = position;
 
@@ -88,12 +89,25 @@ public class MenuManager : Singleton<MenuManager>
         EnableCollisionBypass(true); // 启用穿模逻辑
     }
 
-    private void ShowGameOverMenu()
+private void ShowGameOverMenu()
+{
+    PositionMenuInFrontOfCamera(GameOverMenu);
+    GameOverMenu.SetActive(true);
+
+    // 更新总分数
+    UpdateTotalScore();
+
+    // 更新小球射击数量
+    if (GameManager.Instance != null)
     {
-        PositionMenuInFrontOfCamera(GameOverMenu);
-        GameOverMenu.SetActive(true);
-        UpdateTotalScore(); // 更新总分数
+        int smallBallShooted = GameManager.Instance.numOfSmallBallShooted;
+        smallBallShootedText.text = $"Balls Shot: {smallBallShooted}";
     }
+    else
+    {
+        Debug.LogWarning("GameManager.Instance is null. Cannot update small ball count.");
+    }
+}
 
     private void ResumeGame()
     {
