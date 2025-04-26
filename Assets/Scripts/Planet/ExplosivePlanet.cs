@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ExplosivePlanet : Planet
 {
-    [SerializeField] private float explosionRadiusMultiplier = 3f;
+    [SerializeField] private float explosionRadiusMultiplier = 0.5f;
     [SerializeField] private LayerMask explosionLayerMask;
+    
 
     public override void TakeDamage(int damage)
     {
@@ -48,6 +49,6 @@ public class ExplosivePlanet : Planet
         }
 
         // Destroy(gameObject);// Wenting: 这也应该是SetActivity(false)
-        StartCoroutine(GetDestroy());
+        // StartCoroutine(GetDestroy());
     }
 }
