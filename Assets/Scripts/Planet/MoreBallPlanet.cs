@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoreBallPlanet : Planet
 {
-    [SerializeField] private int rewardAmount = 3;
+    [SerializeField] private int rewardAmount = 3; // 奖励的小球数量
 
     public override void OnBallCollision(SmallBall ball, Vector3 collisionNormal)
     {
@@ -15,8 +15,12 @@ public class MoreBallPlanet : Planet
 
     private void GrantReward()
     {
-        // TODO: 实现奖励逻辑，例如增加小球数量
+        // 调用 GameManager 的方法增加小球数量
+        GameManager.Instance.addSmallBallNum(rewardAmount);
 
-        Debug.Log($"Reward triggered! Granting {rewardAmount} additional balls (logic not implemented yet).");
+        // 触发奖励事件（可选）
+        GameManager.Instance.SendGameEvent(GameEvent.RewardABall);
+
+        Debug.Log($"Reward triggered! Granted {rewardAmount} additional balls.");
     }
 }
