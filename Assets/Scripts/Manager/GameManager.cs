@@ -186,6 +186,9 @@ public class GameManager : Singleton<GameManager>
             case GameEvent.GetProtectShell:
                 HandleGetProtectShell();
                 break;
+            case GameEvent.ProtectShellBreak:
+                HandleProtectShellBreak();
+                break;
             case GameEvent.GetResurrection:
                 HandleGetResurrection();
                 break;
@@ -203,15 +206,11 @@ public class GameManager : Singleton<GameManager>
         GetPlayerProtectShell();
     }
 
-    private void handleProtectShellBreak()
+    private void HandleProtectShellBreak()
     {
         ProtectShell = false;
     }
 
-    private void handleGetProtectShell()
-    {
-        ProtectShell = true;
-    }
 
     private void HandleAllBallUsed()
     {
