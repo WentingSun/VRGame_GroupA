@@ -14,7 +14,7 @@ public class ScoreTextEffect : MonoBehaviour
     private Vector3 startPos;
     private Vector3 endPos;
 
-    private TextMeshPro textMesh;
+    [SerializeField] private TextMeshPro textMesh;
     private Color originalColor;
 
     void Start()

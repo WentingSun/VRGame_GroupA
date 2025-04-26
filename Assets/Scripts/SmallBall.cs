@@ -127,8 +127,8 @@ public class SmallBall : MonoBehaviour
             }
         }
 
-        if (other.gameObject.CompareTag("Player") && isHarmful) 
-        { 
+        if (other.gameObject.CompareTag("Player") && isHarmful)
+        {
             Debug.Log("PlayerState.GetHit");
             GameManager.Instance.UpdatePlayerState(PlayerState.GetHit);
             this.ReleaseItself();
@@ -271,7 +271,7 @@ public class SmallBall : MonoBehaviour
     private void HandleCombo()
     {
         comboNum++;
-        ShowScoreText(+1);
+        // ShowScoreText(+1);
 
         if (comboNum == 3)
         {
@@ -290,11 +290,12 @@ public class SmallBall : MonoBehaviour
         gameObject.layer = 8; // PenetrationSmallBall
     }
 
-    private void ShowScoreText(int value)
+    public void ShowScoreText(int value)
     {
         GameObject obj = Instantiate(scoreTextPrefab, transform.position, Quaternion.identity);
         var effect = obj.GetComponent<ScoreTextEffect>();
-        effect.SetText(value.ToString());
+        effect.SetText("+" + value.ToString());
+
     }
 
 }

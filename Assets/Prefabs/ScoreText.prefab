@@ -188,3 +188,4 @@ MonoBehaviour:
   floatDuration: 1
   finalScale: 0.1
   floatHeight: 1
+  textMesh: {fileID: 4511657125930356659}
