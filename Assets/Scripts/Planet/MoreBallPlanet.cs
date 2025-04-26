@@ -15,8 +15,9 @@ public class MoreBallPlanet : Planet
 
     private void GrantReward()
     {
-        // TODO: 实现奖励逻辑，例如增加小球数量
-
-        Debug.Log($"Reward triggered! Granting {rewardAmount} additional balls (logic not implemented yet).");
+        for (int i = 0; i < rewardAmount; i++)
+        {
+            GameManager.Instance.SendGameEvent(GameEvent.RewardABall);
+        }
     }
 }

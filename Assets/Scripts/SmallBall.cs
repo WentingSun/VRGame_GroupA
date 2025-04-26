@@ -124,8 +124,8 @@ public class SmallBall : MonoBehaviour
             }
         }
 
-        if (other.gameObject.CompareTag("Player") && isHarmful) 
-        { 
+        if (other.gameObject.CompareTag("Player") && isHarmful)
+        {
             Debug.Log("PlayerState.GetHit");
             GameManager.Instance.UpdatePlayerState(PlayerState.GetHit);
             this.ReleaseItself();
@@ -253,6 +253,16 @@ public class SmallBall : MonoBehaviour
     private void HandleCombo()
     {
         comboNum++;
+
+        if (comboNum > GameManager.Instance.MaxReachComboNum)
+        {
+            GameManager.Instance.MaxReachComboNum = comboNum;
+        }
+
+        if (comboNum >= 3)
+        {
+            GameManager.Instance.SendGameEvent(GameEvent.RewardABall);
+        }
 
         if (comboNum == 3)
         {
