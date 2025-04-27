@@ -177,6 +177,9 @@ public class GameManager : Singleton<GameManager>
             case GameEvent.RewardABall:
                 handleRewardABall();
                 break;
+            case GameEvent.RewardTenBall:
+                handleRewardTenBall();
+                break;
             case GameEvent.ResurrectionUsed:
                 HandleResurrectionUsed();
                 break;
@@ -195,6 +198,8 @@ public class GameManager : Singleton<GameManager>
         }
         OnGameEventSent?.Invoke(newGameEvent);
     }
+
+
 
     private void HandleGetResurrection()
     {
@@ -230,6 +235,12 @@ public class GameManager : Singleton<GameManager>
     private void handleRewardABall()
     {
         addSmallBallNum(1);
+        isAllBallUsed = false;
+    }
+
+    private void handleRewardTenBall()
+    {
+        addSmallBallNum(10);
         isAllBallUsed = false;
     }
 
@@ -325,6 +336,7 @@ public enum GameEvent
     TenComboHit,// if a ball comboNum reach 10
     AllBallUsed,
     RewardABall,
+    RewardTenBall,
     GetProtectShell,
     ProtectShellBreak,
     SmallBallIsFull,

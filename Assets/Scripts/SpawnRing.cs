@@ -77,7 +77,7 @@ public class SpawnRing : MonoBehaviour
             break;
 
             case SpawnRingPosition.Outer:
-
+            GameManager.Instance.SendGameEvent(GameEvent.RewardTenBall);
             break;
         }
     }
