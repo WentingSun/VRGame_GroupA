@@ -109,7 +109,8 @@ public class AudioManager : Singleton<AudioManager>
         }else if (receivedEvent == GameEvent.RewardABall)
         {
             PlayAudio(RewardABall);
-        }else if (receivedEvent == GameEvent.GetResurrection)
+        }else if (receivedEvent == GameEvent.GetProtectShell)
+)
         {
             PlayAudio(GetProtectShell);
         }else if (receivedEvent == GameEvent.SmallBallIsFull)
