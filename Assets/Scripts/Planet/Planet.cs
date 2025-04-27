@@ -98,7 +98,7 @@ public class Planet : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            GameManager.Instance.addScore(1, 1);
+            // GameManager.Instance.addScore(1, 1);
             StartCoroutine(GetDestroy());
             // Destroy(gameObject);// Wenting:这里是不是要改成SetActive(false)?
         }

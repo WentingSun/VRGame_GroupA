@@ -44,7 +44,7 @@ public class ExplosivePlanet : Planet
             if (smallBall != null)
             {
                 // Destroy(smallBall.gameObject);
-                smallBall.gameObject.SetActive(false); 
+                smallBall.ReleaseItself(); 
             }
         }
 

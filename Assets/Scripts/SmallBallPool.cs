@@ -10,15 +10,15 @@ public class SmallBallPool : BasePool<SmallBall>
     void Start()
     {
         GameManager.OnGameStateChange += onGameStateChange;
-        if (ActiveCount <= 0 && GameManager.Instance.isAllBallUsed)
-        {
-            GameManager.Instance.UpdateGameState(GameState.GameOver);
-        }
     }
 
     void Update()
     {
         visibleActiveBallNum = ActiveCount;
+        // if (ActiveCount <= 0 && GameManager.Instance.isAllBallUsed)
+        // {
+        //     GameManager.Instance.UpdateGameState(GameState.GameOver);
+        // }
     }
 
     protected override SmallBall OnCreatePoolItem()

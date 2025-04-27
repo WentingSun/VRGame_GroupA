@@ -24,7 +24,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] int MaxPlayerHealth = 3;
 
     public int remainingSmallBallNum = 10;
-    [SerializeField] int MaxSmallBallNum = 10;
+    [SerializeField] int MaxSmallBallNum = 10000;
 
 
 
@@ -242,6 +242,7 @@ public class GameManager : Singleton<GameManager>
     {
         addSmallBallNum(10);
         isAllBallUsed = false;
+        Debug.Log("RewardTenBall");
     }
 
     private void HandleTenComboHit()

@@ -56,6 +56,7 @@ public class SmallBall : MonoBehaviour
     private void Initialise()
     {
         //gameObject.layer = 0;
+        // Debug.Log("SmallBall Initialis");
         MaxHitShellNum = DefaultMaxHitShellNum;
         penetrationNum = 0;
         hitShellNum = 0;
@@ -111,7 +112,7 @@ public class SmallBall : MonoBehaviour
     public void SetCollisions(int count)
     {
         MaxHitShellNum = count;
-        Debug.Log($"The ball's collision count increased by {count}. Current total: {MaxHitShellNum}");
+        // Debug.Log($"The ball's collision count increased by {count}. Current total: {MaxHitShellNum}");
     }
 
     void OnTriggerEnter(Collider other)
@@ -264,6 +265,7 @@ public class SmallBall : MonoBehaviour
         if (comboNum >= 3)
         {
             GameManager.Instance.SendGameEvent(GameEvent.RewardABall);
+            // Debug.Log(comboNum);
         }
 
         if (comboNum == 3)
