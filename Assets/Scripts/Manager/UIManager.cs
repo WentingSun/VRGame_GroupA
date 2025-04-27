@@ -63,11 +63,17 @@ public class UIManager : MonoBehaviour
             case GameEvent.ResurrectionUsed: // 使用复活
                 UpdateResurrectionStatus(false);
                 break;
+            case GameEvent.RewardABall:
+                UpdateBallCount(GameManager.Instance.remainingSmallBallNum);
+                break;
+            case GameEvent.RewardTenBall:
+                UpdateBallCount(GameManager.Instance.remainingSmallBallNum);
+                break;
 
             case GameEvent.ScoreUpdated:
                 UpdateScore(GameManager.Instance.Score);
                 break;
-            
+
         }
     }
 
