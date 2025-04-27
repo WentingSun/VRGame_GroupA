@@ -24,6 +24,7 @@ public class SmallBall : MonoBehaviour
     [SerializeField] private int comboNum;
     [SerializeField] private int hitShellNum;
     [SerializeField] public int MaxHitShellNum = 10;
+    [SerializeField] public int DefaultMaxHitShellNum = 10;
     [SerializeField] private int penetrationNum;
     [SerializeField] private bool isHarmful = false;
 
@@ -55,6 +56,7 @@ public class SmallBall : MonoBehaviour
     private void Initialise()
     {
         //gameObject.layer = 0;
+        MaxHitShellNum = DefaultMaxHitShellNum;
         penetrationNum = 0;
         hitShellNum = 0;
         comboNum = 0;
