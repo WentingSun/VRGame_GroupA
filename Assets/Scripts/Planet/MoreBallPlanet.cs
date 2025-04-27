@@ -15,12 +15,9 @@ public class MoreBallPlanet : Planet
 
     private void GrantReward()
     {
-        // 调用 GameManager 的方法增加小球数量
-        GameManager.Instance.addSmallBallNum(rewardAmount);
-
-        // 触发奖励事件（可选）
-        GameManager.Instance.SendGameEvent(GameEvent.RewardABall);
-
-        Debug.Log($"Reward triggered! Granted {rewardAmount} additional balls.");
+        for (int i = 0; i < rewardAmount; i++)
+        {
+            GameManager.Instance.SendGameEvent(GameEvent.RewardABall);
+        }
     }
 }

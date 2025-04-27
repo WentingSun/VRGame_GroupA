@@ -12,6 +12,7 @@ public class PlanetSpawner : MonoBehaviour
     public bool isSpawner; //判断是否已经生成一颗星球
     public bool isBooked; // 判断是否预定了下一个要生成的星球
     public string BookedPlanetName;
+    public SpawnRing ring;
 
     public void CurrentPlanetTakeDamage()//just for test
     {
@@ -51,6 +52,7 @@ public class PlanetSpawner : MonoBehaviour
     private IEnumerator SpawnPlanets()
     {
         isSpawner = true;
+        ring.SetPlanetState(this);
         yield return new WaitForSeconds(spawnInterval);
         if (isBooked && BookedPlanetName != null)
         {

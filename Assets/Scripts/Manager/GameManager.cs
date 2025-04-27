@@ -26,7 +26,7 @@ public class GameManager : Singleton<GameManager>
     public int remainingSmallBallNum = 10;
     [SerializeField] int MaxSmallBallNum = 10;
 
-    public bool ProtectShell;
+
 
     [Header("Game Information")]
     public float Score;
@@ -34,6 +34,7 @@ public class GameManager : Singleton<GameManager>
     public int numOfSmallBallShooted;
     public int MaxReachComboNum; //达到的最大连击数
     public bool isResurrection;
+    public bool ProtectShell;
     public bool isAllBallUsed;
 
 
@@ -149,7 +150,6 @@ public class GameManager : Singleton<GameManager>
     {
         if (ProtectShell)
         {
-            ProtectShell = false;
             // 添加盾被击碎的音效和动画
             SendGameEvent(GameEvent.ProtectShellBreak);
         }
@@ -183,9 +183,34 @@ public class GameManager : Singleton<GameManager>
             case GameEvent.AllBallUsed:
                 HandleAllBallUsed();
                 break;
+            case GameEvent.GetProtectShell:
+                HandleGetProtectShell();
+                break;
+            case GameEvent.ProtectShellBreak:
+                HandleProtectShellBreak();
+                break;
+            case GameEvent.GetResurrection:
+                HandleGetResurrection();
+                break;
         }
         OnGameEventSent?.Invoke(newGameEvent);
     }
+
+    private void HandleGetResurrection()
+    {
+        GetPlayerResurrection();
+    }
+
+    private void HandleGetProtectShell()
+    {
+        GetPlayerProtectShell();
+    }
+
+    private void HandleProtectShellBreak()
+    {
+        ProtectShell = false;
+    }
+
 
     private void HandleAllBallUsed()
     {
@@ -262,6 +287,11 @@ public class GameManager : Singleton<GameManager>
     public void GetPlayerProtectShell()
     {
         ProtectShell = true;
+    }
+
+    public void GetPlayerResurrection()
+    {
+        isResurrection = true;
     }
 
 }

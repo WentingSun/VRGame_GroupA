@@ -273,6 +273,16 @@ public class SmallBall : MonoBehaviour
         comboNum++;
         // ShowScoreText(+1);
 
+        if (comboNum > GameManager.Instance.MaxReachComboNum)
+        {
+            GameManager.Instance.MaxReachComboNum = comboNum;
+        }
+
+        if (comboNum >= 3)
+        {
+            GameManager.Instance.SendGameEvent(GameEvent.RewardABall);
+        }
+
         if (comboNum == 3)
         {
             GameManager.Instance.SendGameEvent(GameEvent.ThreeComboHit);

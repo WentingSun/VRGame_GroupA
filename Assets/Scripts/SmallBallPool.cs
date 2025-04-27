@@ -10,6 +10,10 @@ public class SmallBallPool : BasePool<SmallBall>
     void Start()
     {
         GameManager.OnGameStateChange += onGameStateChange;
+        if (ActiveCount <= 0 && GameManager.Instance.isAllBallUsed)
+        {
+            GameManager.Instance.UpdateGameState(GameState.GameOver);
+        }
     }
 
     void Update()
@@ -37,10 +41,11 @@ public class SmallBallPool : BasePool<SmallBall>
     {
         foreach (var smallBall in smallBalls)
         {
-            if(smallBall.gameObject.activeSelf){
+            if (smallBall.gameObject.activeSelf)
+            {
                 smallBall.ReleaseItself();
             }
-            
+
         }
     }
 

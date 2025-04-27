@@ -6,6 +6,7 @@ public class ExplosivePlanet : Planet
 {
     [SerializeField] private float explosionRadiusMultiplier = 3f;
     [SerializeField] private LayerMask explosionLayerMask;
+    [SerializeField] private GameObject explosionEffectPrefab;//特效
 
     public override void TakeDamage(int damage)
     {
@@ -29,6 +30,9 @@ public class ExplosivePlanet : Planet
         float explosionRadius = sphereCollider.radius * explosionRadiusMultiplier;
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, explosionLayerMask);
+
+        GameObject effect = Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
+        Destroy(effect, 3f); //销毁
 
         foreach (Collider collider in colliders)
         {
