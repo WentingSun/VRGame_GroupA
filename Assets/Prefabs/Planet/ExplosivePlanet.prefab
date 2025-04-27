@@ -95,10 +95,11 @@ MonoBehaviour:
   FeedbackTime: 0.1
   sphereCollider: {fileID: 0}
   BaseScore: 1
-  explosionRadiusMultiplier: 1
+  explosionRadiusMultiplier: 3
   explosionLayerMask:
     serializedVersion: 2
     m_Bits: 1281
+  explosionEffectPrefab: {fileID: 3123075737211501182, guid: 0aa03bcb9a6f0054496af64436208e36, type: 3}
 --- !u!1 &1103549507603051196
 GameObject:
   m_ObjectHideFlags: 0

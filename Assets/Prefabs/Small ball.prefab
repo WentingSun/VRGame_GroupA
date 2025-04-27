@@ -251,6 +251,8 @@ MonoBehaviour:
   penetrationNum: 0
   isHarmful: 0
   appearAudio: {fileID: 0}
+  rippleEffectPrefab: {fileID: 4963656586175099301, guid: 51a2084d831e6d044bddbe087c02e129, type: 3}
+  scoreTextPrefab: {fileID: 3660783657591175448, guid: 33182ce89ccf9ea4ab01648e02da5001, type: 3}
 --- !u!96 &4968749631452279388
 TrailRenderer:
   serializedVersion: 3

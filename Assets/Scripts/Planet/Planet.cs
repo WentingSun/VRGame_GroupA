@@ -107,6 +107,10 @@ public class Planet : MonoBehaviour
     {
         ball.Reflect(collisionNormal);
         TakeDamage(1);
+        if (health <= 0)
+        {
+           ball.ShowScoreText(+1);
+        }
     }
 }
 public class normalPlanet : Planet
