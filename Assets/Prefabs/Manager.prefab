@@ -69,6 +69,7 @@ MonoBehaviour:
   - planetType: ExplosivePlanet
     prefab: {fileID: 550643163985590430, guid: 2e117cfa1d43caa489ea8a531336acee, type: 3}
     weight: 2
+  pooledPlanets: []
 --- !u!1 &4253780773314421202
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,13 +176,13 @@ MonoBehaviour:
   CurrentPlayerHealth: 3
   MaxPlayerHealth: 3
   remainingSmallBallNum: 10
-  MaxSmallBallNum: 10
-  ProtectShell: 0
+  MaxSmallBallNum: 30
   Score: 0
-  destoryPlanetNum: 0
+  destroyPlanetNum: 0
   numOfSmallBallShooted: 0
   MaxReachComboNum: 0
   isResurrection: 0
+  ProtectShell: 0
   isAllBallUsed: 0
 --- !u!114 &5462272844308109847
 MonoBehaviour:
@@ -319,6 +320,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SmallBallPool: {fileID: 1964081016016168844}
   defaultPlanetPool: {fileID: 0}
+  InnerPlanetSpawners: []
 --- !u!114 &6434831466326393126
 MonoBehaviour:
   m_ObjectHideFlags: 0

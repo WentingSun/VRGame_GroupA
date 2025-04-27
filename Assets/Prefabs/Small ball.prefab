@@ -247,6 +247,7 @@ MonoBehaviour:
   comboNum: 0
   hitShellNum: 0
   MaxHitShellNum: 10
+  DefaultMaxHitShellNum: 10
   penetrationNum: 0
   isHarmful: 0
   appearAudio: {fileID: 0}

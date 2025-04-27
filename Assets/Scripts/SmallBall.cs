@@ -24,6 +24,7 @@ public class SmallBall : MonoBehaviour
     [SerializeField] private int comboNum;
     [SerializeField] private int hitShellNum;
     [SerializeField] public int MaxHitShellNum = 10;
+    [SerializeField] public int DefaultMaxHitShellNum = 10;
     [SerializeField] private int penetrationNum;
     [SerializeField] private bool isHarmful = false;
 
@@ -58,6 +59,8 @@ public class SmallBall : MonoBehaviour
     private void Initialise()
     {
         //gameObject.layer = 0;
+        // Debug.Log("SmallBall Initialis");
+        MaxHitShellNum = DefaultMaxHitShellNum;
         penetrationNum = 0;
         hitShellNum = 0;
         comboNum = 0;
@@ -112,7 +115,7 @@ public class SmallBall : MonoBehaviour
     public void SetCollisions(int count)
     {
         MaxHitShellNum = count;
-        Debug.Log($"The ball's collision count increased by {count}. Current total: {MaxHitShellNum}");
+        // Debug.Log($"The ball's collision count increased by {count}. Current total: {MaxHitShellNum}");
     }
 
     void OnTriggerEnter(Collider other)
@@ -281,6 +284,7 @@ public class SmallBall : MonoBehaviour
         if (comboNum >= 3)
         {
             GameManager.Instance.SendGameEvent(GameEvent.RewardABall);
+            // Debug.Log(comboNum);
         }
 
         if (comboNum == 3)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ExplosivePlanet : Planet
 {
-    [SerializeField] private float explosionRadiusMultiplier = 3f;
+    [SerializeField] private float explosionRadiusMultiplier = 0.5f;
     [SerializeField] private LayerMask explosionLayerMask;
     [SerializeField] private GameObject explosionEffectPrefab;//特效
 
@@ -47,11 +47,11 @@ public class ExplosivePlanet : Planet
             if (smallBall != null)
             {
                 // Destroy(smallBall.gameObject);
-                smallBall.gameObject.SetActive(false); 
+                smallBall.ReleaseItself(); 
             }
         }
 
         // Destroy(gameObject);// Wenting: 这也应该是SetActivity(false)
-        StartCoroutine(GetDestroy());
+        // StartCoroutine(GetDestroy());
     }
 }

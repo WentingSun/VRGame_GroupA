@@ -24,7 +24,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] int MaxPlayerHealth = 3;
 
     public int remainingSmallBallNum = 10;
-    [SerializeField] int MaxSmallBallNum = 10;
+    [SerializeField] int MaxSmallBallNum = 10000;
 
 
 
@@ -177,6 +177,9 @@ public class GameManager : Singleton<GameManager>
             case GameEvent.RewardABall:
                 handleRewardABall();
                 break;
+            case GameEvent.RewardTenBall:
+                handleRewardTenBall();
+                break;
             case GameEvent.ResurrectionUsed:
                 HandleResurrectionUsed();
                 break;
@@ -195,6 +198,8 @@ public class GameManager : Singleton<GameManager>
         }
         OnGameEventSent?.Invoke(newGameEvent);
     }
+
+
 
     private void HandleGetResurrection()
     {
@@ -231,6 +236,13 @@ public class GameManager : Singleton<GameManager>
     {
         addSmallBallNum(1);
         isAllBallUsed = false;
+    }
+
+    private void handleRewardTenBall()
+    {
+        addSmallBallNum(10);
+        isAllBallUsed = false;
+        Debug.Log("RewardTenBall");
     }
 
     private void HandleTenComboHit()
@@ -325,6 +337,7 @@ public enum GameEvent
     TenComboHit,// if a ball comboNum reach 10
     AllBallUsed,
     RewardABall,
+    RewardTenBall,
     GetProtectShell,
     ProtectShellBreak,
     SmallBallIsFull,
