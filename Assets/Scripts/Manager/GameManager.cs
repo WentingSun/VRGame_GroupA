@@ -24,7 +24,8 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] int MaxPlayerHealth = 3;
 
     public int remainingSmallBallNum = 10;
-    [SerializeField] int MaxSmallBallNum = 10000;
+    public int MaxSmallBallNum = 30;
+    public int initSmallBallNum = 10;
 
 
 
@@ -41,7 +42,7 @@ public class GameManager : Singleton<GameManager>
     public void GameInitialsation()
     {
         CurrentPlayerHealth = MaxPlayerHealth;
-        remainingSmallBallNum = MaxSmallBallNum;
+        remainingSmallBallNum = initSmallBallNum;
         destroyPlanetNum = 0;
         numOfSmallBallShooted = 0;
         MaxReachComboNum = 0;
