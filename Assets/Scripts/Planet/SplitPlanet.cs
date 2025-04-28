@@ -35,6 +35,7 @@ public class SplitPlanet : Planet
                 }
             }
         }
-        Destroy(gameObject);
+        StartCoroutine(GetDestroy());
+        // Destroy(gameObject);
     }
 }

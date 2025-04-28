@@ -24,16 +24,17 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] int MaxPlayerHealth = 3;
 
     public int remainingSmallBallNum = 10;
-    [SerializeField] int MaxSmallBallNum = 10;
+    [SerializeField] int MaxSmallBallNum = 10000;
 
-    public bool ProtectShell;
+
 
     [Header("Game Information")]
     public float Score;
-    public int destoryPlanetNum;
+    public int destroyPlanetNum;
     public int numOfSmallBallShooted;
     public int MaxReachComboNum; //达到的最大连击数
     public bool isResurrection;
+    public bool ProtectShell;
     public bool isAllBallUsed;
 
 
@@ -41,7 +42,7 @@ public class GameManager : Singleton<GameManager>
     {
         CurrentPlayerHealth = MaxPlayerHealth;
         remainingSmallBallNum = MaxSmallBallNum;
-        destoryPlanetNum = 0;
+        destroyPlanetNum = 0;
         numOfSmallBallShooted = 0;
         MaxReachComboNum = 0;
         Score = 0;
@@ -172,7 +173,6 @@ public class GameManager : Singleton<GameManager>
     {
         if (ProtectShell)
         {
-            ProtectShell = false;
             // 添加盾被击碎的音效和动画
             SendGameEvent(GameEvent.ProtectShellBreak);
         }
@@ -200,15 +200,45 @@ public class GameManager : Singleton<GameManager>
             case GameEvent.RewardABall:
                 handleRewardABall();
                 break;
+            case GameEvent.RewardTenBall:
+                handleRewardTenBall();
+                break;
             case GameEvent.ResurrectionUsed:
                 HandleResurrectionUsed();
                 break;
             case GameEvent.AllBallUsed:
                 HandleAllBallUsed();
                 break;
+            case GameEvent.GetProtectShell:
+                HandleGetProtectShell();
+                break;
+            case GameEvent.ProtectShellBreak:
+                HandleProtectShellBreak();
+                break;
+            case GameEvent.GetResurrection:
+                HandleGetResurrection();
+                break;
         }
         OnGameEventSent?.Invoke(newGameEvent);
     }
+
+
+
+    private void HandleGetResurrection()
+    {
+        GetPlayerResurrection();
+    }
+
+    private void HandleGetProtectShell()
+    {
+        GetPlayerProtectShell();
+    }
+
+    private void HandleProtectShellBreak()
+    {
+        ProtectShell = false;
+    }
+
 
     private void HandleAllBallUsed()
     {
@@ -231,6 +261,13 @@ public class GameManager : Singleton<GameManager>
         isAllBallUsed = false;
     }
 
+    private void handleRewardTenBall()
+    {
+        addSmallBallNum(10);
+        isAllBallUsed = false;
+        Debug.Log("RewardTenBall");
+    }
+
     private void HandleTenComboHit()
     {
 
@@ -245,6 +282,7 @@ public class GameManager : Singleton<GameManager>
     public void addScore(int ScoreNum, float ScoreMultiplier)
     {
         Score += ScoreNum * ScoreMultiplier;
+        SendGameEvent(GameEvent.ScoreUpdated);
     }
     public int GetCurrentScore()
     {
@@ -271,9 +309,9 @@ public class GameManager : Singleton<GameManager>
 
     }
 
-    public void AddDestoryPlanetNum()
+    public void AddDestroyPlanetNum()
     {
-        destoryPlanetNum++;
+        destroyPlanetNum++;
     }
 
     public void AddNumOfSmallBallShooted()
@@ -292,6 +330,11 @@ public class GameManager : Singleton<GameManager>
     public void GetPlayerProtectShell()
     {
         ProtectShell = true;
+    }
+
+    public void GetPlayerResurrection()
+    {
+        isResurrection = true;
     }
 
 }
@@ -327,11 +370,13 @@ public enum GameEvent
     TenComboHit,// if a ball comboNum reach 10
     AllBallUsed,
     RewardABall,
+    RewardTenBall,
     GetProtectShell,
     ProtectShellBreak,
     SmallBallIsFull,
     GetResurrection,
-    ResurrectionUsed // 复活使用了
+    ResurrectionUsed, // 复活使用了
+    ScoreUpdated
 
 }
 

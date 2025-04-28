@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ExplosivePlanet : Planet
 {
-    [SerializeField] private float explosionRadiusMultiplier = 3f;
+    [SerializeField] private float explosionRadiusMultiplier = 0.5f;
     [SerializeField] private LayerMask explosionLayerMask;
+    [SerializeField] private GameObject explosionEffectPrefab;//特效
 
     public override void TakeDamage(int damage)
     {
@@ -30,22 +31,27 @@ public class ExplosivePlanet : Planet
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, explosionLayerMask);
 
+        GameObject effect = Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
+        Destroy(effect, 3f); //销毁
+
         foreach (Collider collider in colliders)
         {
             Planet planet = collider.GetComponent<Planet>();
             if (planet != null && planet != this)
             {
-                Destroy(planet.gameObject);
+                // Destroy(planet.gameObject);
+                planet.StartDestroy();
             }
 
             SmallBall smallBall = collider.GetComponent<SmallBall>();
             if (smallBall != null)
             {
-                Destroy(smallBall.gameObject); 
+                // Destroy(smallBall.gameObject);
+                smallBall.ReleaseItself(); 
             }
         }
 
         // Destroy(gameObject);// Wenting: 这也应该是SetActivity(false)
-        gameObject.SetActive(false);
+        // StartCoroutine(GetDestroy());
     }
 }

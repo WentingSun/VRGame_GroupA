@@ -6,6 +6,9 @@ using UnityEngine;
 // Audio Request 还需要小球出现音效和动画特效, 发射音效, 连击音效, 爆炸音效
 public class SmallBall : MonoBehaviour
 {
+    [SerializeField] private Renderer meshRenderer;
+    [SerializeField] private Material OriginMaterial;
+    [SerializeField] private Material FinalMaterial;
     [SerializeField] Rigidbody rb;
     [SerializeField] float StayTime;
 
@@ -21,10 +24,15 @@ public class SmallBall : MonoBehaviour
     [SerializeField] private int comboNum;
     [SerializeField] private int hitShellNum;
     [SerializeField] public int MaxHitShellNum = 10;
+    [SerializeField] public int DefaultMaxHitShellNum = 10;
     [SerializeField] private int penetrationNum;
+    [SerializeField] private bool isHarmful = false;
 
     [Header("Audio Clips")]
     [SerializeField] private AudioClip appearAudio;//出现音效 备注音频文件名字
+
+    [SerializeField] private GameObject rippleEffectPrefab;//特效
+    [SerializeField] private GameObject scoreTextPrefab;//score
 
     // Start is called before the first frame update
     void Start()
@@ -51,9 +59,13 @@ public class SmallBall : MonoBehaviour
     private void Initialise()
     {
         //gameObject.layer = 0;
+        // Debug.Log("SmallBall Initialis");
+        MaxHitShellNum = DefaultMaxHitShellNum;
         penetrationNum = 0;
         hitShellNum = 0;
         comboNum = 0;
+        meshRenderer.material = OriginMaterial;
+        isHarmful = false;
     }
 
 
@@ -103,11 +115,12 @@ public class SmallBall : MonoBehaviour
     public void SetCollisions(int count)
     {
         MaxHitShellNum = count;
-        Debug.Log($"The ball's collision count increased by {count}. Current total: {MaxHitShellNum}");
+        // Debug.Log($"The ball's collision count increased by {count}. Current total: {MaxHitShellNum}");
     }
 
     void OnTriggerEnter(Collider other)
     {
+        // Debug.Log("OnTriggerEnter");
         if (other.gameObject.CompareTag("Planet"))
         {
             penetrationNum--;
@@ -115,6 +128,13 @@ public class SmallBall : MonoBehaviour
             {
                 gameObject.layer = 0; //default
             }
+        }
+
+        if (other.gameObject.CompareTag("Player") && isHarmful)
+        {
+            Debug.Log("PlayerState.GetHit");
+            GameManager.Instance.UpdatePlayerState(PlayerState.GetHit);
+            this.ReleaseItself();
         }
 
         // Debug.Log("Trigger! "+ other.gameObject.name);
@@ -127,6 +147,20 @@ public class SmallBall : MonoBehaviour
         // Debug.Log($"SmallBall 碰到：{collision.gameObject.name} (layer={collision.gameObject.layer})");
         if (collision.gameObject.CompareTag("WorldShell"))
         {
+            //HandleHitShell();
+
+            // 获取撞击点
+            ContactPoint contact = collision.contacts[0];
+            Vector3 hitPos = contact.point;
+            Vector3 normal = contact.normal;
+
+
+            //Debug.DrawRay(hitPos, normal * 0.2f, Color.red, 2f);
+
+            // 生成波纹粒子
+            GameObject ripple = Instantiate(rippleEffectPrefab, hitPos + normal * 0.01f, Quaternion.LookRotation(normal));
+            Destroy(ripple, 2f);
+
             HandleHitShell();
         }
         if (collision.gameObject.CompareTag("Planet"))
@@ -140,12 +174,15 @@ public class SmallBall : MonoBehaviour
 
             HandleCombo();
         }
+
+
+
         int handLayer = LayerMask.NameToLayer("PlayerHand");
         if (collision.gameObject.layer == handLayer)
         {
             Vector3 n = collision.contacts[0].normal;
             rb.velocity = Vector3.Reflect(rb.velocity, n) * 1.2f;
-            return;
+
         }
 
     }
@@ -218,8 +255,16 @@ public class SmallBall : MonoBehaviour
     private void HandleHitShell()
     {
         comboNum = 0;
+        //ShowScoreText(+1);//测试
 
         hitShellNum++;
+
+        if (hitShellNum == MaxHitShellNum - 1)
+        {
+            isHarmful = true;
+            meshRenderer.material = FinalMaterial;
+        }
+
         if (hitShellNum >= MaxHitShellNum)
         {
             ReleaseItself();
@@ -229,6 +274,18 @@ public class SmallBall : MonoBehaviour
     private void HandleCombo()
     {
         comboNum++;
+        // ShowScoreText(+1);
+
+        if (comboNum > GameManager.Instance.MaxReachComboNum)
+        {
+            GameManager.Instance.MaxReachComboNum = comboNum;
+        }
+
+        if (comboNum >= 3)
+        {
+            GameManager.Instance.SendGameEvent(GameEvent.RewardABall);
+            // Debug.Log(comboNum);
+        }
 
         if (comboNum == 3)
         {
@@ -245,6 +302,14 @@ public class SmallBall : MonoBehaviour
     {
         penetrationNum = Num;
         gameObject.layer = 8; // PenetrationSmallBall
+    }
+
+    public void ShowScoreText(int value)
+    {
+        GameObject obj = Instantiate(scoreTextPrefab, transform.position, Quaternion.identity);
+        var effect = obj.GetComponent<ScoreTextEffect>();
+        effect.SetText("+" + value.ToString());
+
     }
 
 }
