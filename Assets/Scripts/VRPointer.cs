@@ -81,7 +81,6 @@ public class VRPointer : MonoBehaviour
             Ray ray = new Ray(rayOrigin, rayDirection);
             if (Physics.Raycast(ray, out RaycastHit hit, rayLength, uiLayer))
             {
-                Debug.Log($"[VRPointer] Hit {hit.collider.name} at {hit.point}");
                 if (hit.collider != null && hit.collider.TryGetComponent<Button>(out Button btn))
                 {
                     btn.onClick.Invoke();
@@ -89,13 +88,44 @@ public class VRPointer : MonoBehaviour
                 }
             }
         }
+        else if (IsRockGesture(leftHand))
+            {
+                Debug.Log("Rock gesture detected! Triggering pause menu.");
+                MenuManager.Instance.OnPauseGameButton(); // 触发暂停菜单
+            }
         else
         {
             // 如果未检测到指向手势，隐藏射线
             lineRenderer.enabled = false;
         }
     }
+     private bool IsRockGesture(XRHand hand)
+    {
+        // 检测中指和无名指是否弯曲
+        bool isMiddleFingerBent = IsFingerBent(hand, XRHandJointID.MiddleTip, XRHandJointID.MiddleProximal);
+        bool isRingFingerBent = IsFingerBent(hand, XRHandJointID.RingTip, XRHandJointID.RingProximal);
 
+        // 检测食指和小指是否伸直
+        bool isIndexFingerStraight = !IsFingerBent(hand, XRHandJointID.IndexTip, XRHandJointID.IndexProximal);
+        bool isPinkyFingerStraight = !IsFingerBent(hand, XRHandJointID.LittleTip, XRHandJointID.LittleProximal);
+
+        // 如果中指和无名指弯曲，且食指和小指伸直，则为“摇滚手势”
+        return isMiddleFingerBent && isRingFingerBent && isIndexFingerStraight && isPinkyFingerStraight;
+    }
+    // 检测单个手指是否弯曲
+    private bool IsFingerBent(XRHand hand, XRHandJointID tipJoint, XRHandJointID proximalJoint)
+    {
+        if (hand.GetJoint(tipJoint).TryGetPose(out Pose tipPose) &&
+            hand.GetJoint(proximalJoint).TryGetPose(out Pose proximalPose))
+        {
+            // 计算手指尖和根部的方向
+            Vector3 direction = (tipPose.position - proximalPose.position).normalized;
+
+            // 判断手指尖是否靠近根部（弯曲）
+            return Vector3.Dot(direction, Vector3.up) < 0.5f; // 0.5 表示接近弯曲状态
+        }
+        return false;
+    }
     // 检测是否是指向手势
     private bool IsPointingGesture(XRHand hand)
     {

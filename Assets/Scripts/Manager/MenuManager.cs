@@ -51,6 +51,11 @@ public class MenuManager : Singleton<MenuManager>
                 break;
         }
     }
+    public void OnPauseGameButton()
+    {
+        Debug.Log("Game paused.");
+        GameManager.Instance.UpdateGameState(GameState.GamePause);
+    }
 
     private void PositionMenuInFrontOfCamera(GameObject menu)
     {
@@ -91,26 +96,25 @@ public class MenuManager : Singleton<MenuManager>
         EnableCollisionBypass(true); // 启用穿模逻辑
     }
 
-private void ShowGameOverMenu()
-{
-    Time.timeScale = 0f; // 暂停游戏
-    PositionMenuInFrontOfCamera(GameOverMenu);
-    GameOverMenu.SetActive(true);
-
-    // 更新总分数
-    UpdateTotalScore();
-
-    // 更新小球射击数量
-    if (GameManager.Instance != null)
+    private void ShowGameOverMenu()
     {
-        int smallBallShooted = GameManager.Instance.numOfSmallBallShooted;
-        smallBallShootedText.text = $"Balls Shot: {smallBallShooted}";
+        PositionMenuInFrontOfCamera(GameOverMenu);
+        GameOverMenu.SetActive(true);
+
+        // 更新总分数
+        UpdateTotalScore();
+
+        // 更新小球射击数量
+        if (GameManager.Instance != null)
+        {
+            int smallBallShooted = GameManager.Instance.numOfSmallBallShooted;
+            smallBallShootedText.text = $"Balls Shot: {smallBallShooted}";
+        }
+        else
+        {
+            Debug.LogWarning("GameManager.Instance is null. Cannot update small ball count.");
+        }
     }
-    else
-    {
-        Debug.LogWarning("GameManager.Instance is null. Cannot update small ball count.");
-    }
-}
 
     private void ResumeGame()
     {
@@ -212,7 +216,15 @@ private void ShowGameOverMenu()
 
     public void OnExitGameButton()
     {
+        Debug.Log("Exiting game...");
+
+    #if UNITY_EDITOR
+        // 如果在 Unity 编辑器中，退出播放模式
+        UnityEditor.EditorApplication.isPlaying = false;
+    #else
+        // 如果是构建后的应用程序，退出游戏
         Application.Quit();
+    #endif
     }
 
     public void OnResumeGameButton()
