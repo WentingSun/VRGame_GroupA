@@ -97,7 +97,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateBallCount(int ballCount)
     {
-        ballCountText.text = $"x {ballCount}";
+        ballCountText.text = $"x {ballCount} / {GameManager.Instance.MaxSmallBallNum}";
     }
 
     private void UpdateHealth(int health)
