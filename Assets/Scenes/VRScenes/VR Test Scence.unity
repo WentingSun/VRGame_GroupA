@@ -566,7 +566,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 32
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -575,7 +575,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 262.5, y: 48.5, z: 1}
+  m_Size: {x: 262.5, y: 48.5, z: 20}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &453821378 stripped
 Transform:
@@ -709,7 +709,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 32
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -718,7 +718,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 262.5, y: 48.5, z: 0}
+  m_Size: {x: 262.5, y: 48.5, z: 20}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &634031549
 GameObject:
@@ -1305,7 +1305,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 32
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1314,7 +1314,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 262.5, y: 48.5, z: 1}
+  m_Size: {x: 262.5, y: 48.5, z: 20}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1182409433
 PrefabInstance:
@@ -1440,6 +1440,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 192650044}
+    - target: {fileID: 7679613973445410079, guid: 1133855405d6faf489534d0be68e751f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 196.2
+      objectReference: {fileID: 0}
     - target: {fileID: 8475757141000227118, guid: 1133855405d6faf489534d0be68e751f, type: 3}
       propertyPath: m_Name
       value: Manager

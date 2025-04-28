@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class MenuManager : Singleton<MenuManager>
 {
@@ -77,6 +78,7 @@ public class MenuManager : Singleton<MenuManager>
 
     private void ShowStartMenu()
     {
+        Time.timeScale = 0f; // 暂停游戏
         PositionMenuInFrontOfCamera(StartMenu);
         StartMenu.SetActive(true);
     }
@@ -91,6 +93,7 @@ public class MenuManager : Singleton<MenuManager>
 
 private void ShowGameOverMenu()
 {
+    Time.timeScale = 0f; // 暂停游戏
     PositionMenuInFrontOfCamera(GameOverMenu);
     GameOverMenu.SetActive(true);
 
@@ -112,6 +115,7 @@ private void ShowGameOverMenu()
     private void ResumeGame()
     {
         EnableCollisionBypass(false); // 禁用穿模逻辑
+        Time.timeScale = 1f;
     }
 
     private void UpdateCurrentScore()
@@ -153,18 +157,58 @@ private void ShowGameOverMenu()
 
         Physics.IgnoreLayerCollision(ballLayer, staticSceneLayer, enable);
     }
+    [SerializeField] private VideoPlayer videoPlayer; // 视频播放器
+    [SerializeField] private GameObject videoScreen; // 视频显示的屏幕（例如 RawImage 或 3D 对象）
+    [SerializeField] private List<VideoClip> tutorialVideos; // 按顺序播放的视频列表
+
+    private int currentVideoIndex = 0;
+
+    public void OnTutorialButton()
+    {
+        if (tutorialVideos == null || tutorialVideos.Count == 0)
+        {
+            Debug.LogError("No tutorial videos assigned.");
+            return;
+        }
+
+        Debug.Log("Tutorial started.");
+        videoScreen.SetActive(true); // 显示视频屏幕
+        currentVideoIndex = 0; // 从第一个视频开始
+        PlayNextVideo();
+    }
+
+    private void PlayNextVideo()
+    {
+        if (currentVideoIndex >= tutorialVideos.Count)
+        {
+            Debug.Log("All tutorial videos finished.");
+            videoScreen.SetActive(false); // 隐藏视频屏幕
+            return;
+        }
+
+        // 设置当前视频
+        videoPlayer.clip = tutorialVideos[currentVideoIndex];
+        videoPlayer.Play();
+        Debug.Log($"Playing video: {tutorialVideos[currentVideoIndex].name}");
+
+        // 监听视频播放完成事件
+        videoPlayer.loopPointReached += OnVideoFinished;
+    }
+
+    private void OnVideoFinished(UnityEngine.Video.VideoPlayer vp)
+    {
+        videoPlayer.loopPointReached -= OnVideoFinished; // 移除事件监听
+        currentVideoIndex++; // 播放下一个视频
+        PlayNextVideo();
+    }
 
     // 按钮事件
     public void OnStartGameButton()
     {
+        Time.timeScale = 1f; // 确保游戏时间正常流动
         GameManager.Instance.UpdateGameState(GameState.GamePlay);
     }
 
-    public void OnTutorialButton()
-    {
-        //TODO : Implement tutorial logic here
-        Debug.Log("Tutorial started.");
-    }
 
     public void OnExitGameButton()
     {

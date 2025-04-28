@@ -2,9 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.XR;
 using UnityEngine.XR.Hands;
-using UnityEngine.XR.Interaction.Toolkit;
 
 public class VRPointer : MonoBehaviour
 {
@@ -13,12 +11,6 @@ public class VRPointer : MonoBehaviour
     public float rayLength = 5f;                  // 射线长度
     public LayerMask uiLayer;                     // UI 层
 
-    [Header("手动射线起点设置")]
-    public Transform manualRayOrigin;             // 手动射线起点
-
-    [Header("XR 控制器设置")]
-    public XRController controller;               // XR 控制器（左手或右手）
-
     [Header("参考空间（XR Origin 根节点，用于将关节本地坐标转换为世界坐标）")]
     public Transform referenceSpace;              // 如果不需要可留空
 
@@ -26,14 +18,6 @@ public class VRPointer : MonoBehaviour
 
     private void Start()
     {
-        if (controller == null)
-        {
-            // 自动查找场景中的 Left Controller
-            controller = GameObject.Find("Left Controller")?.GetComponent<XRController>();
-            if (controller == null)
-                Debug.LogError("Left Controller not found or missing XRController component.");
-        }
-
         // 添加 LineRenderer 用于可视化射线
         lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.startWidth = 0.01f;
@@ -62,43 +46,21 @@ public class VRPointer : MonoBehaviour
 
         Vector3 rayOrigin;
         Vector3 rayDirection;
-        bool isManual = manualRayOrigin != null;
 
-        if (isManual)
+        // 仅检测左手
+        XRHand leftHand = handSubsystem.leftHand;
+        Pose indexTipPose;
+
+        // 检测左手是否被追踪以及是否处于指向状态
+        if (leftHand.isTracked &&
+            leftHand.GetJoint(XRHandJointID.IndexTip).TryGetPose(out indexTipPose) &&
+            IsPointingGesture(leftHand)) // 检测是否是指向手势
         {
-            // 手动起点逻辑
-            rayOrigin = manualRayOrigin.position;
-            rayDirection = manualRayOrigin.forward;
-        }
-        else
-        {
-            // 动态获取手指尖 IndexTip
-            XRHand leftHand = handSubsystem.leftHand;
-            XRHand rightHand = handSubsystem.rightHand;
-            Pose indexTipPose;
-
-            if (leftHand.isTracked &&
-                leftHand.GetJoint(XRHandJointID.IndexTip).TryGetPose(out indexTipPose))
-            {
-                // 左手 OK
-            }
-            else if (rightHand.isTracked &&
-                     rightHand.GetJoint(XRHandJointID.IndexTip).TryGetPose(out indexTipPose))
-            {
-                // 右手 OK
-            }
-            else
-            {
-                // 两只手都没追踪到 → 隐藏射线
-                lineRenderer.enabled = false;
-                return;
-            }
-
-            // 先拿到手指尖的“局部”位移和朝向
+            // 获取手指尖的局部位移和朝向
             Vector3 localPos = indexTipPose.position;
             Vector3 localFwd = indexTipPose.rotation * Vector3.forward;
 
-            // 如果 referenceSpace 不为空，就做一次 Transform；否则直接当世界坐标用
+            // 如果 referenceSpace 不为空，转换为世界坐标
             if (referenceSpace != null)
             {
                 rayOrigin = referenceSpace.TransformPoint(localPos);
@@ -109,25 +71,17 @@ public class VRPointer : MonoBehaviour
                 rayOrigin = localPos;
                 rayDirection = localFwd;
             }
-        }
 
-        // —— 调试输出 & 可视化 —— 
-        Debug.Log($"[VRPointer] branch={(isManual ? "Manual" : "Dynamic")}, origin={rayOrigin}");
-        Debug.DrawLine(rayOrigin, rayOrigin + rayDirection * rayLength, Color.red);
+            // 可视化射线
+            lineRenderer.enabled = true;
+            lineRenderer.SetPosition(0, rayOrigin);
+            lineRenderer.SetPosition(1, rayOrigin + rayDirection * rayLength);
 
-        // LineRenderer 可视化射线
-        lineRenderer.enabled = true;
-        lineRenderer.SetPosition(0, rayOrigin);
-        lineRenderer.SetPosition(1, rayOrigin + rayDirection * rayLength);
-
-        // XR Controller 输入检测 & UI 点击
-        if (controller != null &&
-            controller.inputDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool isPressed) &&
-            isPressed)
-        {
+            // 检测射线碰撞
             Ray ray = new Ray(rayOrigin, rayDirection);
             if (Physics.Raycast(ray, out RaycastHit hit, rayLength, uiLayer))
             {
+                Debug.Log($"[VRPointer] Hit {hit.collider.name} at {hit.point}");
                 if (hit.collider != null && hit.collider.TryGetComponent<Button>(out Button btn))
                 {
                     btn.onClick.Invoke();
@@ -135,5 +89,29 @@ public class VRPointer : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            // 如果未检测到指向手势，隐藏射线
+            lineRenderer.enabled = false;
+        }
+    }
+
+    // 检测是否是指向手势
+    private bool IsPointingGesture(XRHand hand)
+    {
+        // 检测食指是否伸直（可以根据具体需求调整逻辑）
+        if (hand.GetJoint(XRHandJointID.IndexTip).TryGetPose(out Pose indexTipPose) &&
+            hand.GetJoint(XRHandJointID.IndexProximal).TryGetPose(out Pose indexProximalPose))
+        {
+            // 判断食指尖和食指根部的方向是否接近手的局部前方
+            Vector3 direction = (indexTipPose.position - indexProximalPose.position).normalized;
+
+            // 使用手部的局部前方向作为参考方向
+            Vector3 handForward = (indexProximalPose.rotation * Vector3.forward).normalized;
+
+            // 判断方向是否接近手部的局部前方向
+            return Vector3.Dot(direction, handForward) > 0.8f; // 0.8 表示接近前方
+        }
+        return false;
     }
 }
