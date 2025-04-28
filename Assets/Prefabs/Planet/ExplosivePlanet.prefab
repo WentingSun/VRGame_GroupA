@@ -95,7 +95,7 @@ MonoBehaviour:
   FeedbackTime: 0.1
   sphereCollider: {fileID: 0}
   BaseScore: 1
-  explosionRadiusMultiplier: 3
+  explosionRadiusMultiplier: 1
   explosionLayerMask:
     serializedVersion: 2
     m_Bits: 1281
