@@ -903,6 +903,7 @@ MonoBehaviour:
     m_Bits: 32
   manualRayOrigin: {fileID: 0}
   controller: {fileID: 0}
+  referenceSpace: {fileID: 1143301599}
 --- !u!4 &686032658 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5305513257459609519, guid: cf84450703e5b8a4089a1180c125a96e, type: 3}
