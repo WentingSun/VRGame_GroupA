@@ -23,7 +23,7 @@ public class MenuManager : Singleton<MenuManager>
     {
         if (gameState == GameState.GamePause)
         {
-            PauseMenu.SetActive(true);
+            if (PauseMenu != null) PauseMenu.SetActive(true);
         }
         else if (gameState == GameState.GameStart)
         {

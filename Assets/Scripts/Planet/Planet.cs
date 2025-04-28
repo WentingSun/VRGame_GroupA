@@ -62,7 +62,9 @@ public class Planet : MonoBehaviour
 
     void OnDisable()
     {
-        GameManager.Instance.destroyPlanetNum++;
+        if (GameManager.Instance != null) {
+            GameManager.Instance.destroyPlanetNum++;
+        }
     }
 
     void Awake()

@@ -141,6 +141,7 @@ public class SmallBall : MonoBehaviour
         // Debug.Log($"SmallBall 碰到：{collision.gameObject.name} (layer={collision.gameObject.layer})");
         if (collision.gameObject.CompareTag("WorldShell"))
         {
+            AudioManager.Instance.PlayAudio(AudioManager.Ball_Hit);
             HandleHitShell();
         }
         if (collision.gameObject.CompareTag("Planet"))

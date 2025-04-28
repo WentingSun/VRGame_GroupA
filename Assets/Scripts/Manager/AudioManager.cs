@@ -15,7 +15,9 @@ public class AudioManager : Singleton<AudioManager>
         GameManager.OnGameStateChange += onGameStateChange;
         GameManager.OnPlayerStateChange += onPlayerStateChange;
         GameManager.OnGameEventSent += receivedGameEvent;
-         
+        PlayAudio(BGM,true);
+
+
     }
 
     public void PlayAudioClip(AudioClip clip, bool isLoop = false)
@@ -110,7 +112,6 @@ public class AudioManager : Singleton<AudioManager>
         {
             PlayAudio(RewardABall);
         }else if (receivedEvent == GameEvent.GetProtectShell)
-)
         {
             PlayAudio(GetProtectShell);
         }else if (receivedEvent == GameEvent.SmallBallIsFull)
@@ -144,6 +145,7 @@ public class AudioManager : Singleton<AudioManager>
     public static string ResurrectionUsed = "ResurrectionUsed";
     public static string RewardABall = "RewardABall";
     public static string ShootingABall = "ShootingABall";
+    public static string BGM = "bgm";
 
 
     // 播放音效
@@ -151,6 +153,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         Debug.Log("PlayAudio:" + name);
         var ac=Resources.Load<AudioClip>("Audio/" + name);
+        Debug.Log("ac " + ac);
         if (ac == null)
         {
             return;
