@@ -99,7 +99,7 @@ MonoBehaviour:
   explosionLayerMask:
     serializedVersion: 2
     m_Bits: 1281
-  explosionEffectPrefab: {fileID: 3123075737211501182, guid: 0aa03bcb9a6f0054496af64436208e36, type: 3}
+  explosionEffectPrefab: {fileID: 7367237673995434793, guid: 671b46e7f64b3ad49931a6eaa6045693, type: 3}
 --- !u!1 &1103549507603051196
 GameObject:
   m_ObjectHideFlags: 0
