@@ -177,6 +177,7 @@ MonoBehaviour:
   MaxPlayerHealth: 3
   remainingSmallBallNum: 10
   MaxSmallBallNum: 30
+  initSmallBallNum: 10
   Score: 0
   destroyPlanetNum: 0
   numOfSmallBallShooted: 0
@@ -319,8 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SmallBallPool: {fileID: 1964081016016168844}
-  defaultPlanetPool: {fileID: 0}
-  InnerPlanetSpawners: []
+  defaultPlanetPool: {fileID: 247527707314596961}
 --- !u!114 &6434831466326393126
 MonoBehaviour:
   m_ObjectHideFlags: 0
