@@ -19,6 +19,12 @@ public class MenuManager : Singleton<MenuManager>
 
         // 手动调用以初始化菜单
         OnGameStateChange(GameManager.Instance.GameStat);
+
+        // 确保视频屏幕在游戏开始时隐藏
+        if (videoScreen != null)
+        {
+            videoScreen.SetActive(false);
+        }
     }
 
     protected override void OnDestroy()
@@ -181,7 +187,7 @@ public class MenuManager : Singleton<MenuManager>
         PlayNextVideo();
     }
 
-    private void PlayNextVideo()
+   private void PlayNextVideo()
     {
         if (currentVideoIndex >= tutorialVideos.Count)
         {
@@ -192,18 +198,30 @@ public class MenuManager : Singleton<MenuManager>
 
         // 设置当前视频
         videoPlayer.clip = tutorialVideos[currentVideoIndex];
+        Debug.Log($"Setting video clip: {tutorialVideos[currentVideoIndex].name}");
         videoPlayer.Play();
         Debug.Log($"Playing video: {tutorialVideos[currentVideoIndex].name}");
 
-        // 监听视频播放完成事件
+        // 确保移除之前的事件监听器，避免重复调用
+        videoPlayer.loopPointReached -= OnVideoFinished;
         videoPlayer.loopPointReached += OnVideoFinished;
     }
 
     private void OnVideoFinished(UnityEngine.Video.VideoPlayer vp)
     {
+        Debug.Log("Video finished playing.");
         videoPlayer.loopPointReached -= OnVideoFinished; // 移除事件监听
         currentVideoIndex++; // 播放下一个视频
-        PlayNextVideo();
+
+        if (currentVideoIndex < tutorialVideos.Count)
+        {
+            PlayNextVideo(); // 播放下一个视频
+        }
+        else
+        {
+            Debug.Log("All tutorial videos finished.");
+            videoScreen.SetActive(false); // 隐藏视频屏幕
+        }
     }
 
     // 按钮事件
