@@ -34,7 +34,9 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
     public bool IsPinching()
     {
         return isPinching[0] || isPinching[1]; // 如果任意一只手正在拉弓，则返回 true
-    }    private bool[] hasLaunched = new bool[2];
+    }
+    private bool[] hasLaunched = new bool[2];
+    private bool canPull = false; // 是否允许拉弓
     private float[] pullAmt = new float[2];
     private GameObject[] currentVball = new GameObject[2];
     private Vector3[] pinchPoint = new Vector3[2];
@@ -48,10 +50,27 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
         if (fingerLineIndex != null) fingerLineIndex.enabled = false;
         if (internalDots != null) internalDots.enabled = false;
         internalDots?.ClearDots();
+
+        // 监听游戏状态变化
+        GameManager.OnGameStateChange += OnGameStateChange;
+    }
+    private void OnGameStateChange(GameState newState)
+    {
+        // 在 GameStart 和 GameOver 状态下禁止拉弓
+        canPull = !(newState == GameState.GameStart || newState == GameState.GameOver);
+        Debug.Log($"GameState changed to {newState}. CanPull set to {canPull}");
     }
 
-    void Update()
+    void OnDestroy()
     {
+        // 移除监听
+        GameManager.OnGameStateChange -= OnGameStateChange;
+    }
+
+   void Update()
+    {
+        if (!canPull) return; // 如果禁止拉弓，直接返回
+
         if (handSub == null || !handSub.running) return;
         if (soccerShell == null || roomShell == null) return;
 
@@ -83,6 +102,11 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
 
             if (pinched)
             {
+                if (!canPull)
+                {
+                    Debug.Log("Pulling is disabled, skipping ball logic.");
+                    return;
+                }
                 if (GameManager.Instance.remainingSmallBallNum <= 0)
                 {
                     return;
@@ -92,9 +116,6 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
                 {
                     isPinching[i] = true;
                     hasLaunched[i] = false;
-                    //添加捏合并开始拉拽音效（Audio）
-
-
 
                     // 记录表面捏合点
                     pinchPoint[i] = center + (mid - center).normalized * radius;
@@ -102,8 +123,8 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
                     // 生成虚拟小球
                     if (virtualBallPrefab != null)
                         currentVball[i] = Instantiate(virtualBallPrefab,
-                                                      mid,
-                                                      Quaternion.identity);
+                                                    mid,
+                                                    Quaternion.identity);
 
                     // 启用外部线
                     if (fingerLineThumb != null) { fingerLineThumb.positionCount = 2; fingerLineThumb.enabled = true; }
@@ -148,14 +169,11 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
             }
 
             // --- 松手发射 ---
-            if (isPinching[i] && !hasLaunched[i])
+            if (isPinching[i] && !hasLaunched[i] && canPull)
             {
                 hasLaunched[i] = true;
                 isPinching[i] = false;
                 GameManager.Instance.UpdatePlayerState(PlayerState.ShootingABall);
-                //添加松手发射小球音效（Audio）
-
-
 
                 // 隐藏外部线
                 if (fingerLineThumb != null) fingerLineThumb.enabled = false;
@@ -182,15 +200,20 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
                 float force = Mathf.Lerp(minLaunchForce, maxLaunchForce, pr);
 
                 //var real = Instantiate(realBallPrefab, spawnPos, Quaternion.identity);
-                var real = PoolManager.Instance.SmallBallPool.Get();
-                real.transform.position = spawnPos;
-                real.transform.rotation = Quaternion.identity;
+                if(canPull){
+                    Debug.Log("Play pinch sound effect.");
+                    var real = PoolManager.Instance.SmallBallPool.Get();
+                    real.transform.position = spawnPos;
+                    real.transform.rotation = Quaternion.identity;
 
-                if (real.TryGetComponent<Rigidbody>(out var rb))
-                {
-                    rb.velocity = Vector3.zero;
-                    rb.AddForce(fireDir * force, ForceMode.VelocityChange);
+                    if (real.TryGetComponent<Rigidbody>(out var rb))
+                    {
+                        rb.velocity = Vector3.zero;
+                        rb.AddForce(fireDir * force, ForceMode.VelocityChange);
+                    }
                 }
+                
+              
             }
         }
     }

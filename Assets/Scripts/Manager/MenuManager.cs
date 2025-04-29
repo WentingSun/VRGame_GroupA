@@ -5,6 +5,7 @@ using UnityEngine.Video;
 
 public class MenuManager : Singleton<MenuManager>
 {
+    [SerializeField] private VRPointer vrPointer; // 手势控制器
     [SerializeField] private GameObject StartMenu; // 初始菜单
     [SerializeField] private GameObject PauseMenu; // 暂停菜单
     [SerializeField] private GameObject GameOverMenu; // 游戏结束菜单
@@ -13,12 +14,25 @@ public class MenuManager : Singleton<MenuManager>
     [SerializeField] private TMPro.TextMeshProUGUI totalScoreText; // 游戏结束菜单显示总分数
 
     [SerializeField] private TMPro.TextMeshProUGUI smallBallShootedText; // 显示小球射击数量
+    [SerializeField] private TMPro.TextMeshProUGUI videoHintText; // 视频提示文字
+    [SerializeField] private List<string> videoHints = new List<string>
+    {
+        "motherfucker",
+        "caonimade",
+        "woaisinile 111"
+    };
     private void Start()
     {
         GameManager.OnGameStateChange += OnGameStateChange;
 
         // 手动调用以初始化菜单
         OnGameStateChange(GameManager.Instance.GameStat);
+
+        // 确保视频屏幕在游戏开始时隐藏
+        if (videoScreen != null)
+        {
+            videoScreen.SetActive(false);
+        }
     }
 
     protected override void OnDestroy()
@@ -187,23 +201,66 @@ public class MenuManager : Singleton<MenuManager>
         {
             Debug.Log("All tutorial videos finished.");
             videoScreen.SetActive(false); // 隐藏视频屏幕
+            videoHintText.text = ""; // 清空提示文字
+
+            // 重新启用手势
+            if (vrPointer != null)
+            {
+                vrPointer.enabled = true;
+            }
+
             return;
+        }
+
+        // 禁用手势
+        if (vrPointer != null)
+        {
+            vrPointer.enabled = false;
         }
 
         // 设置当前视频
         videoPlayer.clip = tutorialVideos[currentVideoIndex];
+        Debug.Log($"Setting video clip: {tutorialVideos[currentVideoIndex].name}");
         videoPlayer.Play();
         Debug.Log($"Playing video: {tutorialVideos[currentVideoIndex].name}");
 
-        // 监听视频播放完成事件
+        // 更新提示文字
+        if (currentVideoIndex < videoHints.Count)
+        {
+            videoHintText.text = videoHints[currentVideoIndex];
+        }
+        else
+        {
+            videoHintText.text = "";
+        }
+
+        // 确保移除之前的事件监听器，避免重复调用
+        videoPlayer.loopPointReached -= OnVideoFinished;
         videoPlayer.loopPointReached += OnVideoFinished;
     }
 
     private void OnVideoFinished(UnityEngine.Video.VideoPlayer vp)
     {
+        Debug.Log("Video finished playing.");
         videoPlayer.loopPointReached -= OnVideoFinished; // 移除事件监听
         currentVideoIndex++; // 播放下一个视频
-        PlayNextVideo();
+
+        if (currentVideoIndex < tutorialVideos.Count)
+        {
+            PlayNextVideo(); // 播放下一个视频
+        }
+        else
+        {
+            Debug.Log("All tutorial videos finished.");
+            videoScreen.SetActive(false); // 隐藏视频屏幕
+            videoHintText.text = ""; // 清空提示文字
+
+            // 重新启用手势
+            if (vrPointer != null)
+            {
+                vrPointer.enabled = true;
+            }
+        }
     }
 
     // 按钮事件
