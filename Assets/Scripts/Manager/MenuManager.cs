@@ -5,6 +5,7 @@ using UnityEngine.Video;
 
 public class MenuManager : Singleton<MenuManager>
 {
+    [SerializeField] private VRPointer vrPointer; // 手势控制器
     [SerializeField] private GameObject StartMenu; // 初始菜单
     [SerializeField] private GameObject PauseMenu; // 暂停菜单
     [SerializeField] private GameObject GameOverMenu; // 游戏结束菜单
@@ -13,6 +14,13 @@ public class MenuManager : Singleton<MenuManager>
     [SerializeField] private TMPro.TextMeshProUGUI totalScoreText; // 游戏结束菜单显示总分数
 
     [SerializeField] private TMPro.TextMeshProUGUI smallBallShootedText; // 显示小球射击数量
+    [SerializeField] private TMPro.TextMeshProUGUI videoHintText; // 视频提示文字
+    [SerializeField] private List<string> videoHints = new List<string>
+    {
+        "motherfucker",
+        "caonimade",
+        "woaisinile 111"
+    };
     private void Start()
     {
         GameManager.OnGameStateChange += OnGameStateChange;
@@ -187,13 +195,27 @@ public class MenuManager : Singleton<MenuManager>
         PlayNextVideo();
     }
 
-   private void PlayNextVideo()
+    private void PlayNextVideo()
     {
         if (currentVideoIndex >= tutorialVideos.Count)
         {
             Debug.Log("All tutorial videos finished.");
             videoScreen.SetActive(false); // 隐藏视频屏幕
+            videoHintText.text = ""; // 清空提示文字
+
+            // 重新启用手势
+            if (vrPointer != null)
+            {
+                vrPointer.enabled = true;
+            }
+
             return;
+        }
+
+        // 禁用手势
+        if (vrPointer != null)
+        {
+            vrPointer.enabled = false;
         }
 
         // 设置当前视频
@@ -201,6 +223,16 @@ public class MenuManager : Singleton<MenuManager>
         Debug.Log($"Setting video clip: {tutorialVideos[currentVideoIndex].name}");
         videoPlayer.Play();
         Debug.Log($"Playing video: {tutorialVideos[currentVideoIndex].name}");
+
+        // 更新提示文字
+        if (currentVideoIndex < videoHints.Count)
+        {
+            videoHintText.text = videoHints[currentVideoIndex];
+        }
+        else
+        {
+            videoHintText.text = "";
+        }
 
         // 确保移除之前的事件监听器，避免重复调用
         videoPlayer.loopPointReached -= OnVideoFinished;
@@ -221,6 +253,13 @@ public class MenuManager : Singleton<MenuManager>
         {
             Debug.Log("All tutorial videos finished.");
             videoScreen.SetActive(false); // 隐藏视频屏幕
+            videoHintText.text = ""; // 清空提示文字
+
+            // 重新启用手势
+            if (vrPointer != null)
+            {
+                vrPointer.enabled = true;
+            }
         }
     }
 
