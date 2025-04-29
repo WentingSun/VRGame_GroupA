@@ -96,7 +96,7 @@ public class AudioManager : Singleton<AudioManager>
         if (receivedEvent == GameEvent.ThreeComboHit)
         {
             //达到三连击的时候的音效在这播放
-            PlayAudio(Hit3);
+            // PlayAudio(Hit3);
         }
         else if (receivedEvent == GameEvent.ProtectShellBreak)
         {
@@ -143,7 +143,7 @@ public class AudioManager : Singleton<AudioManager>
     public static string GetProtectShell = "GetProtectShell";
     public static string GetResurrection = "GetResurrection";
     public static string ResurrectionUsed = "ResurrectionUsed";
-    public static string RewardABall = "RewardABall";
+    public static string RewardABall = "RewardABall2";
     public static string ShootingABall = "ShootingABall";
     public static string BGM = "bgm";
 
