@@ -20,6 +20,7 @@ public class ExplosivePlanet : Planet
 
     private void Explode()
     {
+        AudioManager.Instance.PlayAudio(AudioManager.Ball_Bomb);
         SphereCollider sphereCollider = GetComponent<SphereCollider>();
         if (sphereCollider == null)
         {
