@@ -577,7 +577,7 @@ MonoBehaviour:
   mainCamera: {fileID: 192650044}
   solidAngle: 30
   transparentAngle: 90
-  alphaOffset: 0
+  alphaOffset: 0.8
 --- !u!65 &119154039
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -36,7 +36,7 @@ public class Floor : MonoBehaviour
             alpha = Mathf.Clamp01(Mathf.InverseLerp(transparentAngle, solidAngle, angle));
         }
 
-        SetAlpha(alpha-alphaOffset);
+        SetAlpha(Mathf.Max(0,alpha-alphaOffset));
     }
     void SetAlpha(float alpha)
     {
