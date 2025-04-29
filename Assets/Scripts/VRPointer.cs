@@ -15,18 +15,35 @@ public class VRPointer : MonoBehaviour
     public Transform referenceSpace;              // 如果不需要可留空
 
     private LineRenderer lineRenderer;
+    private bool isPointerEnabled = true;        // 是否启用光线可视化
 
-    private void Start()
+   private void Start()
     {
         // 添加 LineRenderer 用于可视化射线
         lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.startWidth = 0.01f;
-        lineRenderer.endWidth = 0.01f;
+        lineRenderer.startWidth = 0.001f; // 更细的光线
+        lineRenderer.endWidth = 0.001f;
         lineRenderer.positionCount = 2;
-        lineRenderer.material = new Material(Shader.Find("Unlit/Color"));
-        lineRenderer.material.color = Color.green;
 
-        // ★ 核心：世界空间下绘制，确保 SetPosition 用的是世界坐标
+        // 使用支持透明度的材质
+        lineRenderer.material = new Material(Shader.Find("Unlit/Transparent"));
+        lineRenderer.material.color = new Color(0f, 0.3f, 0f, 0.2f); // 更暗的绿色，20%透明度
+
+        // 设置渐变颜色
+        Gradient gradient = new Gradient();
+        gradient.SetKeys(
+            new GradientColorKey[] {
+                new GradientColorKey(new Color(0f, 0.3f, 0f, 0.5f), 0f), // 起点颜色
+                new GradientColorKey(new Color(0f, 0.1f, 0f, 0.1f), 1f)  // 终点颜色
+            },
+            new GradientAlphaKey[] {
+                new GradientAlphaKey(0.5f, 0f), // 起点透明度
+                new GradientAlphaKey(0.1f, 1f)  // 终点透明度
+            }
+        );
+        lineRenderer.colorGradient = gradient;
+
+        // 世界空间下绘制，确保 SetPosition 用的是世界坐标
         lineRenderer.useWorldSpace = true;
         lineRenderer.enabled = false;
 
@@ -37,11 +54,30 @@ public class VRPointer : MonoBehaviour
             SubsystemManager.GetInstances(subsystems);
             handSubsystem = subsystems.Count > 0 ? subsystems[0] : null;
         }
+
+        // 监听游戏状态变化
+        GameManager.OnGameStateChange += OnGameStateChange;
+    }
+
+    private void OnDestroy()
+    {
+        // 移除监听
+        GameManager.OnGameStateChange -= OnGameStateChange;
+    }
+
+    private void OnGameStateChange(GameState newState)
+    {
+        // 仅在 GameStart 和 GameOver 状态下启用光线可视化
+        isPointerEnabled = (newState == GameState.GameStart || newState == GameState.GameOver);
+        if (!isPointerEnabled)
+        {
+            lineRenderer.enabled = false;
+        }
     }
 
     private void Update()
     {
-        if (handSubsystem == null || !handSubsystem.running)
+        if (!isPointerEnabled || handSubsystem == null || !handSubsystem.running)
             return;
 
         Vector3 rayOrigin;
@@ -88,45 +124,13 @@ public class VRPointer : MonoBehaviour
                 }
             }
         }
-        else if (IsRockGesture(leftHand))
-            {
-                Debug.Log("Rock gesture detected! Triggering pause menu.");
-                MenuManager.Instance.OnPauseGameButton(); // 触发暂停菜单
-            }
         else
         {
             // 如果未检测到指向手势，隐藏射线
             lineRenderer.enabled = false;
         }
     }
-     private bool IsRockGesture(XRHand hand)
-    {
-        // 检测中指和无名指是否弯曲
-        bool isMiddleFingerBent = IsFingerBent(hand, XRHandJointID.MiddleTip, XRHandJointID.MiddleProximal);
-        bool isRingFingerBent = IsFingerBent(hand, XRHandJointID.RingTip, XRHandJointID.RingProximal);
 
-        // 检测食指和小指是否伸直
-        bool isIndexFingerStraight = !IsFingerBent(hand, XRHandJointID.IndexTip, XRHandJointID.IndexProximal);
-        bool isPinkyFingerStraight = !IsFingerBent(hand, XRHandJointID.LittleTip, XRHandJointID.LittleProximal);
-
-        // 如果中指和无名指弯曲，且食指和小指伸直，则为“摇滚手势”
-        return isMiddleFingerBent && isRingFingerBent && isIndexFingerStraight && isPinkyFingerStraight;
-    }
-    // 检测单个手指是否弯曲
-    private bool IsFingerBent(XRHand hand, XRHandJointID tipJoint, XRHandJointID proximalJoint)
-    {
-        if (hand.GetJoint(tipJoint).TryGetPose(out Pose tipPose) &&
-            hand.GetJoint(proximalJoint).TryGetPose(out Pose proximalPose))
-        {
-            // 计算手指尖和根部的方向
-            Vector3 direction = (tipPose.position - proximalPose.position).normalized;
-
-            // 判断手指尖是否靠近根部（弯曲）
-            return Vector3.Dot(direction, Vector3.up) < 0.5f; // 0.5 表示接近弯曲状态
-        }
-        return false;
-    }
-    // 检测是否是指向手势
     private bool IsPointingGesture(XRHand hand)
     {
         // 检测食指是否伸直（可以根据具体需求调整逻辑）
