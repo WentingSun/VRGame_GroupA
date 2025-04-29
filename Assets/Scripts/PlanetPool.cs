@@ -15,11 +15,11 @@ public class PlanetPool : MonoBehaviour
     [SerializeField]
     private List<PlanetWeight> planetWeights = new List<PlanetWeight>
     {
-        new PlanetWeight { planetType = "normalPlanet", weight = 49 },
+        new PlanetWeight { planetType = "normalPlanet", weight = 45 },
         new PlanetWeight { planetType = "SplitPlanet", weight = 15 },
         new PlanetWeight { planetType = "SpeedUpPlanet", weight = 10 },
         new PlanetWeight { planetType = "SlowDownPlanet", weight = 10 },
-        new PlanetWeight { planetType = "MoreBallPlanet", weight = 1 },
+        new PlanetWeight { planetType = "MoreBallPlanet", weight = 5 },
         new PlanetWeight { planetType = "ExtraScorePlanet", weight = 10 },
         new PlanetWeight { planetType = "ExtraCollisionPlanet", weight = 3 },
         new PlanetWeight { planetType = "ExplosivePlanet", weight = 2 }

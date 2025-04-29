@@ -90,6 +90,26 @@ public class GameManagerEditor : Editor
            manager.SendGameEvent(GameEvent.RewardABall);
         }
 
+        if (GUILayout.Button("Send GetProtectShell"))
+        {
+           manager.SendGameEvent(GameEvent.GetProtectShell);
+        }
+
+        if (GUILayout.Button("Send GetResurrection"))
+        {
+           manager.SendGameEvent(GameEvent.GetResurrection);
+        }
+
+        if (GUILayout.Button("Send ProtectShellBreak"))
+        {
+           manager.SendGameEvent(GameEvent.ProtectShellBreak);
+        }
+
+        if (GUILayout.Button("Send ResurrectionUsed"))
+        {
+           manager.SendGameEvent(GameEvent.ResurrectionUsed);
+        }
+
         GUILayout.Space(10);
         GUILayout.Label("音效");
         if (GUILayout.Button("死亡"))

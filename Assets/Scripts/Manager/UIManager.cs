@@ -13,7 +13,9 @@ public class UIManager : MonoBehaviour
 
     [Header("Sprite Resources")]
     [SerializeField] private Sprite shieldSprite;
+    [SerializeField] private Sprite shieldSprite_dark;
     [SerializeField] private Sprite resurrectionSprite;
+    [SerializeField] private Sprite resurrectionSprite_dark;
 
     [Header("Colors")]
     [SerializeField] private Color activeColor = Color.white;
@@ -88,11 +90,13 @@ public class UIManager : MonoBehaviour
     private void UpdateShieldStatus(bool hasShield)
     {
         shieldImage.color = hasShield ? activeColor : inactiveColor;
+        shieldImage.sprite = hasShield ? shieldSprite : shieldSprite_dark;
     }
 
     private void UpdateResurrectionStatus(bool hasResurrection)
     {
         resurrectionImage.color = hasResurrection ? activeColor : inactiveColor;
+        resurrectionImage.sprite = hasResurrection ? resurrectionSprite : resurrectionSprite_dark;
     }
 
     private void UpdateBallCount(int ballCount)
