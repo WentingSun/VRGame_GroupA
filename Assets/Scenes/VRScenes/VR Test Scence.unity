@@ -577,7 +577,7 @@ MonoBehaviour:
   mainCamera: {fileID: 192650044}
   solidAngle: 30
   transparentAngle: 90
-  alphaOffset: 0
+  alphaOffset: 0.8
 --- !u!65 &119154039
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1431,13 +1431,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 469504459}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.3049, y: -0.57, z: -1.711}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0.7071068, w: 0}
+  m_LocalPosition: {x: -0.09, y: -0.06, z: -2.041}
   m_LocalScale: {x: 0.0896, y: 0.0896, z: 0.0896}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 180}
 --- !u!1 &509905139
 GameObject:
   m_ObjectHideFlags: 0
@@ -2875,10 +2875,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4069357092311542226, guid: b27ecbe8784294c44ba77ec9247cd033, type: 3}
-      propertyPath: defaultPlanetPool
-      value: 
-      objectReference: {fileID: 2027511279}
     - target: {fileID: 4462987914498124106, guid: b27ecbe8784294c44ba77ec9247cd033, type: 3}
       propertyPath: MaxSmallBallNum
       value: 30
@@ -2926,7 +2922,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1336716375}
   m_SourcePrefab: {fileID: 100100000, guid: b27ecbe8784294c44ba77ec9247cd033, type: 3}
-
+--- !u!4 &1182409434 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2945578432596688087, guid: b27ecbe8784294c44ba77ec9247cd033, type: 3}
+  m_PrefabInstance: {fileID: 1182409433}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1193504685
 GameObject:
   m_ObjectHideFlags: 0
@@ -2995,7 +2995,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-
 --- !u!4 &1208574544 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6252307751113160901, guid: 57311738b897da9409e4d3962d1fb21c, type: 3}
