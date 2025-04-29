@@ -54,6 +54,15 @@ public class SmallBall : MonoBehaviour
     {
         velocity = rb.velocity;
         velocityMagnitude = velocity.magnitude;
+        if(velocity.magnitude == 0){
+            this.ReleaseItself();
+        }
+        if(transform.position.y < -30f || transform.position.y > 30f 
+        || transform.position.x < -30f || transform.position.x > 30f 
+        || transform.position.z < -30f || transform.position.z > 30f){
+            this.ReleaseItself();
+        }
+
     }
 
     private void Initialise()
