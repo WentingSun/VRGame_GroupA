@@ -31,7 +31,10 @@ public class DualSphereSlingshotDynamic : MonoBehaviour
 
     private XRHandSubsystem handSub;
     private bool[] isPinching = new bool[2];
-    private bool[] hasLaunched = new bool[2];
+    public bool IsPinching()
+    {
+        return isPinching[0] || isPinching[1]; // 如果任意一只手正在拉弓，则返回 true
+    }    private bool[] hasLaunched = new bool[2];
     private float[] pullAmt = new float[2];
     private GameObject[] currentVball = new GameObject[2];
     private Vector3[] pinchPoint = new Vector3[2];

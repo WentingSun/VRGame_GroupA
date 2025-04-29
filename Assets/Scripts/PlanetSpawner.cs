@@ -12,6 +12,8 @@ public class PlanetSpawner : MonoBehaviour
     public bool isSpawner; //判断是否已经生成一颗星球
     public bool isBooked; // 判断是否预定了下一个要生成的星球
     public string BookedPlanetName;
+    public SpawnRing ring;
+    private bool isProcessing;
 
     public void CurrentPlanetTakeDamage()//just for test
     {
@@ -78,12 +80,15 @@ public class PlanetSpawner : MonoBehaviour
             planet.SetPlanetSpawner(this);
             currentPlanet = planet;
         }
+        isProcessing = false;
     }
 
     public void StartSpawnAPlanet()
     {
-        if (isSpawner == false)
+        if (isSpawner == false && isProcessing == false)
         {
+            ring.SetPlanetState(this);
+            isProcessing = true;
             StartCoroutine(SpawnPlanets());
         }
 
@@ -106,5 +111,6 @@ public class PlanetSpawner : MonoBehaviour
                 currentPlanet = planet;
             }
         }
+        isProcessing = false;
     }
 }

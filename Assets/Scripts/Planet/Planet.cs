@@ -11,6 +11,7 @@ public class Planet : MonoBehaviour
     [SerializeField] private GameObject HitedGameobject;
     [SerializeField] private float FeedbackTime = 0.1f;
     [SerializeField] private SphereCollider sphereCollider;
+    [SerializeField] protected int BaseScore = 1;
 
 
     private IEnumerator GetHitedFeedback()
@@ -38,7 +39,7 @@ public class Planet : MonoBehaviour
         RealGameobject.SetActive(false);
         HitedGameobject.SetActive(true);
         sphereCollider.enabled = false;
-
+        GameManager.Instance.addScore(BaseScore, 1.0f);
         yield return new WaitForSeconds(FeedbackTime);
 
         gameObject.SetActive(false);
@@ -99,6 +100,7 @@ public class Planet : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
+            // GameManager.Instance.addScore(1, 1);
             StartCoroutine(GetDestroy());
             // Destroy(gameObject);// Wenting:这里是不是要改成SetActive(false)?
         }
@@ -107,6 +109,10 @@ public class Planet : MonoBehaviour
     {
         ball.Reflect(collisionNormal);
         TakeDamage(1);
+        if (health <= 0)
+        {
+           ball.ShowScoreText(+1);
+        }
     }
 }
 public class normalPlanet : Planet

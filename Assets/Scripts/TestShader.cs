@@ -16,6 +16,6 @@ public class TestShader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("RenderTexture vrUsage: " + renderTexture.vrUsage);
+        //Debug.Log("RenderTexture vrUsage: " + renderTexture.vrUsage);
     }
 }

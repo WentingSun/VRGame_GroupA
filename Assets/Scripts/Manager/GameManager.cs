@@ -24,9 +24,10 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] int MaxPlayerHealth = 3;
 
     public int remainingSmallBallNum = 10;
-    [SerializeField] int MaxSmallBallNum = 10;
+    public int MaxSmallBallNum = 30;
+    public int initSmallBallNum = 10;
 
-    public bool ProtectShell;
+
 
     [Header("Game Information")]
     public float Score;
@@ -34,13 +35,14 @@ public class GameManager : Singleton<GameManager>
     public int numOfSmallBallShooted;
     public int MaxReachComboNum; //达到的最大连击数
     public bool isResurrection;
+    public bool ProtectShell;
     public bool isAllBallUsed;
 
 
     public void GameInitialsation()
     {
         CurrentPlayerHealth = MaxPlayerHealth;
-        remainingSmallBallNum = MaxSmallBallNum;
+        remainingSmallBallNum = initSmallBallNum;
         destroyPlanetNum = 0;
         numOfSmallBallShooted = 0;
         MaxReachComboNum = 0;
@@ -61,14 +63,35 @@ public class GameManager : Singleton<GameManager>
             case GameState.GameStart:
                 HandleGameStart();
                 break;
+            case GameState.GamePlay: // 游戏进行中
+                HandleGamePlay();
+                break;
             case GameState.GameOver:
                 HandleGameOver();
                 break;
             case GameState.GamePause:
                 HandleGamePause();
                 break;
+            case GameState.GameResume:
+                HandleGameResume();
+                break;
         }
         OnGameStateChange?.Invoke(newGameState);
+    }
+
+    private void HandleGamePlay()
+    {
+        Debug.Log("Game is now playing.");
+        // TODO在这里添加游戏进行时的逻辑，例如启用玩家输入、开始计时等
+
+        Time.timeScale = 1f; 
+    }
+
+    private void HandleGameResume()
+    {
+        Debug.Log("Game resumed.");
+        // 恢复时间流动
+        Time.timeScale = 1f;
     }
 
     private void HandleGameOver()
@@ -78,7 +101,9 @@ public class GameManager : Singleton<GameManager>
 
     private void HandleGamePause()
     {
-
+        Debug.Log("Game paused.");
+        // 暂停时间流动
+        Time.timeScale = 0f;
     }
 
     private void HandleGameStart()
@@ -149,7 +174,6 @@ public class GameManager : Singleton<GameManager>
     {
         if (ProtectShell)
         {
-            ProtectShell = false;
             // 添加盾被击碎的音效和动画
             SendGameEvent(GameEvent.ProtectShellBreak);
         }
@@ -177,15 +201,45 @@ public class GameManager : Singleton<GameManager>
             case GameEvent.RewardABall:
                 handleRewardABall();
                 break;
+            case GameEvent.RewardTenBall:
+                handleRewardTenBall();
+                break;
             case GameEvent.ResurrectionUsed:
                 HandleResurrectionUsed();
                 break;
             case GameEvent.AllBallUsed:
                 HandleAllBallUsed();
                 break;
+            case GameEvent.GetProtectShell:
+                HandleGetProtectShell();
+                break;
+            case GameEvent.ProtectShellBreak:
+                HandleProtectShellBreak();
+                break;
+            case GameEvent.GetResurrection:
+                HandleGetResurrection();
+                break;
         }
         OnGameEventSent?.Invoke(newGameEvent);
     }
+
+
+
+    private void HandleGetResurrection()
+    {
+        GetPlayerResurrection();
+    }
+
+    private void HandleGetProtectShell()
+    {
+        GetPlayerProtectShell();
+    }
+
+    private void HandleProtectShellBreak()
+    {
+        ProtectShell = false;
+    }
+
 
     private void HandleAllBallUsed()
     {
@@ -208,6 +262,13 @@ public class GameManager : Singleton<GameManager>
         isAllBallUsed = false;
     }
 
+    private void handleRewardTenBall()
+    {
+        addSmallBallNum(10);
+        isAllBallUsed = false;
+        Debug.Log("RewardTenBall");
+    }
+
     private void HandleTenComboHit()
     {
 
@@ -222,8 +283,17 @@ public class GameManager : Singleton<GameManager>
     public void addScore(int ScoreNum, float ScoreMultiplier)
     {
         Score += ScoreNum * ScoreMultiplier;
+        SendGameEvent(GameEvent.ScoreUpdated);
+    }
+    public int GetCurrentScore()
+    {
+        return Mathf.FloorToInt(Score); // 返回当前分数（取整）
     }
 
+    public int GetTotalScore()
+    {
+        return Mathf.FloorToInt(Score); // 如果有其他总分逻辑，可以在这里实现
+    }
     public void addSmallBallNum(int Num)
     {
         int newNum = remainingSmallBallNum + Num;
@@ -263,6 +333,11 @@ public class GameManager : Singleton<GameManager>
         ProtectShell = true;
     }
 
+    public void GetPlayerResurrection()
+    {
+        isResurrection = true;
+    }
+
 }
 //We need add more State or Event in future.
 //Events for GameState
@@ -270,7 +345,9 @@ public enum GameState
 {
     GameStart,
     GameOver,
+    GamePlay,
     GamePause,
+    GameResume
 
 }
 
@@ -294,11 +371,13 @@ public enum GameEvent
     TenComboHit,// if a ball comboNum reach 10
     AllBallUsed,
     RewardABall,
+    RewardTenBall,
     GetProtectShell,
     ProtectShellBreak,
     SmallBallIsFull,
     GetResurrection,
-    ResurrectionUsed // 复活使用了
+    ResurrectionUsed, // 复活使用了
+    ScoreUpdated
 
 }
 

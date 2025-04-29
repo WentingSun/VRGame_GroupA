@@ -24,11 +24,15 @@ public class SmallBall : MonoBehaviour
     [SerializeField] private int comboNum;
     [SerializeField] private int hitShellNum;
     [SerializeField] public int MaxHitShellNum = 10;
+    [SerializeField] public int DefaultMaxHitShellNum = 10;
     [SerializeField] private int penetrationNum;
     [SerializeField] private bool isHarmful = false;
 
     [Header("Audio Clips")]
     [SerializeField] private AudioClip appearAudio;//出现音效 备注音频文件名字
+
+    [SerializeField] private GameObject rippleEffectPrefab;//特效
+    [SerializeField] private GameObject scoreTextPrefab;//score
 
     // Start is called before the first frame update
     void Start()
@@ -50,11 +54,22 @@ public class SmallBall : MonoBehaviour
     {
         velocity = rb.velocity;
         velocityMagnitude = velocity.magnitude;
+        // if(velocity.magnitude == 0){
+        //     this.ReleaseItself();
+        // }
+        if(transform.position.y < -30f || transform.position.y > 30f 
+        || transform.position.x < -30f || transform.position.x > 30f 
+        || transform.position.z < -30f || transform.position.z > 30f){
+            this.ReleaseItself();
+        }
+
     }
 
     private void Initialise()
     {
         //gameObject.layer = 0;
+        // Debug.Log("SmallBall Initialis");
+        MaxHitShellNum = DefaultMaxHitShellNum;
         penetrationNum = 0;
         hitShellNum = 0;
         comboNum = 0;
@@ -109,7 +124,7 @@ public class SmallBall : MonoBehaviour
     public void SetCollisions(int count)
     {
         MaxHitShellNum = count;
-        Debug.Log($"The ball's collision count increased by {count}. Current total: {MaxHitShellNum}");
+        // Debug.Log($"The ball's collision count increased by {count}. Current total: {MaxHitShellNum}");
     }
 
     void OnTriggerEnter(Collider other)
@@ -124,8 +139,8 @@ public class SmallBall : MonoBehaviour
             }
         }
 
-        if (other.gameObject.CompareTag("Player") && isHarmful) 
-        { 
+        if (other.gameObject.CompareTag("Player") && isHarmful)
+        {
             Debug.Log("PlayerState.GetHit");
             GameManager.Instance.UpdatePlayerState(PlayerState.GetHit);
             this.ReleaseItself();
@@ -142,6 +157,20 @@ public class SmallBall : MonoBehaviour
         if (collision.gameObject.CompareTag("WorldShell"))
         {
             AudioManager.Instance.PlayAudio(AudioManager.Ball_Hit);
+            //HandleHitShell();
+
+            // 获取撞击点
+            ContactPoint contact = collision.contacts[0];
+            Vector3 hitPos = contact.point;
+            Vector3 normal = contact.normal;
+
+
+            //Debug.DrawRay(hitPos, normal * 0.2f, Color.red, 2f);
+
+            // 生成波纹粒子
+            GameObject ripple = Instantiate(rippleEffectPrefab, hitPos + normal * 0.01f, Quaternion.LookRotation(normal));
+            Destroy(ripple, 2f);
+
             HandleHitShell();
         }
         if (collision.gameObject.CompareTag("Planet"))
@@ -236,6 +265,7 @@ public class SmallBall : MonoBehaviour
     private void HandleHitShell()
     {
         comboNum = 0;
+        //ShowScoreText(+1);//测试
 
         hitShellNum++;
 
@@ -254,6 +284,18 @@ public class SmallBall : MonoBehaviour
     private void HandleCombo()
     {
         comboNum++;
+        // ShowScoreText(+1);
+
+        if (comboNum > GameManager.Instance.MaxReachComboNum)
+        {
+            GameManager.Instance.MaxReachComboNum = comboNum;
+        }
+
+        if (comboNum >= 3)
+        {
+            GameManager.Instance.SendGameEvent(GameEvent.RewardABall);
+            // Debug.Log(comboNum);
+        }
 
         if (comboNum == 3)
         {
@@ -270,6 +312,14 @@ public class SmallBall : MonoBehaviour
     {
         penetrationNum = Num;
         gameObject.layer = 8; // PenetrationSmallBall
+    }
+
+    public void ShowScoreText(int value)
+    {
+        GameObject obj = Instantiate(scoreTextPrefab, transform.position, Quaternion.identity);
+        var effect = obj.GetComponent<ScoreTextEffect>();
+        effect.SetText("+" + value.ToString());
+
     }
 
 }

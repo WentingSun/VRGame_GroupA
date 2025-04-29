@@ -7,6 +7,8 @@ public class Floor : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private float solidAngle = 30f; // 不透明起始角度
     [SerializeField] private float transparentAngle = 90f; // 完全透明角度
+    [Range(0f,1f)]
+    [SerializeField] private float alphaOffset;
 
     private Renderer rend;
 
@@ -34,7 +36,7 @@ public class Floor : MonoBehaviour
             alpha = Mathf.Clamp01(Mathf.InverseLerp(transparentAngle, solidAngle, angle));
         }
 
-        SetAlpha(alpha);
+        SetAlpha(alpha-alphaOffset);
     }
     void SetAlpha(float alpha)
     {
