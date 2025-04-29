@@ -63,14 +63,35 @@ public class GameManager : Singleton<GameManager>
             case GameState.GameStart:
                 HandleGameStart();
                 break;
+            case GameState.GamePlay: // 游戏进行中
+                HandleGamePlay();
+                break;
             case GameState.GameOver:
                 HandleGameOver();
                 break;
             case GameState.GamePause:
                 HandleGamePause();
                 break;
+            case GameState.GameResume:
+                HandleGameResume();
+                break;
         }
         OnGameStateChange?.Invoke(newGameState);
+    }
+
+    private void HandleGamePlay()
+    {
+        Debug.Log("Game is now playing.");
+        // TODO在这里添加游戏进行时的逻辑，例如启用玩家输入、开始计时等
+
+        Time.timeScale = 1f; 
+    }
+
+    private void HandleGameResume()
+    {
+        Debug.Log("Game resumed.");
+        // 恢复时间流动
+        Time.timeScale = 1f;
     }
 
     private void HandleGameOver()
@@ -80,7 +101,9 @@ public class GameManager : Singleton<GameManager>
 
     private void HandleGamePause()
     {
-
+        Debug.Log("Game paused.");
+        // 暂停时间流动
+        Time.timeScale = 0f;
     }
 
     private void HandleGameStart()
@@ -262,7 +285,15 @@ public class GameManager : Singleton<GameManager>
         Score += ScoreNum * ScoreMultiplier;
         SendGameEvent(GameEvent.ScoreUpdated);
     }
+    public int GetCurrentScore()
+    {
+        return Mathf.FloorToInt(Score); // 返回当前分数（取整）
+    }
 
+    public int GetTotalScore()
+    {
+        return Mathf.FloorToInt(Score); // 如果有其他总分逻辑，可以在这里实现
+    }
     public void addSmallBallNum(int Num)
     {
         int newNum = remainingSmallBallNum + Num;
@@ -314,7 +345,9 @@ public enum GameState
 {
     GameStart,
     GameOver,
+    GamePlay,
     GamePause,
+    GameResume
 
 }
 
