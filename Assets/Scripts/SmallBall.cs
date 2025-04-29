@@ -54,9 +54,9 @@ public class SmallBall : MonoBehaviour
     {
         velocity = rb.velocity;
         velocityMagnitude = velocity.magnitude;
-        if(velocity.magnitude == 0){
-            this.ReleaseItself();
-        }
+        // if(velocity.magnitude == 0){
+        //     this.ReleaseItself();
+        // }
         if(transform.position.y < -30f || transform.position.y > 30f 
         || transform.position.x < -30f || transform.position.x > 30f 
         || transform.position.z < -30f || transform.position.z > 30f){
@@ -156,6 +156,7 @@ public class SmallBall : MonoBehaviour
         // Debug.Log($"SmallBall 碰到：{collision.gameObject.name} (layer={collision.gameObject.layer})");
         if (collision.gameObject.CompareTag("WorldShell"))
         {
+            AudioManager.Instance.PlayAudio(AudioManager.Ball_Hit);
             //HandleHitShell();
 
             // 获取撞击点

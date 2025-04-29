@@ -14,8 +14,10 @@ public class AudioManager : Singleton<AudioManager>
     {
         GameManager.OnGameStateChange += onGameStateChange;
         GameManager.OnPlayerStateChange += onPlayerStateChange;
+        GameManager.OnGameEventSent += receivedGameEvent;
+        PlayAudio(BGM,true);
 
-         
+
     }
 
     public void PlayAudioClip(AudioClip clip, bool isLoop = false)
@@ -30,25 +32,31 @@ public class AudioManager : Singleton<AudioManager>
     {
         base.OnDestroy();
         GameManager.OnGameStateChange -= onGameStateChange;
+        GameManager.OnPlayerStateChange -= onPlayerStateChange;
+        GameManager.OnGameEventSent -= receivedGameEvent;
     }
 
+    // 有些GameState变化的音效在这里添加
     private void onGameStateChange(GameState gameState)
     {
         if (gameState == GameState.GamePause)
         {
-
+            PlayAudio(GamePause);
         }
         else if (gameState == GameState.GameStart)
         {
 
+        }else if (gameState == GameState.GameOver)
+        {
+            PlayAudio(gameover);
         }
     }
-
+    // 游戏里PlayState变化的音效在这里添加
     private void onPlayerStateChange(PlayerState playerState)
     {
         if (playerState == PlayerState.TakingDamage)
         {
-            if (GameManager.Instance.CurrentPlayerHealth == 1)
+            if (GameManager.Instance.CurrentPlayerHealth == 0)
             {
                 //这时候算是玩家死亡, 不用播放受伤音效, 如果没有死亡音效, 这if判断删了便是
                 PlayAudio(Death);
@@ -59,20 +67,65 @@ public class AudioManager : Singleton<AudioManager>
                 PlayAudio(Hurt);
             }
         }
+        else if (playerState == PlayerState.Idel)
+        {
+
+        }
+        else if (playerState == PlayerState.Aiming)
+        {
+
+        }
+        else if (playerState == PlayerState.ShootingABall)
+        {
+            PlayAudio(ShootingABall);
+        }
+        else if (playerState == PlayerState.GetHit)
+        {
+
+        }
+        else if (playerState == PlayerState.Dead)
+        {
+
+        }
     }
 
+         
+    // 游戏里GameEvent变化时播放的音效在这里添加。
     private void receivedGameEvent(GameEvent receivedEvent)
     {
         if (receivedEvent == GameEvent.ThreeComboHit)
         {
             //达到三连击的时候的音效在这播放
-            PlayAudio(Hit3);
+            // PlayAudio(Hit3);
         }
         else if (receivedEvent == GameEvent.ProtectShellBreak)
         {
             //护盾被破坏时的音效在这添加
             PlayAudio(Shield_Break);
+        }else if (receivedEvent == GameEvent.TenComboHit)
+        {
+
+        }else if (receivedEvent == GameEvent.AllBallUsed)
+        {
+
+        }else if (receivedEvent == GameEvent.RewardABall)
+        {
+            PlayAudio(RewardABall);
+        }else if (receivedEvent == GameEvent.GetProtectShell)
+        {
+            PlayAudio(GetProtectShell);
+        }else if (receivedEvent == GameEvent.SmallBallIsFull)
+        {
+
+        }else if (receivedEvent == GameEvent.GetResurrection)
+        {
+            PlayAudio(GetResurrection);
+        }else if (receivedEvent == GameEvent.ResurrectionUsed)
+        {
+            PlayAudio(ResurrectionUsed);
         }
+
+ 
     }
 
     public static string Death = "death"; // 死亡
@@ -85,12 +138,22 @@ public class AudioManager : Singleton<AudioManager>
     public static string Ball_Bomb = "ball_bomb"; // 小球暴炸
     public static string Recursion="recursion"; // 复活
 
+    public static string gameover = "gameover";
+    public static string GamePause = "GamePause";
+    public static string GetProtectShell = "GetProtectShell";
+    public static string GetResurrection = "GetResurrection";
+    public static string ResurrectionUsed = "ResurrectionUsed";
+    public static string RewardABall = "RewardABall2";
+    public static string ShootingABall = "ShootingABall";
+    public static string BGM = "bgm";
 
 
     // 播放音效
     public void PlayAudio(string name, bool isLoop = false)
     {
+        Debug.Log("PlayAudio:" + name);
         var ac=Resources.Load<AudioClip>("Audio/" + name);
+        Debug.Log("ac " + ac);
         if (ac == null)
         {
             return;
@@ -115,6 +178,8 @@ public class AudioManager : Singleton<AudioManager>
 
     private GameObject _audioRoot;
     private Queue<AudioSource> _audioSourceCache = new Queue<AudioSource>();
+    private object Dead;
+
     private AudioSource GetAudioSourceCache()
     {
         if (_audioRoot == null)
