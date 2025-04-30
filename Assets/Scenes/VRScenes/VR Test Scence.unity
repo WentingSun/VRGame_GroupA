@@ -552,6 +552,7 @@ MonoBehaviour:
   solidAngle: 30
   transparentAngle: 90
   alphaOffset: 0.8
+  rend: {fileID: 119154040}
 --- !u!65 &119154039
 BoxCollider:
   m_ObjectHideFlags: 0

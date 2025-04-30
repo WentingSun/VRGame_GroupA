@@ -10,7 +10,7 @@ public class Floor : MonoBehaviour
     [Range(0f,1f)]
     [SerializeField] private float alphaOffset;
 
-    private Renderer rend;
+    [SerializeField] private Renderer rend;
 
     // Start is called before the first frame update
     void Start()
