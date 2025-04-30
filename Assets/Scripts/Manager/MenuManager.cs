@@ -33,6 +33,7 @@ public class MenuManager : Singleton<MenuManager>
         {
             videoScreen.SetActive(false);
         }
+        //OnStartGameButton();
     }
 
     protected override void OnDestroy()
@@ -97,7 +98,7 @@ public class MenuManager : Singleton<MenuManager>
 
     private void ShowStartMenu()
     {
-        Time.timeScale = 0f; // 暂停游戏
+        //Time.timeScale = 0f; // 暂停游戏
         PositionMenuInFrontOfCamera(StartMenu);
         StartMenu.SetActive(true);
     }
