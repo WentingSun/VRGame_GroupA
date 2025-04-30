@@ -474,7 +474,9 @@ MonoBehaviour:
   healthText: {fileID: 7412266526167826314}
   scoreText: {fileID: 5583696111911682554}
   shieldSprite: {fileID: 21300000, guid: 8a164218dad981d439b0075fba3793ad, type: 3}
+  shieldSprite_dark: {fileID: 0}
   resurrectionSprite: {fileID: 21300000, guid: a8133b00ad74f5b4dae1482be12444bd, type: 3}
+  resurrectionSprite_dark: {fileID: 0}
   activeColor: {r: 1, g: 1, b: 1, a: 1}
   inactiveColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
 --- !u!1 &3127728406573987378

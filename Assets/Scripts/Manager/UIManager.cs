@@ -34,6 +34,7 @@ public class UIManager : MonoBehaviour
         UpdateScore(GameManager.Instance.Score);
 
         // 订阅事件
+        GameManager.OnGameStateChange += OnGameStateChange;
         GameManager.OnGameEventSent += OnGameEventSent;
         GameManager.OnPlayerStateChange += OnPlayerStateChanged;
     }
@@ -41,8 +42,20 @@ public class UIManager : MonoBehaviour
     private void OnDestroy()
     {
         // 取消订阅事件
+        GameManager.OnGameStateChange -= OnGameStateChange;
         GameManager.OnGameEventSent -= OnGameEventSent;
         GameManager.OnPlayerStateChange -= OnPlayerStateChanged;
+    }
+
+    private void OnGameStateChange(GameState gameState)
+    {
+        switch (gameState)
+        {
+            case GameState.GamePlay:
+                UpdateResurrectionStatus(false);
+                UpdateShieldStatus(false);
+                break;
+        }
     }
 
     private void OnGameEventSent(GameEvent gameEvent)

@@ -275,13 +275,13 @@ public class MenuManager : Singleton<MenuManager>
     {
         Debug.Log("Exiting game...");
 
-    #if UNITY_EDITOR
+    /* #if UNITY_EDITOR
         // 如果在 Unity 编辑器中，退出播放模式
         UnityEditor.EditorApplication.isPlaying = false;
     #else
         // 如果是构建后的应用程序，退出游戏
         Application.Quit();
-    #endif
+    #endif */
     }
 
     public void OnResumeGameButton()

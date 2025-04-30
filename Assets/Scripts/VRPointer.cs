@@ -24,6 +24,7 @@ public class VRPointer : MonoBehaviour
         lineRenderer.startWidth = 0.001f; // 更细的光线
         lineRenderer.endWidth = 0.001f;
         lineRenderer.positionCount = 2;
+        lineRenderer.gameObject.layer = 5;
 
         // 使用支持透明度的材质
         lineRenderer.material = new Material(Shader.Find("Unlit/Transparent"));

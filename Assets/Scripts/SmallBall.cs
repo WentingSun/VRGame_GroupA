@@ -291,7 +291,7 @@ public class SmallBall : MonoBehaviour
             GameManager.Instance.MaxReachComboNum = comboNum;
         }
 
-        if (comboNum >= 3)
+        if (comboNum >= 3 && comboNum <=4)
         {
             GameManager.Instance.SendGameEvent(GameEvent.RewardABall);
             // Debug.Log(comboNum);

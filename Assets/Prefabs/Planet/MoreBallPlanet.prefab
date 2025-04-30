@@ -142,7 +142,8 @@ MonoBehaviour:
   HitedGameobject: {fileID: 8485326192943376166}
   FeedbackTime: 0.1
   sphereCollider: {fileID: 0}
-  rewardAmount: 3
+  BaseScore: 1
+  rewardAmount: -5
 --- !u!135 &1781062198521885729
 SphereCollider:
   m_ObjectHideFlags: 0
